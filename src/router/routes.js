@@ -1,3 +1,4 @@
+const TheContainer = () => import("@/container");
 const Home = () => import("@/views/Home");
 const About = () => import("@/views/About");
 const Login = () => import("@/views/Login");
@@ -7,8 +8,20 @@ import { HOME, ABOUT, LOGIN } from "./name.types";
 export const configRoutes = [
   {
     path: "/",
-    name: HOME,
-    component: Home,
+    component: TheContainer,
+    meta: {
+      title: "Home",
+    },
+    children: [
+      {
+        path: "/",
+        name: HOME,
+        component: Home,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     path: "/login",
