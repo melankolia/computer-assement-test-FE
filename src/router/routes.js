@@ -1,7 +1,8 @@
 const TheContainer = () => import("@/container");
-const Home = () => import("@/views/Home");
+// const Home = () => import("@/views/Home");
 const About = () => import("@/views/About");
 const Login = () => import("@/views/Login");
+const DaftarPeserta = () => import("@/views/Peserta");
 
 import { HOME, ABOUT, LOGIN } from "./name.types";
 
@@ -14,9 +15,9 @@ export const configRoutes = [
     },
     children: [
       {
-        path: "/",
+        path: "/data-peserta",
         name: HOME,
-        component: Home,
+        component: DaftarPeserta,
         meta: {
           requiresAuth: true,
         },

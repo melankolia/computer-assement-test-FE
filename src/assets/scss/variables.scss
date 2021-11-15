@@ -7,3 +7,58 @@ $font-family: "Inter";
   }
   font-family: $font-family, sans-serif !important;
 }
+
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+  > .v-input__control
+  > .v-input__slot {
+  box-shadow: none !important;
+}
+
+table,
+th,
+td {
+  border: none !important;
+}
+
+// .table-header,
+// .table-footer {
+//   height: 60px;
+//   background: #f7f7f7 !important;
+// }
+
+thead > tr > th {
+  height: 60px !important;
+}
+
+tbody > tr > td {
+  height: 60px !important;
+}
+
+tbody > tr:hover {
+  background: #e9e5f2 !important;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.no-uppercase {
+  text-transform: none !important;
+}
+
+.v-simple-checkbox .v-icon {
+  color: #7c48ea !important;
+}
+
+.selection-item {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 19px;
+  color: #6e7191;
+}
+
+.v-data-table__expanded.v-data-table__expanded__content {
+  box-shadow: none !important;
+}

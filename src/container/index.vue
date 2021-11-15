@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <Sidebar />
-    <v-container fluid>
+    <v-container style="background: #f8f6fb; height: 100%" fluid>
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>

@@ -39,7 +39,7 @@ export default {
       Logo,
       selectedItem: 0,
       items: [
-        { text: "Data Peserta", to: "/" },
+        { text: "Data Peserta", to: "/data-peserta" },
         { text: "Manajemen Soal", to: "/manajemen-soal" },
         { text: "Peraturan Soal & Siswa", to: "/peraturan" },
       ],
