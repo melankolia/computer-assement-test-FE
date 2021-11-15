@@ -22,6 +22,7 @@ export default new Vuetify({
         graycs: "#f5f5f5",
         graytext: "#e0e0e0",
         addbg: "#E9E5F2",
+        subtitlegraytext: "#808080",
       },
     },
   },

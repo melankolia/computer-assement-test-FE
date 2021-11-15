@@ -62,3 +62,20 @@ table {
 .v-data-table__expanded.v-data-table__expanded__content {
   box-shadow: none !important;
 }
+
+.label-style {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 140%;
+  color: #726b81;
+}
+
+.header-3 {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 600 !important;
+  font-size: 22px;
+  line-height: 34px;
+}

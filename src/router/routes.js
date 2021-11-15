@@ -3,8 +3,9 @@ const TheContainer = () => import("@/container");
 const About = () => import("@/views/About");
 const Login = () => import("@/views/Login");
 const DaftarPeserta = () => import("@/views/Peserta");
+const ManajemenSoal = () => import("@/views/ManajemenSoal");
 
-import { HOME, ABOUT, LOGIN } from "./name.types";
+import { HOME, ABOUT, LOGIN, MANAJEMEN_SOAL } from "./name.types";
 
 export const configRoutes = [
   {
@@ -18,6 +19,14 @@ export const configRoutes = [
         path: "/data-peserta",
         name: HOME,
         component: DaftarPeserta,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/manajemen-soal",
+        name: MANAJEMEN_SOAL,
+        component: ManajemenSoal,
         meta: {
           requiresAuth: true,
         },

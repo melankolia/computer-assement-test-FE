@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-12">
+  <div class="px-6 py-12 mt-6">
     <p class="text-h4 font-weight-bold ma-0">Daftar Peserta</p>
     <v-row dense class="mt-9" align="center" justify="space-between">
       <v-col cols="12" xs="12" sm="4">
@@ -279,15 +279,6 @@ export default {
 </script>
 
 <style scoped>
-.label-style {
-  font-family: Inter !important;
-  font-style: normal;
-  font-weight: 500 !important;
-  font-size: 12px !important;
-  line-height: 140%;
-  color: #726b81;
-}
-
 .v-text-field--outlined >>> fieldset {
   border-color: transparent;
 }
