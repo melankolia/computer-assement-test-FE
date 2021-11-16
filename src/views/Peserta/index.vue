@@ -69,6 +69,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Nama Peserta</p>
                 <v-text-field
+                  v-model="payload.nama"
                   placeholder="Nama Peserta"
                   hide-details
                   outlined
@@ -81,6 +82,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Username</p>
                 <v-text-field
+                  v-model="payload.username"
                   placeholder="Cari Peserta"
                   hide-details
                   outlined
@@ -93,6 +95,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Password</p>
                 <v-text-field
+                  v-model="payload.password"
                   placeholder="Password"
                   hide-details
                   outlined
@@ -103,8 +106,10 @@
                 </v-text-field>
               </div>
               <v-btn
+                :loading="loadingSubmit"
                 @click="() => handleSave('submit')"
-                color="primary no-uppercase align-self-end"
+                color="primary"
+                class="no-uppercase align-self-end"
                 >Simpan</v-btn
               >
             </div>
@@ -245,14 +250,15 @@ export default {
         },
       ],
       expanded: [],
-      selectedEdit: {
+      payload: {
         secureId: null,
         nama: null,
         username: null,
         password: null,
-        status: null,
+        status: "Aktif",
       },
       addMode: false,
+      loadingSubmit: false,
     };
   },
   methods: {
@@ -260,15 +266,24 @@ export default {
       this.addMode = true;
     },
     handleSave(type = "submit") {
-      if (type == "submit") this.addMode = false;
+      if (type == "submit") {
+        this.loadingSubmit = true;
+        setTimeout(() => {
+          this.items.push({
+            ...this.payload,
+          });
+          this.addMode = false;
+          this.loadingSubmit = false;
+        }, 2000);
+      }
     },
     handleEdit(item, cb) {
-      if (item) this.selectedEdit = { ...item };
-      cb();
+      if (item) this.payload = { ...item };
+      cb && cb();
     },
   },
   watch: {
-    selectedEdit: {
+    payload: {
       handler(val) {
         console.log(val);
       },

@@ -1,6 +1,6 @@
 <template>
   <div class="px-6 py-12 mt-6">
-    <p class="text-h4 font-weight-bold mt-0 mb-9">Manajemen Soal</p>
+    <p class="text-h4 font-weight-bold mt-0 mb-9 font-inter">Manajemen Soal</p>
     <v-row class="mb-12">
       <v-col cols="12" class="py-2">
         <v-btn-toggle
@@ -11,22 +11,22 @@
           background-color="white"
         >
           <v-btn class="no-uppercase" small value="Kecerdasan">
-            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kecerdasan
             </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kepribadian">
-            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kepribadian
             </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kejiwaan">
-            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kejiwaan
             </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kecermatan">
-            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kecermatan
             </p>
           </v-btn>
@@ -62,4 +62,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.font-inter {
+  font-family: Inter !important;
+}
+</style>

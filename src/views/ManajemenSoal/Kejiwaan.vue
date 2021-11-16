@@ -40,6 +40,10 @@
             </template>
             <v-list>
               <v-list-item link>
+                <v-icon small class="mr-4">mdi-plus</v-icon>
+                <p class="selection-item ma-0">Tambah Soal</p>
+              </v-list-item>
+              <v-list-item link>
                 <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
                 <p class="selection-item ma-0">Edit Data</p>
               </v-list-item>
