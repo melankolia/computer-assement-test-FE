@@ -13,14 +13,18 @@
         </v-btn>
       </v-expand-transition>
     </div>
-    <div class="white my-6 px-8 pt-6 pb-10 rounded-lg">
+    <div
+      v-for="(item, index) in items"
+      class="white my-6 px-8 pt-6 pb-10 rounded-lg"
+      :key="index"
+    >
       <div class="d-flex flex-row justify-space-between align-center">
-        <p class="header-3 mb-0">Test Kejiwaan 1</p>
+        <p class="header-3 mb-0">{{ item.title }}</p>
         <div class="d-flex flex-row align-center">
           <p class="label-style mb-0 mx-4">
-            {{ !switch2 ? "Tidak Aktif" : "Aktif" }}
+            {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
           </p>
-          <v-switch dense v-model="switch2" color="greentext" inset />
+          <v-switch dense v-model="item.is_active" color="greentext" inset />
           <v-menu rounded left min-width="188px">
             <template v-slot:activator="{ attrs, on }">
               <v-btn
@@ -48,7 +52,7 @@
         </div>
       </div>
       <p class="text-subtitle-2 my-1 font-weight-light subtitlegraytext--text">
-        Tema Soal pada Kejiwaan 1 adalah Kejiwaan
+        {{ item.description }}
       </p>
       <div class="d-flex flex-row align-center mt-12">
         <div class="d-flex flex-row align-center mr-6">
@@ -57,7 +61,9 @@
         </div>
         <div class="d-flex flex-row align-center">
           <img class="mr-2" src="@/assets/icons/time.svg" />
-          <p class="selection-item font-weight-medium ma-0">90 Menit</p>
+          <p class="selection-item font-weight-medium ma-0">
+            {{ item.time }} Menit
+          </p>
         </div>
       </div>
     </div>
@@ -70,6 +76,7 @@
           <div class="d-flex flex-column" style="width: 344px">
             <p class="label-style mb-1">Nama Paket Soal</p>
             <v-text-field
+              v-model="payload.title"
               placeholder="Nama Paket Soal"
               hide-details
               filled
@@ -87,6 +94,7 @@
         </div>
         <div class="d-flex flex-row justify-space-between mt-2">
           <v-text-field
+            v-model="payload.description"
             style="max-width: 344px"
             placeholder="Deskripsi Paket Soal"
             hide-details
@@ -102,6 +110,7 @@
               Batal
             </v-btn>
             <v-btn
+              :loading="loadingSubmit"
               color="primary"
               @click="handleSubmit"
               class="no-uppercase depressed"
@@ -124,8 +133,22 @@ export default {
   },
   data() {
     return {
-      switch2: false,
+      items: [
+        {
+          title: "Test Kejiwaan 1",
+          description: "Tema Soal pada Kejiwaan 1 adalah Kejiwaan",
+          time: "12",
+          is_active: false,
+        },
+      ],
+      payload: {
+        title: null,
+        description: null,
+        is_active: true,
+        time: 12,
+      },
       modeAdd: false,
+      loadingSubmit: false,
     };
   },
   methods: {
@@ -133,7 +156,23 @@ export default {
       this.modeAdd = false;
     },
     handleSubmit() {
-      this.modeAdd = false;
+      this.loadingSubmit = true;
+      setTimeout(() => {
+        this.items.push({
+          ...this.payload,
+        });
+        this.payload = {
+          title: null,
+          description: null,
+          is_active: true,
+          time: "12",
+        };
+        this.modeAdd = false;
+        this.loadingSubmit = false;
+      }, 1000);
+    },
+    handleChange(e) {
+      this.payload.time = parseInt(e);
     },
   },
 };
@@ -143,6 +182,7 @@ export default {
 .label-style {
   color: #9b9b9b !important;
 }
+
 .v-text-field--outlined >>> fieldset {
   border-color: transparent;
   background: #f8f6fb;

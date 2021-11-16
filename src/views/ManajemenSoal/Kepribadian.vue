@@ -13,14 +13,18 @@
         </v-btn>
       </v-expand-transition>
     </div>
-    <div class="white my-6 px-8 pt-6 pb-10 rounded-lg">
+    <div
+      v-for="(item, index) in items"
+      class="white my-6 px-8 pt-6 pb-10 rounded-lg"
+      :key="index"
+    >
       <div class="d-flex flex-row justify-space-between align-center">
-        <p class="header-3 mb-0">Test Kepribadian 1</p>
+        <p class="header-3 mb-0">{{ item.title }}</p>
         <div class="d-flex flex-row align-center">
           <p class="label-style mb-0 mx-4">
-            {{ !switch2 ? "Tidak Aktif" : "Aktif" }}
+            {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
           </p>
-          <v-switch dense v-model="switch2" color="greentext" inset />
+          <v-switch dense v-model="item.is_active" color="greentext" inset />
           <v-menu rounded left min-width="188px">
             <template v-slot:activator="{ attrs, on }">
               <v-btn
@@ -48,18 +52,20 @@
         </div>
       </div>
       <p class="text-subtitle-2 my-1 font-weight-light subtitlegraytext--text">
-        Tema Soal pada Kepribadian 1 adalah Kepribadian
+        {{ item.description }}
       </p>
       <div class="d-flex flex-row align-center mt-12">
         <div class="d-flex flex-row align-center mr-6">
           <img class="mr-2" src="@/assets/icons/sheet.svg" />
           <p class="selection-item font-weight-medium ma-0">
-            50 Soal (5 Jawaban)
+            50 Soal ({{ item.type }} Jawaban)
           </p>
         </div>
         <div class="d-flex flex-row align-center">
           <img class="mr-2" src="@/assets/icons/time.svg" />
-          <p class="selection-item font-weight-medium ma-0">90 Menit</p>
+          <p class="selection-item font-weight-medium ma-0">
+            {{ item.time }} Menit
+          </p>
         </div>
       </div>
     </div>
@@ -72,6 +78,7 @@
           <div class="d-flex flex-column" style="width: 344px">
             <p class="label-style mb-1">Nama Paket Soal</p>
             <v-text-field
+              v-model="payload.title"
               placeholder="Nama Paket Soal"
               hide-details
               filled
@@ -84,18 +91,18 @@
             <div class="d-flex flex-column align-center mx-12">
               <p class="text-caption font-weight-light mb-1">Jumlah Jawaban</p>
               <v-btn-toggle
-                v-model="type"
+                v-model="payload.type"
                 mandatory
                 borderless
                 active-class
                 color="deep-purple accent-3"
               >
-                <v-btn class="no-uppercase" small value="four">
+                <v-btn class="no-uppercase" small value="4">
                   <p class="ma-0 text-subtitle-2 font-weight-regular">
                     4 Jawaban
                   </p>
                 </v-btn>
-                <v-btn class="no-uppercase" small value="five">
+                <v-btn class="no-uppercase" small value="5">
                   <p class="ma-0 text-subtitle-2 font-weight-regular">
                     5 Jawaban
                   </p>
@@ -106,12 +113,13 @@
               <p class="text-caption font-weight-light mb-1">
                 Total Menit / Paket
               </p>
-              <Counter />
+              <Counter @on-change="(e) => handleChange(e)" />
             </div>
           </div>
         </div>
         <div class="d-flex flex-row justify-space-between mt-4">
           <v-text-field
+            v-model="payload.description"
             style="max-width: 344px"
             placeholder="Deskripsi Paket Soal"
             hide-details
@@ -127,6 +135,7 @@
               Batal
             </v-btn>
             <v-btn
+              :loading="loadingSubmit"
               color="primary"
               @click="handleSubmit"
               class="no-uppercase depressed"
@@ -149,9 +158,24 @@ export default {
   },
   data() {
     return {
-      type: "four",
-      switch2: false,
+      items: [
+        {
+          title: "Test Kepribadian 1",
+          description: "Tema Soal pada Kepribadian 1 adalah Kepribadian",
+          time: "12",
+          type: "4",
+          is_active: false,
+        },
+      ],
+      payload: {
+        title: null,
+        description: null,
+        is_active: true,
+        type: "4",
+        time: 12,
+      },
       modeAdd: false,
+      loadingSubmit: false,
     };
   },
   methods: {
@@ -159,7 +183,24 @@ export default {
       this.modeAdd = false;
     },
     handleSubmit() {
-      this.modeAdd = false;
+      this.loadingSubmit = true;
+      setTimeout(() => {
+        this.items.push({
+          ...this.payload,
+        });
+        this.payload = {
+          title: null,
+          description: null,
+          is_active: true,
+          type: "4",
+          time: 12,
+        };
+        this.modeAdd = false;
+        this.loadingSubmit = false;
+      }, 1000);
+    },
+    handleChange(e) {
+      this.payload.time = parseInt(e);
     },
   },
 };

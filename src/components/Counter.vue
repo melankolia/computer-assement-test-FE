@@ -3,7 +3,7 @@
     class="d-flex flex-row quantity-count rounded align-center justify-center"
     style="width: 124px"
   >
-    <v-icon small @click="() => handleRemove()" color="black" class="ma-1">
+    <v-icon small @click="counter--" color="black" class="ma-1">
       mdi-minus
     </v-icon>
     <v-text-field
@@ -15,7 +15,7 @@
       single-line
       type="number"
     />
-    <v-icon small @click="() => handleAdd()" color="black" class="ma-1">
+    <v-icon small @click="counter++" color="black" class="ma-1">
       mdi-plus
     </v-icon>
   </div>
@@ -28,12 +28,9 @@ export default {
       counter: 0,
     };
   },
-  methods: {
-    handleAdd() {
-      console.log("handleAdd");
-    },
-    handleRemove() {
-      console.log("handleRemove");
+  watch: {
+    counter(val) {
+      this.$emit("on-change", val);
     },
   },
 };

@@ -53,5 +53,6 @@ export default {
   font-weight: 500 !important;
   font-size: 16px !important;
   line-height: 140%;
+  text-transform: none !important;
 }
 </style>
