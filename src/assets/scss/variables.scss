@@ -79,3 +79,27 @@ table {
   font-size: 22px;
   line-height: 34px;
 }
+
+.v-text-field input {
+  font-size: 14px;
+}
+
+.custom-padding input {
+  padding-left: 10px !important;
+  opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.v-btn-toggle > .v-btn.v-btn {
+  opacity: 1 !important;
+  background-color: white !important;
+}

@@ -7,20 +7,28 @@
           v-model="isComponent"
           mandatory
           borderless
-          active-class
           color="deep-purple accent-3"
+          background-color="white"
         >
           <v-btn class="no-uppercase" small value="Kecerdasan">
-            <p class="ma-0 mx-4 text-subtitle-2">Kecerdasan</p>
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+              Kecerdasan
+            </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kepribadian">
-            <p class="ma-0 mx-4 text-subtitle-2">Kepribadian</p>
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+              Kepribadian
+            </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kejiwaan">
-            <p class="ma-0 mx-4 text-subtitle-2">Kejiwaan</p>
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+              Kejiwaan
+            </p>
           </v-btn>
           <v-btn class="no-uppercase" small value="Kecermatan">
-            <p class="ma-0 mx-4 text-subtitle-2">Kecermatan</p>
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular">
+              Kecermatan
+            </p>
           </v-btn>
         </v-btn-toggle>
       </v-col>

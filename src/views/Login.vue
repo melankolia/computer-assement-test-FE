@@ -12,10 +12,10 @@
       </div>
       <div class="d-flex flex-column mb-6">
         <p class="label-style mb-1">Username</p>
-        <v-text-field filled outlined />
+        <v-text-field dense filled outlined />
 
         <p class="label-style mb-1">Password</p>
-        <v-text-field filled outlined />
+        <v-text-field dense filled outlined />
 
         <v-btn class="primary pa-6" depressed>
           <p class="ma-0">Masuk</p>
