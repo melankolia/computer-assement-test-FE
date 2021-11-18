@@ -41,7 +41,7 @@ export default {
       items: [
         { text: "Data Peserta", to: "/data-peserta" },
         { text: "Manajemen Soal", to: "/manajemen-soal" },
-        { text: "Peraturan Soal & Siswa", to: "/peraturan" },
+        { text: "Peraturan Soal & Siswa", to: "/peraturan-soal" },
       ],
     };
   },

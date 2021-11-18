@@ -4,8 +4,15 @@ const About = () => import("@/views/About");
 const Login = () => import("@/views/Login");
 const DaftarPeserta = () => import("@/views/Peserta");
 const ManajemenSoal = () => import("@/views/ManajemenSoal");
+const PeraturanSoal = () => import("@/views/Peraturan");
 
-import { HOME, ABOUT, LOGIN, MANAJEMEN_SOAL } from "./name.types";
+import {
+  HOME,
+  ABOUT,
+  LOGIN,
+  MANAJEMEN_SOAL,
+  PERATURAN_SOAL,
+} from "./name.types";
 
 export const configRoutes = [
   {
@@ -27,6 +34,14 @@ export const configRoutes = [
         path: "/manajemen-soal",
         name: MANAJEMEN_SOAL,
         component: ManajemenSoal,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/peraturan-soal",
+        name: PERATURAN_SOAL,
+        component: PeraturanSoal,
         meta: {
           requiresAuth: true,
         },
