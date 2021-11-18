@@ -38,12 +38,25 @@ export default {
       DefaultProfile,
       Logo,
       selectedItem: 0,
-      items: [
+      items: [],
+      itemsAdmin: [
         { text: "Data Peserta", to: "/data-peserta" },
         { text: "Manajemen Soal", to: "/manajemen-soal" },
         { text: "Peraturan Soal & Siswa", to: "/peraturan-soal" },
       ],
+      itemsSiswa: [
+        { text: "Daftar Soal", to: "/data-soal" },
+        { text: "Daftar Nilai", to: "/data-nilai" },
+      ],
     };
+  },
+  mounted() {
+    const type = "user";
+    if (type == "user") {
+      this.items = [...this.itemsSiswa];
+    } else {
+      this.items = [...this.itemsAdmin];
+    }
   },
 };
 </script>

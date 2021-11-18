@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createLogger from "vuex/dist/logger";
 import VuexPersistence from "vuex-persist";
 
+import profile from "./modules/profile.store";
 import auth from "./modules/auth.store";
 import snackbar from "./modules/snackbar.store";
 
@@ -25,6 +26,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     snackbar,
+    profile,
   },
   strict: debug,
   plugins: [vuexLocal.plugin, ...debugPlugin],
