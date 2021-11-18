@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex flex-column">
     <p class="text-h5 mb-3" style="font-family: Inter !important">
-      Test Kecerdasan 1
+      Test Kepribadian 1
     </p>
     <p class="text-caption label-caption mb-5">
-      Tema Soal pada Kecerdasan 2 adalah Tentang Negara dan Ibu kota
+      Tema Soal pada Kepribadian 2 adalah Tentang Negara dan Ibu kota
     </p>
     <div
       class="d-flex flex-row justify-space-between white py-2 px-9 rounded-lg"

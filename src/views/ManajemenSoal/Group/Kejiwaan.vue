@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex flex-row justify-space-between align-center">
-      <p class="header-3 mb-0">Kecerdasan</p>
+      <p class="header-3 mb-0">Kejiwaan</p>
       <v-expand-transition>
         <v-btn
           v-if="!modeAdd"
@@ -93,7 +93,7 @@
             <p class="text-caption font-weight-light mb-1">
               Total Menit / Paket
             </p>
-            <Counter @on-change="(e) => handleChange(e)" />
+            <Counter />
           </div>
         </div>
         <div class="d-flex flex-row justify-space-between mt-2">
@@ -140,10 +140,9 @@ export default {
     return {
       items: [
         {
-          secureId: "123456",
-          title: "Test Kecerdasan 1",
-          description:
-            "Tema Soal pada Kecerdasan 1 adalah Tentang Negara dan Ibu kota",
+          secureId: "4422-0099-8877",
+          title: "Test Kejiwaan 1",
+          description: "Tema Soal pada Kejiwaan 1 adalah Kejiwaan",
           time: "12",
           is_active: false,
         },
@@ -167,7 +166,6 @@ export default {
       setTimeout(() => {
         this.items.push({
           ...this.payload,
-          secureId: "qwerty",
         });
         this.payload = {
           title: null,
@@ -188,7 +186,7 @@ export default {
       });
       this.$router.replace({
         name: MANAJEMEN_SOAL,
-        query: { kecerdasanSecureId: item.secureId },
+        query: { kejiwaanSecureId: item.secureId },
       });
     },
   },
@@ -197,7 +195,6 @@ export default {
 
 <style scoped>
 .label-style {
-  font-family: Inter !important;
   color: #9b9b9b !important;
 }
 

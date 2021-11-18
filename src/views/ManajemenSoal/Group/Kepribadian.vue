@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex flex-row justify-space-between align-center">
-      <p class="header-3 mb-0">Kecerdasan</p>
+      <p class="header-3 mb-0">Kepribadian</p>
       <v-expand-transition>
         <v-btn
           v-if="!modeAdd"
@@ -61,7 +61,9 @@
       <div class="d-flex flex-row align-center mt-12">
         <div class="d-flex flex-row align-center mr-6">
           <img class="mr-2" src="@/assets/icons/sheet.svg" />
-          <p class="selection-item font-weight-medium ma-0">50 Soal</p>
+          <p class="selection-item font-weight-medium ma-0">
+            50 Soal ({{ item.type }} Jawaban)
+          </p>
         </div>
         <div class="d-flex flex-row align-center">
           <img class="mr-2" src="@/assets/icons/time.svg" />
@@ -89,14 +91,37 @@
               class="rounded"
             />
           </div>
-          <div class="d-flex flex-column align-center">
-            <p class="text-caption font-weight-light mb-1">
-              Total Menit / Paket
-            </p>
-            <Counter @on-change="(e) => handleChange(e)" />
+          <div class="d-flex flex-row">
+            <div class="d-flex flex-column align-center mx-12">
+              <p class="text-caption font-weight-light mb-1">Jumlah Jawaban</p>
+              <v-btn-toggle
+                v-model="payload.type"
+                mandatory
+                borderless
+                active-class
+                color="deep-purple accent-3"
+              >
+                <v-btn class="no-uppercase" small value="4">
+                  <p class="ma-0 text-subtitle-2 font-weight-regular">
+                    4 Jawaban
+                  </p>
+                </v-btn>
+                <v-btn class="no-uppercase" small value="5">
+                  <p class="ma-0 text-subtitle-2 font-weight-regular">
+                    5 Jawaban
+                  </p>
+                </v-btn>
+              </v-btn-toggle>
+            </div>
+            <div class="d-flex flex-column align-center">
+              <p class="text-caption font-weight-light mb-1">
+                Total Menit / Paket
+              </p>
+              <Counter @on-change="(e) => handleChange(e)" />
+            </div>
           </div>
         </div>
-        <div class="d-flex flex-row justify-space-between mt-2">
+        <div class="d-flex flex-row justify-space-between mt-4">
           <v-text-field
             v-model="payload.description"
             style="max-width: 344px"
@@ -140,11 +165,11 @@ export default {
     return {
       items: [
         {
-          secureId: "123456",
-          title: "Test Kecerdasan 1",
-          description:
-            "Tema Soal pada Kecerdasan 1 adalah Tentang Negara dan Ibu kota",
+          secureId: "6655-4433-2211",
+          title: "Test Kepribadian 1",
+          description: "Tema Soal pada Kepribadian 1 adalah Kepribadian",
           time: "12",
+          type: "4",
           is_active: false,
         },
       ],
@@ -152,6 +177,7 @@ export default {
         title: null,
         description: null,
         is_active: true,
+        type: "4",
         time: 12,
       },
       modeAdd: false,
@@ -167,13 +193,13 @@ export default {
       setTimeout(() => {
         this.items.push({
           ...this.payload,
-          secureId: "qwerty",
         });
         this.payload = {
           title: null,
           description: null,
           is_active: true,
-          time: "12",
+          type: "4",
+          time: 12,
         };
         this.modeAdd = false;
         this.loadingSubmit = false;
@@ -188,7 +214,7 @@ export default {
       });
       this.$router.replace({
         name: MANAJEMEN_SOAL,
-        query: { kecerdasanSecureId: item.secureId },
+        query: { kepribadianSecureId: item.secureId },
       });
     },
   },
@@ -197,7 +223,6 @@ export default {
 
 <style scoped>
 .label-style {
-  font-family: Inter !important;
   color: #9b9b9b !important;
 }
 
