@@ -63,7 +63,7 @@
           style="width: 71%"
         >
           <div class="d-flex flex-column ma-0">
-            <p class="header-3 mb-12 text-center">Tes Kecerdasan 1</p>
+            <p class="header-3 mb-12 text-center">Tes Kepribadian 1</p>
             <transition name="slide-fade" mode="out-in">
               <Answer :data="questions[questionIndex]" />
             </transition>
@@ -117,7 +117,7 @@
               "
               :class="{
                 'number-answer-not-answered-yet':
-                  questions[i].answer.secureId == null && i != questionIndex,
+                  questions[i].answer.answer == null && i != questionIndex,
                 'number-answer-active': i == questionIndex,
               }"
               :key="i"
@@ -126,7 +126,7 @@
                 class="mb-0 number-font"
                 :class="{
                   'number-font-not-answered-yet':
-                    questions[i].answer.secureId == null && i != questionIndex,
+                    questions[i].answer.answer == null && i != questionIndex,
                   'number-font-active': i == questionIndex,
                 }"
               >
@@ -137,26 +137,24 @@
         </div>
       </div>
     </v-expand-transition>
-    <v-expand-transition>
-      <div v-if="isCompleted" class="d-flex flex-column align-center pa-12">
-        <div
-          class="d-flex flex-column align-center white pa-12 rounded-lg"
-          style="width: 450px"
+    <div v-if="isCompleted" class="d-flex flex-column align-center pa-12">
+      <div
+        class="d-flex flex-column align-center white pa-12 rounded-lg"
+        style="width: 450px"
+      >
+        <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
+        <p class="nilai-subtitle-font">Test Kepribadian 1</p>
+        <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
+        <v-btn
+          color="primary"
+          class="no-uppercase"
+          block
+          @click="handleSelesai"
         >
-          <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
-          <p class="nilai-subtitle-font">Test Kecerdasan 1</p>
-          <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
-          <v-btn
-            color="primary"
-            class="no-uppercase"
-            block
-            @click="handleSelesai"
-          >
-            Selesai
-          </v-btn>
-        </div>
+          Selesai
+        </v-btn>
       </div>
-    </v-expand-transition>
+    </div>
   </div>
 </template>
 
@@ -359,6 +357,7 @@ export default {
         (acc, cur) => acc + cur.answer.value,
         0
       );
+      console.log(this.totalAnswer);
     },
     handleNext() {
       if (this.isLast) {
@@ -388,6 +387,7 @@ export default {
           month: "short",
           day: "numeric",
         });
+
         const hour = new Date().toLocaleTimeString("id-ID", {
           hour: "2-digit",
           hour12: true,

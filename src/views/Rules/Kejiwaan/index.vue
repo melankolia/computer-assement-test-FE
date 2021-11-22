@@ -42,13 +42,21 @@
     </div>
     <v-row v-else align="center" justify="center" class="mt-12">
       <v-col cols="12" xs="12" sm="3">
-        <v-btn color="primary" class="no-uppercase" block> Mulai </v-btn>
+        <v-btn
+          @click="() => handleMulai()"
+          color="primary"
+          class="no-uppercase"
+          block
+        >
+          Mulai
+        </v-btn>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import { QUIZ } from "@/router/name.types";
 const Cover = () => import("./Peraturan/Cover");
 const Soal = () => import("./Peraturan/Soal");
 const Siswa = () => import("./Peraturan/Siswa");
@@ -61,6 +69,7 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params?.secureId,
       index: 0,
       types: ["Cover", "Soal", "Siswa"],
       item: {
@@ -111,10 +120,16 @@ export default {
         }, 2000);
       }
     },
-    computed: {
-      isLast() {
-        return this.types[this.index] == "Siswa";
-      },
+    handleMulai() {
+      this.$router.push({
+        name: QUIZ.KEJIWAAN,
+        params: { secureId: this.id },
+      });
+    },
+  },
+  computed: {
+    isLast() {
+      return this.types[this.index] == "Siswa";
     },
   },
 };

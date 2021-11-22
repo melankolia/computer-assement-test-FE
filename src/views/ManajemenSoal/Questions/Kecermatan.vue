@@ -74,7 +74,7 @@
       </div>
       <div
         :key="`question-${i}`"
-        class="d-flex flex-column white pt-12 rounded-lg"
+        class="d-flex flex-column white pt-12 rounded-lg mb-4"
       >
         <div class="d-flex flex-row justify-space-between px-12">
           <p v-if="!e.modeAdd" class="section-title-font mb-0">{{ e.title }}</p>
@@ -194,11 +194,13 @@
           d-flex
           flex-row
           white
-          py-6
+          py-3
           px-12
-          mt-5
+          mb-1
           rounded-lg
           justify-space-between
+          black-border
+          align-center
         "
         v-for="(q, j) in e.question"
         :key="`part-2-${i}-${j}`"
@@ -207,7 +209,7 @@
           <div class="d-flex flex-row align-center px-6">
             <p class="pr-5 mb-3 align-self-end no-question">{{ j + 1 }}.</p>
             <div class="d-flex flex-column">
-              <p class="caption-label mb-3">Soal</p>
+              <p v-if="j == 0" class="caption-label mb-3">Soal</p>
               <div
                 class="d-flex flex-row align-center"
                 style="max-width: 203px"
@@ -228,10 +230,10 @@
           </div>
           <div class="d-flex flex-row align-center px-6">
             <div class="d-flex flex-column">
-              <p class="caption-label mb-3">Jawaban (Poin)</p>
+              <p v-if="j == 0" class="caption-label mb-3">Jawaban (Poin)</p>
               <div
                 class="d-flex flex-row align-center"
-                style="max-width: 380px"
+                style="max-width: 490px"
               >
                 <template v-for="(textField, k) in q.answerList">
                   <p
@@ -247,7 +249,7 @@
                     outlined
                     solo
                     dense
-                    class="rounded mr-3"
+                    class="rounded mr-8"
                     :disabled="!q.modeAdd"
                   />
                 </template>

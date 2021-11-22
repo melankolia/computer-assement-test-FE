@@ -3,13 +3,7 @@
     <p class="question-text-font ml-8 mt-4">
       {{ data.question.question }}
     </p>
-    <v-btn-toggle
-      v-bind="{ mandatory: data.answer.answer != null }"
-      class="ml-12"
-      v-model="data.answer"
-      tile
-      group
-    >
+    <v-btn-toggle class="ml-12" v-model="data.answer" tile group>
       <div
         v-for="(e, i) in data.answerList"
         class="d-flex flex-row align-center my-1 ml-4"
