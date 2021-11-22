@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <Snackbar />
+    <confirm-dialog />
     <transition name="slide-fade" mode="out-in">
       <router-view />
     </transition>

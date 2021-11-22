@@ -27,11 +27,16 @@ td {
 // }
 
 thead > tr > th {
-  height: 60px !important;
+  height: 64px !important;
 }
 
 tbody > tr > td {
-  height: 60px !important;
+  height: 64px !important;
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px !important;
+  line-height: 160%;
 }
 
 tbody > tr:hover {
@@ -111,3 +116,86 @@ input[type="number"] {
 // .v-btn::before {
 //   background-color: transparent !important;
 // }
+
+.timer-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 29px;
+}
+
+.timer-date-subtitle-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 160%;
+  letter-spacing: 0.01em;
+  color: #8e8e8e;
+}
+
+.timer-date-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  color: #8e8e8e;
+}
+
+.question-text-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.daftar-soal-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  /* or 22px */
+
+  text-align: center;
+}
+
+.number-answer {
+  background-color: #d7f6d7 !important;
+  border: 1px solid #38d535 !important;
+  width: 40px;
+  height: 40px;
+}
+
+.number-answer-active {
+  background-color: #38d435 !important;
+}
+
+.number-answer-not-answered-yet {
+  background-color: #ffc59e !important;
+  border: 1px solid #ff6c0a !important;
+}
+
+.number-answer:hover {
+  cursor: pointer;
+}
+
+.number-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 160%;
+  color: #38d535;
+}
+
+.number-font-active {
+  color: #d7f6d7 !important;
+}
+
+.number-font-not-answered-yet {
+  color: #ff6c0a !important;
+}

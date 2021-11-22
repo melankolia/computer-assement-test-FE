@@ -157,7 +157,7 @@
           </v-btn>
         </v-expand-transition>
       </template>
-      <template #expanded-item="{ headers, item }">
+      <template #expanded-item="{ headers }">
         <v-expand-transition>
           <td class="addbg" :colspan="headers.length">
             <div
@@ -174,7 +174,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Nama Peserta</p>
                 <v-text-field
-                  :value="item.nama"
+                  v-model="edited.nama"
                   placeholder="Nama Peserta"
                   hide-details
                   outlined
@@ -187,7 +187,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Username</p>
                 <v-text-field
-                  :value="item.username"
+                  v-model="edited.username"
                   placeholder="Cari Peserta"
                   hide-details
                   outlined
@@ -200,7 +200,7 @@
               <div style="width: 246px">
                 <p class="label-style mb-1">Password</p>
                 <v-text-field
-                  :value="item.password"
+                  v-model="edited.password"
                   placeholder="Password"
                   hide-details
                   outlined
@@ -211,6 +211,7 @@
                 </v-text-field>
               </div>
               <v-btn
+                :loading="loadingSubmit"
                 @click="() => handleSave('edit')"
                 color="primary no-uppercase align-self-end"
                 >Simpan</v-btn
@@ -237,12 +238,14 @@ export default {
       ],
       items: [
         {
+          secureId: "1",
           nama: "Hafizh Alfurqon",
           username: "Alfurqon",
           password: "malaka123",
           status: "Aktif",
         },
         {
+          secureId: "2",
           nama: "Faris Nabil",
           username: "Faris22",
           password: "malaka123",
@@ -251,6 +254,13 @@ export default {
       ],
       expanded: [],
       payload: {
+        secureId: null,
+        nama: null,
+        username: null,
+        password: null,
+        status: "Aktif",
+      },
+      edited: {
         secureId: null,
         nama: null,
         username: null,
@@ -266,19 +276,23 @@ export default {
       this.addMode = true;
     },
     handleSave(type = "submit") {
-      if (type == "submit") {
-        this.loadingSubmit = true;
-        setTimeout(() => {
+      this.loadingSubmit = true;
+      setTimeout(() => {
+        if (type == "submit") {
           this.items.push({
             ...this.payload,
+            secureId: "5",
           });
           this.addMode = false;
           this.loadingSubmit = false;
-        }, 2000);
-      }
+        } else {
+          this.addMode = false;
+          this.loadingSubmit = false;
+        }
+      }, 2000);
     },
     handleEdit(item, cb) {
-      if (item) this.payload = { ...item };
+      if (item) this.edited = { ...item };
       cb && cb();
     },
   },

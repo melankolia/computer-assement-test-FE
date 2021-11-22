@@ -6,6 +6,9 @@ const DaftarPeserta = () => import("@/views/Peserta");
 const ManajemenSoal = () => import("@/views/ManajemenSoal");
 const PeraturanSoal = () => import("@/views/Peraturan");
 const DaftarSoal = () => import("@/views/DaftarSoal");
+const DaftarNilai = () => import("@/views/DaftarNilai");
+const Rules = () => import("@/views/Rules");
+const KecerdasanQuiz = () => import("@/views/Quiz/Kecerdasan");
 
 import {
   HOME,
@@ -15,6 +18,8 @@ import {
   PERATURAN_SOAL,
   DATA_SOAL,
   DATA_NILAI,
+  RULES,
+  QUIZ,
 } from "./name.types";
 
 export const configRoutes = [
@@ -44,7 +49,7 @@ export const configRoutes = [
       {
         path: "/data-nilai",
         name: DATA_NILAI,
-        component: DaftarPeserta,
+        component: DaftarNilai,
         meta: {
           requiresAuth: true,
         },
@@ -63,6 +68,37 @@ export const configRoutes = [
         component: PeraturanSoal,
         meta: {
           requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/rules/:secureId",
+    name: RULES,
+    component: Rules,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/quiz",
+    component: {
+      render(c) {
+        return c("router-view");
+      },
+    },
+    meta: {
+      requiresAuth: true,
+      title: "Quiz",
+    },
+    children: [
+      {
+        path: "/kecerdasan/:secureId",
+        name: QUIZ.KECERDASAN,
+        component: KecerdasanQuiz,
+        meta: {
+          requiresAuth: true,
+          title: "Kecerdasan Quiz",
         },
       },
     ],

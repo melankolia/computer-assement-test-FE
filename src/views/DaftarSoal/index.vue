@@ -60,15 +60,37 @@
         <div class="d-flex flex-column mt-12">
           <div class="d-flex flex-row mr-6 mb-3">
             <img class="mr-2" src="@/assets/icons/sheet.svg" />
-            <p class="selection-item font-weight-medium ma-0">50 Soal</p>
-          </div>
-          <div class="d-flex flex-row mb-10">
-            <img class="mr-2" src="@/assets/icons/time.svg" />
             <p class="selection-item font-weight-medium ma-0">
-              {{ item.time }} Menit
+              {{ item.soal }} Soal
+              <span v-if="questionType == 'Kepribadian'">
+                ({{ item.type }} Jawaban)
+              </span>
             </p>
           </div>
-          <v-btn block color="primary" class="no-uppercase align-self-end">
+          <div class="d-flex flex-row mr-6 mb-3">
+            <img class="mr-2" src="@/assets/icons/time.svg" />
+            <p class="selection-item font-weight-medium ma-0">
+              <span v-if="questionType != 'Kecermatan'">
+                {{ item.time }} Menit
+              </span>
+              <span v-else>90 ({{ item.time }} Menit / Section)</span>
+            </p>
+          </div>
+          <div
+            v-if="questionType == 'Kecermatan'"
+            class="d-flex flex-row mr-6 mb-3"
+          >
+            <img class="mr-2" src="@/assets/icons/three-line.svg" />
+            <p class="selection-item font-weight-medium ma-0">
+              {{ item.section }} Bagian
+            </p>
+          </div>
+          <v-btn
+            @click="() => handleMulai(item)"
+            block
+            color="primary"
+            class="no-uppercase align-self-end mt-10"
+          >
             Mulai
           </v-btn>
         </div>
@@ -78,12 +100,17 @@
 </template>
 
 <script>
+import { RULES } from "@/router/name.types";
+
 export default {
   data() {
     return {
-      questionType: "Kecerdasan",
+      questionType: null,
       items: [],
     };
+  },
+  mounted() {
+    this.questionType = "Kecerdasan";
   },
   watch: {
     questionType(val) {
@@ -95,6 +122,8 @@ export default {
             description: "Ini adalah contoh description",
             time: 23,
             is_active: 0,
+            soal: 50,
+            section: 4,
           },
           {
             secureId: "65e39eef-29b3-4d41-9ce1-9ccdb40fbcff",
@@ -102,6 +131,8 @@ export default {
             description: "Ini adalah contoh description",
             time: 23,
             is_active: 0,
+            soal: 50,
+            section: 4,
           },
         ];
       } else if (val == "Kepribadian") {
@@ -112,6 +143,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 50,
             is_active: 0,
+            soal: 50,
             type: "4",
           },
           {
@@ -120,6 +152,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 50,
             is_active: 1,
+            soal: 50,
             type: "4",
           },
         ];
@@ -131,6 +164,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 50,
             is_active: 0,
+            soal: 50,
           },
         ];
       } else if (val == "Kecerdasan") {
@@ -141,6 +175,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 12,
             is_active: 0,
+            soal: 50,
           },
           {
             secureId: "2b54af84-6894-4d62-af1d-04c815667e40",
@@ -148,6 +183,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 23,
             is_active: 0,
+            soal: 50,
           },
           {
             secureId: "62d6c4b9-1adb-44a5-8f8e-420062e6f9f9",
@@ -155,6 +191,7 @@ export default {
             description: "Ini adalah contoh description",
             time: 23,
             is_active: 0,
+            soal: 50,
           },
           {
             secureId: "a4e4a4d1-cc87-475b-a347-e8c835ab27a7",
@@ -162,6 +199,7 @@ export default {
             description: "Ini adalah contoh description Testing",
             time: 23,
             is_active: 0,
+            soal: 50,
           },
           {
             secureId: "6216ace2-b9a2-4929-ba89-3850ffe40689",
@@ -169,9 +207,19 @@ export default {
             description: "Ini adalah contoh description",
             time: 23,
             is_active: 0,
+            soal: 50,
           },
         ];
       }
+    },
+  },
+  methods: {
+    handleMulai(item) {
+      this.$router.replace({
+        name: RULES,
+        params: { secureId: item.secureId },
+        query: { type: this.questionType },
+      });
     },
   },
 };
