@@ -21,7 +21,7 @@
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
-      <v-btn color="primary" outlined block depressed>
+      <v-btn @click="logout" color="primary" outlined block depressed>
         <p class="text-button ma-0">Keluar</p>
       </v-btn>
     </template>
@@ -31,6 +31,8 @@
 <script>
 import DefaultProfile from "@/assets/Pic.png";
 import Logo from "@/assets/Small.svg";
+import { FORCE_LOGOUT } from "@/store/constants/actions.type";
+import { LOGIN } from "@/router/name.types";
 
 export default {
   data() {
@@ -57,6 +59,28 @@ export default {
     } else {
       this.items = [...this.itemsAdmin];
     }
+  },
+  methods: {
+    logout() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Are you sure you want to Logout ?`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.handleLogout();
+          }
+        },
+      });
+    },
+    handleLogout() {
+      this.$store.dispatch(FORCE_LOGOUT).then(() => {
+        this.$router.push({ name: LOGIN });
+      });
+    },
   },
 };
 </script>

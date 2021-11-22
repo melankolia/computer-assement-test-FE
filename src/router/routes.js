@@ -1,6 +1,6 @@
 const TheContainer = () => import("@/container");
 // const Home = () => import("@/views/Home");
-const About = () => import("@/views/About");
+// const About = () => import("@/views/About");
 const Login = () => import("@/views/Login");
 const DaftarPeserta = () => import("@/views/Peserta");
 const ManajemenSoal = () => import("@/views/ManajemenSoal");
@@ -9,10 +9,12 @@ const DaftarSoal = () => import("@/views/DaftarSoal");
 const DaftarNilai = () => import("@/views/DaftarNilai");
 const Rules = () => import("@/views/Rules");
 const KecerdasanQuiz = () => import("@/views/Quiz/Kecerdasan");
+const KepribadianQuiz = () => import("@/views/Quiz/Kepribadian");
+const KejiwaanQuiz = () => import("@/views/Quiz/Kejiwaan");
+const KecermatanQuiz = () => import("@/views/Quiz/Kecermatan");
 
 import {
   HOME,
-  ABOUT,
   LOGIN,
   MANAJEMEN_SOAL,
   PERATURAN_SOAL,
@@ -101,6 +103,33 @@ export const configRoutes = [
           title: "Kecerdasan Quiz",
         },
       },
+      {
+        path: "/kepribadian/:secureId",
+        name: QUIZ.KEPRIBADIAN,
+        component: KepribadianQuiz,
+        meta: {
+          requiresAuth: true,
+          title: "Kepribadian Quiz",
+        },
+      },
+      {
+        path: "/kejiwaan/:secureId",
+        name: QUIZ.KEJIWAAN,
+        component: KejiwaanQuiz,
+        meta: {
+          requiresAuth: true,
+          title: "Kejiwaan Quiz",
+        },
+      },
+      {
+        path: "/kecermatan/:secureId",
+        name: QUIZ.KECERMATAN,
+        component: KecermatanQuiz,
+        meta: {
+          requiresAuth: true,
+          title: "Kecermatan Quiz",
+        },
+      },
     ],
   },
   {
@@ -110,10 +139,5 @@ export const configRoutes = [
     meta: {
       requiresAuth: false,
     },
-  },
-  {
-    path: "/about",
-    name: ABOUT,
-    component: About,
   },
 ];
