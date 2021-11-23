@@ -17,3 +17,13 @@ export const USERS = {
   INSERT: `${users}/insert`,
   DELETE: `${users}/delete`,
 };
+
+const groups = `groups`;
+export const GROUPS = {
+  KECERDASAN: {
+    LIST: `${groups}/kecerdasan`,
+    INSERT: `${groups}/kecerdasan`,
+    DELETE: `${groups}/kecerdasan`,
+    ACTIVATION: `${groups}/kecerdasan/activation`,
+  },
+};

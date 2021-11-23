@@ -133,7 +133,11 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                    :rules="[
+                      (v) => !!v || 'Field ini tidak boleh kosong',
+                      (v) =>
+                        /^\S{1,}$/.test(v) || 'Format username harus sesuai',
+                    ]"
                   >
                   </v-text-field>
                 </div>
@@ -254,7 +258,11 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                    :rules="[
+                      (v) => !!v || 'Field ini tidak boleh kosong',
+                      (v) =>
+                        /^\S{1,}$/.test(v) || 'Format username harus sesuai',
+                    ]"
                   >
                   </v-text-field>
                 </div>
