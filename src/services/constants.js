@@ -26,4 +26,22 @@ export const GROUPS = {
     DELETE: `${groups}/kecerdasan`,
     ACTIVATION: `${groups}/kecerdasan/activation`,
   },
+  KEPRIBADIAN: {
+    LIST: `${groups}/kepribadian`,
+    INSERT: `${groups}/kepribadian`,
+    DELETE: `${groups}/kepribadian`,
+    ACTIVATION: `${groups}/kepribadian/activation`,
+  },
+  KEJIWAAN: {
+    LIST: `${groups}/kejiwaan`,
+    INSERT: `${groups}/kejiwaan`,
+    DELETE: `${groups}/kejiwaan`,
+    ACTIVATION: `${groups}/kejiwaan/activation`,
+  },
+  KECERMATAN: {
+    LIST: `${groups}/kecermatan`,
+    INSERT: `${groups}/kecermatan`,
+    DELETE: `${groups}/kecermatan`,
+    ACTIVATION: `${groups}/kecermatan/activation`,
+  },
 };

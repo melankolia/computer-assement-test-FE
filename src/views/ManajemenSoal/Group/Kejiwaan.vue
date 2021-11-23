@@ -5,7 +5,7 @@
       <v-expand-transition>
         <v-btn
           v-if="!modeAdd"
-          @click="modeAdd = !modeAdd"
+          @click="() => handleAddPaket()"
           color="primary"
           class="no-uppercase"
         >
@@ -15,8 +15,9 @@
     </div>
     <template v-for="(item, index) in items">
       <div
+        @click="() => handleAddSoal(item)"
         v-if="!item.modeAdd"
-        class="white my-6 px-8 pt-6 pb-10 rounded-lg"
+        class="white my-6 px-8 pt-6 pb-10 rounded-lg pointer"
         :key="index"
       >
         <div class="d-flex flex-row justify-space-between align-center">
@@ -25,7 +26,15 @@
             <p class="label-style mb-0 mx-4">
               {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
             </p>
-            <v-switch dense v-model="item.is_active" color="greentext" inset />
+            <v-switch
+              @change="(e) => handleClickActivation(item, index, e)"
+              dense
+              :disabled="item.loadingActivate"
+              :loading="item.loadingActivate"
+              v-model="item.is_active"
+              color="greentext"
+              inset
+            />
             <v-menu rounded left min-width="188px">
               <template v-slot:activator="{ attrs, on }">
                 <v-btn
@@ -44,12 +53,27 @@
                   <v-icon small class="mr-4">mdi-plus</v-icon>
                   <p class="selection-item ma-0">Tambah Soal</p>
                 </v-list-item>
-                <v-list-item @click="() => handleEdit(index)" link>
+                <v-list-item @click="() => handleEdit(item, index)" link>
                   <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
                   <p class="selection-item ma-0">Edit Data</p>
                 </v-list-item>
-                <v-list-item @click="() => handleDelete(index)" link>
-                  <img class="mr-4" src="@/assets/icons/delete-outlined.svg" />
+                <v-list-item
+                  :disabled="item.loadingDelete"
+                  @click="() => handleDelete(item, index)"
+                  link
+                >
+                  <img
+                    v-if="!item.loadingDelete"
+                    class="mr-4"
+                    src="@/assets/icons/delete-outlined.svg"
+                  />
+                  <v-progress-circular
+                    v-else
+                    indeterminate
+                    :size="20"
+                    color="primary"
+                    class="mr-4"
+                  ></v-progress-circular>
                   <p class="selection-item ma-0">Hapus Data</p>
                 </v-list-item>
               </v-list>
@@ -64,7 +88,9 @@
         <div class="d-flex flex-row align-center mt-12">
           <div class="d-flex flex-row align-center mr-6">
             <img class="mr-2" src="@/assets/icons/sheet.svg" />
-            <p class="selection-item font-weight-medium ma-0">50 Soal</p>
+            <p class="selection-item font-weight-medium ma-0">
+              {{ item.total_soal }} Soal
+            </p>
           </div>
           <div class="d-flex flex-row align-center">
             <img class="mr-2" src="@/assets/icons/time.svg" />
@@ -74,6 +100,7 @@
           </div>
         </div>
       </div>
+      <!-- Edited Mode -->
       <div
         v-else
         class="d-flex flex-column white my-6 px-8 py-10 rounded-lg"
@@ -83,7 +110,7 @@
           <div class="d-flex flex-column" style="width: 344px">
             <p class="label-style mb-1">Nama Paket Soal</p>
             <v-text-field
-              v-model="item.title"
+              v-model="edited.title"
               placeholder="Nama Paket Soal"
               hide-details
               filled
@@ -101,7 +128,7 @@
         </div>
         <div class="d-flex flex-row justify-space-between mt-2">
           <v-text-field
-            v-model="item.description"
+            v-model="edited.description"
             style="max-width: 344px"
             placeholder="Deskripsi Paket Soal"
             hide-details
@@ -117,7 +144,7 @@
               Batal
             </v-btn>
             <v-btn
-              :loading="loadingSubmit"
+              :loading="item.loadingEdit"
               color="primary"
               @click="() => handleSubmit(index, 'edit')"
               class="no-uppercase depressed"
@@ -128,6 +155,18 @@
         </div>
       </div>
     </template>
+    <ContentNotFound
+      message="Kejiwaan Group Not Found"
+      :loading="loading"
+      v-if="!isAvailable"
+    >
+      <template v-slot:action>
+        <v-btn depressed @click="() => getList()" color="default" class="px-10">
+          <v-icon class="mr-1" small>mdi-reload</v-icon>
+          Reload
+        </v-btn>
+      </template>
+    </ContentNotFound>
     <v-expand-transition>
       <div
         v-if="modeAdd"
@@ -187,69 +226,250 @@
 
 <script>
 import { MANAJEMEN_SOAL } from "@/router/name.types";
+import GroupService from "@/services/resources/group.service";
 const Counter = () => import("@/components/Counter");
+const ContentNotFound = () => import("@/components/Content/NotFound");
 
 export default {
   components: {
+    ContentNotFound,
     Counter,
   },
   data() {
     return {
-      items: [
-        {
-          secureId: "123456",
-          title: "Test Kejiwaan 1",
-          description:
-            "Tema Soal pada Kejiwaan 1 adalah Tentang Negara dan Ibu kota",
-          time: "12",
-          is_active: false,
-          modeAdd: false,
-        },
-      ],
+      loading: false,
+      items: [],
       payload: {
-        secureId: "1234",
+        secureId: null,
         title: null,
         description: null,
-        is_active: true,
-        time: 12,
+        is_active: false,
+        time: 0,
         modeAdd: false,
+        loadingDelete: false,
+        loadingActivate: false,
+        loadingEdit: false,
+      },
+      edited: {
+        secureId: null,
+        title: null,
+        description: null,
+        is_active: false,
+        time: 0,
+        modeAdd: false,
+        loadingDelete: false,
+        loadingActivate: false,
+        loadingEdit: false,
       },
       modeAdd: false,
       loadingSubmit: false,
     };
   },
+  computed: {
+    isAvailable() {
+      return this.items.length > 0;
+    },
+  },
+  mounted() {
+    this.getList();
+  },
   methods: {
+    getList() {
+      this.loading = true;
+      this.items = [];
+      GroupService.getListKejiwaan()
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal memuat data Kejiwaan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data Kejiwaan",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
+    handleAddPaket() {
+      this.modeAdd = !this.modeAdd;
+      // Reset Open Edited Section
+      this.items.map((e) => (e.modeAdd = false));
+      this.resetEditVariable();
+
+      // Going to the last section of the website
+      this.$vuetify.goTo(9999, {
+        duration: 1500,
+        offset: 0,
+        easing: "easeInOutCubic",
+      });
+    },
     handleCancel(index, type = "add") {
       if (type == "edit" && this.items[index]?.secureId) {
         this.items[index].modeAdd = false;
+        this.resetEditVariable();
       } else {
+        this.$vuetify.goTo(0, {
+          duration: 500,
+          offset: 0,
+          easing: "easeInOutCubic",
+        });
         this.modeAdd = false;
       }
     },
-    handleEdit(i) {
-      this.items[i].modeAdd = true;
+    handleEdit(item, index) {
+      this.edited = {
+        ...item,
+      };
+      this.items.map((e) => (e.modeAdd = false));
+      this.items[index].modeAdd = true;
+    },
+    handleClickActivation(item, index, event) {
+      this.$confirm({
+        title: "Confirm",
+        message: `Are you sure you want to ${
+          event ? "activate" : "deactivate"
+        } this data ?`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.activateData(item, index, event);
+          } else {
+            this.items[index].is_active = !event;
+          }
+        },
+      });
+    },
+    activateData(item, index, event) {
+      this.items[index].loadingActivate = true;
+      GroupService.activationKejiwaan({
+        secureId: item.secureId,
+        is_active: event,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items[index].is_active = event;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: `Berhasil ${
+                event ? "mengaktifkan" : "menonaktifkan"
+              } status soal`,
+              color: "success",
+            });
+          } else {
+            this.items[index].is_active = !event;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message:
+                result ||
+                `Gagal ${event ? "mengaktifkan" : "menonaktifkan"} status soal`,
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.items[index].is_active = !event;
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: `Gagal ${
+              event ? "mengaktifkan" : "menonaktifkan"
+            } status soal`,
+            color: "error",
+          });
+        })
+        .finally(() => (this.items[index].loadingActivate = false));
     },
     handleSubmit(index, type = "add") {
-      if (type == "edit") {
-        this.items[index].modeAdd = false;
-      } else {
-        this.loadingSubmit = true;
-        setTimeout(() => {
-          this.items.push({
-            ...this.payload,
-            secureId: "qwerty",
+      if (type == "edit") this.requestEdit(index);
+      else this.requestAdd();
+    },
+    requestEdit(index) {
+      this.items[index].loadingEdit = true;
+      GroupService.insertDataKejiwaan({
+        secureId: this.edited.secureId,
+        title: this.edited.title,
+        description: this.edited.description,
+        time: this.edited.time,
+        is_active: this.edited.is_active,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items[index].modeAdd = false;
+            this.resetEditVariable();
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil menyimpan data Kejiwaan",
+              color: "success",
+            });
+            this.getList();
+          } else {
+            this.items[index].loadingEdit = false;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal menyimpan data Kejiwaan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          this.items[index].loadingEdit = false;
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal menyimpan data Kejiwaan",
+            color: "error",
           });
-          this.payload = {
-            secureId: "123",
-            title: null,
-            description: null,
-            is_active: true,
-            time: "12",
-          };
-          this.modeAdd = false;
+        });
+    },
+    requestAdd() {
+      this.loadingSubmit = true;
+      GroupService.insertDataKejiwaan({
+        title: this.payload.title,
+        description: this.payload.description,
+        time: this.payload.time,
+        is_active: this.payload.is_active,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.modeAdd = false;
+            this.resetVariable();
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil membuat data Kejiwaan",
+              color: "success",
+            });
+            this.getList();
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal membuat data Kejiwaan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal membuat data Kejiwaan",
+            color: "error",
+          });
+        })
+        .finally(() => {
           this.loadingSubmit = false;
-        }, 1000);
-      }
+        });
     },
     handleChange(e, i, type = "add") {
       if (type == "edit") {
@@ -258,8 +478,50 @@ export default {
         this.payload.time = parseInt(e);
       }
     },
-    handleDelete(index) {
-      this.items.splice(index, 1);
+    handleDelete(item, index) {
+      this.$confirm({
+        title: "Confirm",
+        message: `Are you sure you want to delete this data ?`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.deleteData(item, index);
+          }
+        },
+      });
+    },
+    deleteData(item, index) {
+      this.items[index].loadingDelete = true;
+      GroupService.deleteKejiwaan(item.secureId)
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil menghapus data Kejiwaan",
+              color: "success",
+            });
+            this.getList();
+          } else {
+            this.items[index].loadingDelete = false;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal menghapus data Kejiwaan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          this.items[index].loadingDelete = false;
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal menghapus data Kejiwaan",
+            color: "error",
+          });
+        });
     },
     handleAddSoal(item) {
       this.$router.replace({
@@ -269,6 +531,28 @@ export default {
         name: MANAJEMEN_SOAL,
         query: { kejiwaanSecureId: item.secureId },
       });
+    },
+    resetVariable() {
+      this.payload = {
+        secureId: null,
+        title: null,
+        description: null,
+        is_active: false,
+        time: 0,
+        modeAdd: false,
+        loadingDelete: false,
+      };
+    },
+    resetEditVariable() {
+      this.edited = {
+        secureId: null,
+        title: null,
+        description: null,
+        is_active: false,
+        time: 0,
+        modeAdd: false,
+        loadingDelete: false,
+      };
     },
   },
 };

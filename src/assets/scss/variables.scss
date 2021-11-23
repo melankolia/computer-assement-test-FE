@@ -198,3 +198,14 @@ input[type="number"] {
 .number-font-not-answered-yet {
   color: #cc1212 !important;
 }
+
+.pointer:hover {
+  cursor: pointer !important;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.1s ease-in-out;
+}
+
+.pointer:active {
+  cursor: pointer !important;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+}

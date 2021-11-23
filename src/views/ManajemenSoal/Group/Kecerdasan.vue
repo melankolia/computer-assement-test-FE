@@ -15,8 +15,9 @@
     </div>
     <template v-for="(item, index) in items">
       <div
+        @click="() => handleAddSoal(item)"
         v-if="!item.modeAdd"
-        class="white my-6 px-8 pt-6 pb-10 rounded-lg"
+        class="white my-6 px-8 pt-6 pb-10 rounded-lg pointer"
         :key="index"
       >
         <div class="d-flex flex-row justify-space-between align-center">
@@ -275,6 +276,7 @@ export default {
   methods: {
     getList() {
       this.loading = true;
+      this.items = [];
       GroupService.getListKecerdasan()
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -299,6 +301,11 @@ export default {
     },
     handleAddPaket() {
       this.modeAdd = !this.modeAdd;
+      // Reset Open Edited Section
+      this.items.map((e) => (e.modeAdd = false));
+      this.resetEditVariable();
+
+      // Going to the last section of the website
       this.$vuetify.goTo(9999, {
         duration: 1500,
         offset: 0,
@@ -322,6 +329,7 @@ export default {
       this.edited = {
         ...item,
       };
+      this.items.map((e) => (e.modeAdd = false));
       this.items[index].modeAdd = true;
     },
     handleClickActivation(item, index, event) {
@@ -345,7 +353,7 @@ export default {
     },
     activateData(item, index, event) {
       this.items[index].loadingActivate = true;
-      GroupService.activationKecerdasanData({
+      GroupService.activationKecerdasan({
         secureId: item.secureId,
         is_active: event,
       })
@@ -407,6 +415,7 @@ export default {
             });
             this.getList();
           } else {
+            this.items[index].loadingEdit = false;
             this.$store.commit("snackbar/setSnack", {
               show: true,
               message: result || "Gagal menyimpan data Kecerdasan",
@@ -416,13 +425,13 @@ export default {
         })
         .catch((err) => {
           console.error(err);
+          this.items[index].loadingEdit = false;
           this.$store.commit("snackbar/setSnack", {
             show: true,
             message: "Gagal menyimpan data Kecerdasan",
             color: "error",
           });
-        })
-        .finally(() => (this.items[index].loadingEdit = false));
+        });
     },
     requestAdd() {
       this.loadingSubmit = true;
@@ -486,7 +495,7 @@ export default {
     },
     deleteData(item, index) {
       this.items[index].loadingDelete = true;
-      GroupService.deleteKecerdasanData(item.secureId)
+      GroupService.deleteKecerdasan(item.secureId)
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -496,6 +505,7 @@ export default {
             });
             this.getList();
           } else {
+            this.items[index].loadingDelete = false;
             this.$store.commit("snackbar/setSnack", {
               show: true,
               message: result || "Gagal menghapus data Kecerdasan",
@@ -505,13 +515,13 @@ export default {
         })
         .catch((err) => {
           console.error(err);
+          this.items[index].loadingDelete = false;
           this.$store.commit("snackbar/setSnack", {
             show: true,
             message: "Gagal menghapus data Kecerdasan",
             color: "error",
           });
-        })
-        .finally(() => (this.items[index].loadingDelete = false));
+        });
     },
     handleAddSoal(item) {
       this.$router.replace({
