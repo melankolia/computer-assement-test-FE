@@ -17,6 +17,9 @@ import { LOGIN } from "./router/name.types";
 import DialogConfirm from "./components/Confirm";
 Vue.use(DialogConfirm);
 
+// Vue Mixin
+import "./mixin";
+
 Vue.config.productionTip = false;
 
 // Ensure we checked auth before each page load.

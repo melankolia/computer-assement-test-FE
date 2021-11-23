@@ -56,7 +56,7 @@
 
 <script>
 import { LOGIN } from "@/store/constants/actions.type";
-import { HOME } from "@/router/name.types";
+import { DATA_PESERTA, DATA_SOAL } from "@/router/name.types";
 
 export default {
   data() {
@@ -82,17 +82,21 @@ export default {
             username: this.username,
             password: this.password,
           })
-          .then(() => {
+          .then((result) => {
             if (this.$route.query && this.$route.query.pathname) {
               if (this.$route.query.pathname.includes("login")) {
-                this.$router.replace({ name: HOME });
+                this.$router.replace({
+                  name: result?.type == "admin" ? DATA_PESERTA : DATA_SOAL,
+                });
               } else {
                 this.$router.replace(
                   this.$route.query.pathname + this.$route.query.search
                 );
               }
             } else {
-              this.$router.replace({ name: HOME });
+              this.$router.replace({
+                name: result?.type == "admin" ? DATA_PESERTA : DATA_SOAL,
+              });
             }
           })
           .catch((err) => {

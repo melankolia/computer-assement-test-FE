@@ -1,7 +1,12 @@
 import { initialAuthState } from "../states";
 import JwtService from "@/common/JwtService";
 import { LOGIN } from "../constants/actions.type";
-import { SET_AUTH, PURGE_AUTH } from "../constants/mutations.type";
+import {
+  SET_AUTH,
+  PURGE_AUTH,
+  PURGE_PROFILE,
+  SET_PROFILE,
+} from "../constants/mutations.type";
 import { FORCE_LOGOUT, CHECK_AUTH } from "../constants/actions.type";
 
 import AuthService from "@/services/resources/auth.service";
@@ -49,7 +54,15 @@ const actions = {
               isAuthenticated: true,
               token: result.token,
             });
-            resolve(message);
+            context.commit(SET_PROFILE, {
+              secureId: result.secureId,
+              username: result.username,
+              nama_lengkap: result.nama_lengkap,
+              type: result.type,
+              isAuthenticated: true,
+              token: result.token,
+            });
+            resolve(result);
           } else {
             reject(message);
           }
@@ -67,10 +80,12 @@ const actions = {
   },
   [FORCE_LOGOUT](context) {
     context.commit(PURGE_AUTH);
+    context.commit(PURGE_PROFILE);
   },
   [CHECK_AUTH](context) {
     if (!JwtService.getToken()) {
       context.commit(PURGE_AUTH);
+      context.commit(PURGE_PROFILE);
     }
   },
 };

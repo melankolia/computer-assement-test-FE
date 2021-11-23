@@ -14,10 +14,10 @@ const KejiwaanQuiz = () => import("@/views/Quiz/Kejiwaan");
 const KecermatanQuiz = () => import("@/views/Quiz/Kecermatan");
 
 import {
-  HOME,
   LOGIN,
   MANAJEMEN_SOAL,
   PERATURAN_SOAL,
+  DATA_PESERTA,
   DATA_SOAL,
   DATA_NILAI,
   RULES,
@@ -34,7 +34,7 @@ export const configRoutes = [
     children: [
       {
         path: "/data-peserta",
-        name: HOME,
+        name: DATA_PESERTA,
         component: DaftarPeserta,
         meta: {
           requiresAuth: true,

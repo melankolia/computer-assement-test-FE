@@ -33,6 +33,7 @@ import DefaultProfile from "@/assets/Pic.png";
 import Logo from "@/assets/Small.svg";
 import { FORCE_LOGOUT } from "@/store/constants/actions.type";
 import { LOGIN } from "@/router/name.types";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -52,8 +53,11 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters(["getProfile"]),
+  },
   mounted() {
-    const type = "user";
+    const type = this.getProfile.type;
     if (type == "user") {
       this.items = [...this.itemsSiswa];
     } else {

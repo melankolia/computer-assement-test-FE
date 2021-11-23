@@ -10,3 +10,10 @@ export const CHANGE_PASSWORD = `auth/me/change-password`;
 export const LOGIN = `users/login`;
 export const LOGOUT = `logout`;
 export const REFRESH_TOKEN = `refresh-token`;
+
+const users = `users`;
+export const USERS = {
+  LIST: `${users}/list`,
+  INSERT: `${users}/insert`,
+  DELETE: `${users}/delete`,
+};
