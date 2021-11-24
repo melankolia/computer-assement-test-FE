@@ -45,3 +45,31 @@ export const GROUPS = {
     ACTIVATION: `${groups}/kecermatan/activation`,
   },
 };
+
+const questions = `questions`;
+export const QUESTIONS = {
+  KECERDASAN: {
+    DETAIL: `${questions}/kecerdasan`,
+    INSERT: `${questions}/kecerdasan`,
+    DELETE: `${questions}/kecerdasan`,
+    ACTIVATION: `${questions}/kecerdasan/activation`,
+  },
+  KEPRIBADIAN: {
+    DETAIL: `${questions}/kepribadian`,
+    INSERT: `${questions}/kepribadian`,
+    DELETE: `${questions}/kepribadian`,
+    ACTIVATION: `${questions}/kepribadian/activation`,
+  },
+  KEJIWAAN: {
+    DETAIL: `${questions}/kejiwaan`,
+    INSERT: `${questions}/kejiwaan`,
+    DELETE: `${questions}/kejiwaan`,
+    ACTIVATION: `${questions}/kejiwaan/activation`,
+  },
+  KECERMATAN: {
+    DETAIL: `${questions}/kecermatan`,
+    INSERT: `${questions}/kecermatan`,
+    DELETE: `${questions}/kecermatan`,
+    ACTIVATION: `${questions}/kecermatan/activation`,
+  },
+};

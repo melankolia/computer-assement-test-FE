@@ -22,11 +22,12 @@
       >
         <div class="d-flex flex-row justify-space-between align-center">
           <p class="header-3 mb-0">{{ item.title }}</p>
-          <div class="d-flex flex-row align-center">
+          <div class="d-flex flex-row align-center" @click="() => {}">
             <p class="label-style mb-0 mx-4">
               {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
             </p>
             <v-switch
+              @click.stop="() => {}"
               @change="(e) => handleClickActivation(item, index, e)"
               dense
               :disabled="item.loadingActivate"
@@ -225,7 +226,6 @@
 </template>
 
 <script>
-import { MANAJEMEN_SOAL } from "@/router/name.types";
 import GroupService from "@/services/resources/group.service";
 const Counter = () => import("@/components/Counter");
 const ContentNotFound = () => import("@/components/Content/NotFound");
@@ -525,10 +525,6 @@ export default {
     },
     handleAddSoal(item) {
       this.$router.replace({
-        query: null,
-      });
-      this.$router.replace({
-        name: MANAJEMEN_SOAL,
         query: { kecerdasanSecureId: item.secureId },
       });
     },

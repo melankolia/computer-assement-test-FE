@@ -27,6 +27,7 @@
               {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
             </p>
             <v-switch
+              @click.stop="() => {}"
               @change="(e) => handleClickActivation(item, index, e)"
               dense
               :disabled="item.loadingActivate"
