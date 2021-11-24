@@ -270,7 +270,7 @@ export default {
       return this.items.length > 0;
     },
   },
-  mounted() {
+  activated() {
     this.getList();
   },
   methods: {

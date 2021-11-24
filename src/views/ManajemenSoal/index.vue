@@ -34,9 +34,7 @@
       </v-col>
     </v-row>
     <transition name="slide-fade" mode="out-in">
-      <keep-alive>
-        <component :is="isComponent" class="mt-6" />
-      </keep-alive>
+      <component :is="isComponent" class="mt-6" />
     </transition>
   </div>
 </template>
@@ -58,6 +56,11 @@ export default {
     return {
       isComponent: "Kecerdasan",
     };
+  },
+  watch: {
+    isComponent() {
+      this.$router.replace({ query: null });
+    },
   },
 };
 </script>

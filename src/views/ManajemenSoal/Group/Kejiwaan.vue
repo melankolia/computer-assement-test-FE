@@ -226,7 +226,6 @@
 </template>
 
 <script>
-import { MANAJEMEN_SOAL } from "@/router/name.types";
 import GroupService from "@/services/resources/group.service";
 const Counter = () => import("@/components/Counter");
 const ContentNotFound = () => import("@/components/Content/NotFound");
@@ -271,7 +270,7 @@ export default {
       return this.items.length > 0;
     },
   },
-  mounted() {
+  activated() {
     this.getList();
   },
   methods: {
@@ -526,10 +525,6 @@ export default {
     },
     handleAddSoal(item) {
       this.$router.replace({
-        query: null,
-      });
-      this.$router.replace({
-        name: MANAJEMEN_SOAL,
         query: { kejiwaanSecureId: item.secureId },
       });
     },
