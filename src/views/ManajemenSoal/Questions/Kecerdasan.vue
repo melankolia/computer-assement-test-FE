@@ -280,6 +280,13 @@ import GroupService from "@/services/resources/group.service";
 import QuestionService from "@/services/resources/Questions/kecerdasan.service";
 
 export default {
+  props: {
+    kecerdasanSecureId: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
   data() {
     return {
       id: this.$route.query?.kecerdasanSecureId,
@@ -376,7 +383,7 @@ export default {
     getDetail() {
       this.loading = true;
       QuestionService.getDetail({
-        secureId: this.id,
+        secureId: this.kecerdasanSecureId || this.id,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -504,7 +511,7 @@ export default {
     activateData(event) {
       this.loadingActivate = true;
       GroupService.activationKecerdasan({
-        secureId: this.id,
+        secureId: this.kecerdasanSecureId || this.id,
         is_active: event,
       })
         .then(({ data: { result, message } }) => {
@@ -558,7 +565,10 @@ export default {
     },
     requestEdit(i) {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.edited, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.edited,
+        groupSecureId: this.kecerdasanSecureId || this.id,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -589,7 +599,10 @@ export default {
     },
     requestSubmit() {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.item, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.item,
+        groupSecureId: this.kecerdasanSecureId || this.id,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -682,7 +695,7 @@ export default {
     },
     deleteGroup() {
       this.loadingDeleteGroup = true;
-      GroupService.deleteKecerdasan(this.id)
+      GroupService.deleteKecerdasan(this.kecerdasanSecureId || this.id)
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {

@@ -34,7 +34,7 @@
       </v-col>
     </v-row>
     <transition name="slide-fade" mode="out-in">
-      <component :is="isComponent" class="mt-6" />
+      <component :query="query" :is="isComponent" class="mt-6" />
     </transition>
   </div>
 </template>
@@ -55,9 +55,16 @@ export default {
   data() {
     return {
       isComponent: "Kecerdasan",
+      query: {},
     };
   },
   watch: {
+    $route: {
+      handler(val) {
+        val?.query && (this.query = val?.query);
+      },
+      deep: true,
+    },
     isComponent() {
       const query = { ...this.$route.query };
       if (!(Object.keys(query).length === 0 && query.constructor === Object)) {

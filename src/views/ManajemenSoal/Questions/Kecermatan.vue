@@ -424,6 +424,13 @@ import QuestionService from "@/services/resources/Questions/kecermatan.service";
 import GroupService from "@/services/resources/group.service";
 
 export default {
+  props: {
+    kecermatanSecureId: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
   data() {
     return {
       id: this.$route.query?.kecermatanSecureId,
@@ -545,7 +552,9 @@ export default {
   methods: {
     getDetail() {
       this.loading = true;
-      QuestionService.getDetail({ secureId: this.id })
+      QuestionService.getDetail({
+        secureId: this.kecermatanSecureId || this.id,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.detail = {
@@ -558,7 +567,7 @@ export default {
           } else {
             this.$store.commit("snackbar/setSnack", {
               show: true,
-              message: result || "Gagal memuat data Kecerdasan",
+              message: result || "Gagal memuat data Kecermatan",
               color: "error",
             });
           }
@@ -634,7 +643,7 @@ export default {
     },
     handleSaveSection(i) {
       const Payload = {
-        groupSecureId: this.id,
+        groupSecureId: this.kecermatanSecureId || this.id,
         secureId: this.editedSection.secureId,
         title: this.editedSection.title,
         table_name: this.editedSection.tableName,
@@ -851,7 +860,7 @@ export default {
     activateData(event) {
       this.loadingActivate = true;
       GroupService.activationKecermatan({
-        secureId: this.id,
+        secureId: this.kecermatanSecureId || this.id,
         is_active: event,
       })
         .then(({ data: { result, message } }) => {
@@ -905,7 +914,7 @@ export default {
     },
     deleteData() {
       this.loadingDelete = true;
-      GroupService.deleteKecermatan(this.id)
+      GroupService.deleteKecermatan(this.kecermatanSecureId || this.id)
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
