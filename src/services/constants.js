@@ -11,6 +11,8 @@ export const LOGIN = `users/login`;
 export const LOGOUT = `logout`;
 export const REFRESH_TOKEN = `refresh-token`;
 
+export const PERATURAN = `peraturan`;
+
 const users = `users`;
 export const USERS = {
   LIST: `${users}/list`,
