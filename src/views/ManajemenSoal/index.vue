@@ -59,7 +59,10 @@ export default {
   },
   watch: {
     isComponent() {
-      this.$router.replace({ query: null });
+      const query = { ...this.$route.query };
+      if (!(Object.keys(query).length === 0 && query.constructor === Object)) {
+        this.$router.replace({ query: null });
+      }
     },
   },
 };

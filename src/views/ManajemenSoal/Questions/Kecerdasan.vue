@@ -77,7 +77,7 @@
       <div
         v-if="!e.modeAdd"
         :key="`question-${i}`"
-        class="d-flex flex-column white pa-12 mt-4 rounded-lg"
+        class="d-flex flex-column white pa-12 mt-4 rounded-lg question"
       >
         <div class="d-flex flex-row justify-end">
           <v-menu rounded left min-width="188px">
@@ -619,9 +619,10 @@ export default {
         .finally(() => (this.loadingSubmit = false));
     },
     handleEdit(item, i) {
+      this.questions.map((e) => (e.modeAdd = false));
+      this.modeAdd = false;
       this.questions[i].modeAdd = true;
       this.modeEdit = true;
-      this.modeAdd = false;
       this.edited = { ...item };
     },
     handleAdd() {

@@ -20,6 +20,9 @@ Vue.use(DialogConfirm);
 // Vue Mixin
 import "./mixin";
 
+import _ from "lodash";
+Object.defineProperty(Vue.prototype, "$_", { value: _ });
+
 Vue.config.productionTip = false;
 
 // Ensure we checked auth before each page load.

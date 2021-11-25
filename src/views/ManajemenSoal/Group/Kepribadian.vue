@@ -377,6 +377,7 @@ export default {
       this.edited = {
         ...item,
       };
+      this.modeAdd = false;
       this.items.map((e) => (e.modeAdd = false));
       this.items[index].modeAdd = true;
     },

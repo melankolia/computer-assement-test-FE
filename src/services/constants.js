@@ -68,8 +68,10 @@ export const QUESTIONS = {
   },
   KECERMATAN: {
     DETAIL: `${questions}/kecermatan`,
-    INSERT: `${questions}/kecermatan`,
-    DELETE: `${questions}/kecermatan`,
+    INSERT_SECTION: `${questions}/kecermatan/section`,
+    INSERT_QUESTION: `${questions}/kecermatan/question`,
+    DELETE_SECTION: `${questions}/kecermatan/section`,
+    DELETE_QUESTION: `${questions}/kecermatan/question`,
     ACTIVATION: `${questions}/kecermatan/activation`,
   },
 };
