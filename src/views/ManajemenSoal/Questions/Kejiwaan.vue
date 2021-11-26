@@ -280,6 +280,13 @@ import GroupService from "@/services/resources/group.service";
 import QuestionService from "@/services/resources/Questions/kejiwaan.service";
 
 export default {
+  props: {
+    kejiwaanSecureId: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
   data() {
     return {
       id: this.$route.query?.kejiwaanSecureId,
@@ -346,7 +353,7 @@ export default {
     getDetail() {
       this.loading = true;
       QuestionService.getDetail({
-        secureId: this.id,
+        secureId: this.kejiwaanSecureId || this.id,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -444,7 +451,7 @@ export default {
     activateData(event) {
       this.loadingActivate = true;
       GroupService.activationKejiwaan({
-        secureId: this.id,
+        secureId: this.kejiwaanSecureId || this,
         is_active: event,
       })
         .then(({ data: { result, message } }) => {
@@ -498,7 +505,10 @@ export default {
     },
     requestEdit(i) {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.edited, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.edited,
+        groupSecureId: this.kejiwaanSecureId || this,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -529,7 +539,10 @@ export default {
     },
     requestSubmit() {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.item, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.item,
+        groupSecureId: this.kejiwaanSecureId || this,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -622,7 +635,7 @@ export default {
     },
     deleteGroup() {
       this.loadingDeleteGroup = true;
-      GroupService.deleteKejiwaan(this.id)
+      GroupService.deleteKejiwaan(this.kejiwaanSecureId || this)
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {

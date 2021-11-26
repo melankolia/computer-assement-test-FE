@@ -5,6 +5,7 @@
         <component
           @on-change="isComponent = $event"
           :is="isComponent"
+          :kejiwaanSecureId="kejiwaanSecureId"
           class="mt-6"
         />
       </keep-alive>
@@ -18,6 +19,13 @@ const KejiwaanQuestion = () =>
   import("@/views/ManajemenSoal/Questions/Kejiwaan");
 
 export default {
+  props: {
+    query: {
+      type: Object,
+      required: true,
+      default: () => {},
+    },
+  },
   components: {
     KejiwaanGroup,
     KejiwaanQuestion,
@@ -25,6 +33,7 @@ export default {
   data() {
     return {
       id: this.$route.query?.kejiwaanSecureId,
+      kejiwaanSecureId: "",
       isComponent: "KejiwaanGroup",
     };
   },
@@ -34,6 +43,11 @@ export default {
       : (this.isComponent = "KejiwaanGroup");
   },
   watch: {
+    query: {
+      handler(val) {
+        this.kejiwaanSecureId = val?.kejiwaanSecureId || "";
+      },
+    },
     $route: {
       handler(val) {
         if (val?.query?.kejiwaanSecureId) {

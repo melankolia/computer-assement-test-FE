@@ -329,6 +329,13 @@ import GroupService from "@/services/resources/group.service";
 import QuestionService from "@/services/resources/Questions/kepribadian.service";
 
 export default {
+  props: {
+    kepribadianSecureId: {
+      type: String,
+      required: true,
+      default: "",
+    },
+  },
   data() {
     return {
       id: this.$route.query?.kepribadianSecureId,
@@ -378,7 +385,7 @@ export default {
     getDetail() {
       this.loading = true;
       QuestionService.getDetail({
-        secureId: this.id,
+        secureId: this.kepribadianSecureId || this.id,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -456,7 +463,7 @@ export default {
     activateData(event) {
       this.loadingActivate = true;
       GroupService.activationKepribadian({
-        secureId: this.id,
+        secureId: this.kepribadianSecureId || this.id,
         is_active: event,
       })
         .then(({ data: { result, message } }) => {
@@ -510,7 +517,10 @@ export default {
     },
     requestEdit(i) {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.edited, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.edited,
+        groupSecureId: this.kepribadianSecureId || this.id,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -541,7 +551,10 @@ export default {
     },
     requestSubmit() {
       this.loadingSubmit = true;
-      QuestionService.insertData({ ...this.item, groupSecureId: this.id })
+      QuestionService.insertData({
+        ...this.item,
+        groupSecureId: this.kepribadianSecureId || this.id,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {
@@ -634,7 +647,7 @@ export default {
     },
     deleteGroup() {
       this.loadingDeleteGroup = true;
-      GroupService.deleteKepribadian(this.id)
+      GroupService.deleteKepribadian(this.kepribadianSecureId || this.id)
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.$store.commit("snackbar/setSnack", {

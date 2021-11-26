@@ -1,9 +1,13 @@
 <template>
   <div class="d-flex flex-column mx-10 mb-10 pb-10 px-10">
-    <p v-if="!modeEdit" class="paragraph-font pt-10" v-html="item.rules" />
+    <p
+      v-if="!modeEdit"
+      class="paragraph-font pt-10"
+      v-html="items.kepribadianVO.soal.description"
+    />
     <template v-else>
       <v-textarea
-        v-model="item.rules"
+        v-model="items.kepribadianVO.soal.description"
         auto-grow
         hide-details
         filled
@@ -18,10 +22,12 @@
           color="primary"
           class="no-uppercase depressed mr-4"
           outlined
+          :disabled="loading"
         >
           Batal
         </v-btn>
         <v-btn
+          :loading="loading"
           @click="handleSubmit"
           color="primary"
           class="no-uppercase depressed"
@@ -34,25 +40,73 @@
 </template>
 
 <script>
+const items = {
+  kepribadianVO: {
+    siswa: {
+      secureId: null,
+      description: null,
+    },
+    soal: {
+      secureId: null,
+      description: null,
+    },
+  },
+};
+
+import PeraturanService from "@/services/resources/peraturan.service";
+
 export default {
   props: {
     modeEdit: { type: Boolean, required: true },
+    items: {
+      type: Object,
+      required: true,
+      default: () => items,
+    },
   },
   data() {
     return {
-      item: {
-        rules: `- Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. <br />
-                - Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.  Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. <br />
-                - Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.  Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. `,
-      },
+      loading: false,
     };
   },
   methods: {
     handleSubmit() {
-      this.$emit("on-change", false);
+      const Payload = {
+        secureId: this.items.kepribadianVO.soal.secureId || "",
+        type: "soal",
+        rule_type: "kepribadian",
+        description: this.items.kepribadianVO.soal.description,
+      };
+      this.loading = true;
+      PeraturanService.insertData(Payload)
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil menyimpan data Peraturan",
+              color: "success",
+            });
+            this.$emit("on-submit");
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Berhasil menyimpan data Peraturan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal menyimpan data Peraturan",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
     },
     handleCancel() {
-      this.$emit("on-change", false);
+      this.$emit("on-cancel");
     },
   },
 };

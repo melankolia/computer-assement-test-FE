@@ -38,7 +38,9 @@
         <component
           :is="isComponent"
           :modeEdit="modeEdit"
-          @on-change="modeEdit = $event"
+          @on-submit="() => handleSubmit()"
+          @on-cancel="() => handleCancel()"
+          :items="items"
         />
       </keep-alive>
     </transition>
@@ -46,10 +48,29 @@
 </template>
 
 <script>
+const items = {
+  kecerdasanVO: {
+    siswa: {
+      secureId: null,
+      description: null,
+    },
+    soal: {
+      secureId: null,
+      description: null,
+    },
+  },
+};
 const Soal = () => import("@/views/Peraturan/Kecerdasan/Soal");
 const Siswa = () => import("@/views/Peraturan/Kecerdasan/Siswa");
 
 export default {
+  props: {
+    items: {
+      type: Object,
+      required: true,
+      default: () => items,
+    },
+  },
   components: {
     Soal,
     Siswa,
@@ -58,11 +79,34 @@ export default {
     return {
       isComponent: "Soal",
       modeEdit: false,
+      editedPeraturan: items.kecerdasanVO,
     };
   },
   methods: {
     handleEdit() {
+      this.editedPeraturan = this.$_.cloneDeep(this.items.kecerdasanVO);
       this.modeEdit = true;
+    },
+    handleSubmit() {
+      this.$emit("reload");
+      this.modeEdit = false;
+    },
+    handleCancel() {
+      this.items.kecerdasanVO = {
+        ...this.editedPeraturan,
+      };
+      this.editedPeraturan = { ...items.kecerdasanVO };
+      this.modeEdit = false;
+    },
+  },
+  watch: {
+    isComponent() {
+      if (this.modeEdit) {
+        this.items.kecerdasanVO = {
+          ...this.editedPeraturan,
+        };
+      }
+      this.modeEdit = false;
     },
   },
 };
