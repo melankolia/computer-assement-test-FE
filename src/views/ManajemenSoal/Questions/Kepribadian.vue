@@ -385,7 +385,7 @@ export default {
           secureId: null,
         },
         modeAdd: false,
-        answerList: answerListType4,
+        answerList: [...answerListType4],
       },
       edited: {
         groupSecureId: null,
@@ -395,7 +395,7 @@ export default {
         },
         modeAdd: false,
         loadingDelete: false,
-        answerList: answerListType4,
+        answerList: [...answerListType4],
       },
       questions: [],
     };
@@ -403,8 +403,8 @@ export default {
   activated() {
     this.getDetail();
     if (!this.isType4) {
-      this.item.answerList = answerListType5;
-      this.edited.answerList = answerListType5;
+      this.item.answerList = [...answerListType5];
+      this.edited.answerList = [...answerListType5];
     }
   },
   methods: {
@@ -453,7 +453,7 @@ export default {
           secureId: null,
         },
         modeAdd: false,
-        answerList: this.isType4 ? answerListType4 : answerListType5,
+        answerList: this.isType4 ? [...answerListType4] : [...answerListType5],
       };
     },
     resetEditVariable() {
@@ -465,7 +465,7 @@ export default {
         },
         modeAdd: false,
         loadingDelete: false,
-        answerList: this.isType4 ? answerListType4 : answerListType5,
+        answerList: this.isType4 ? [...answerListType4] : [...answerListType5],
       };
     },
     handleClickActivation(event) {

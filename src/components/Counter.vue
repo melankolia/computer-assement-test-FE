@@ -3,7 +3,7 @@
     class="d-flex flex-row quantity-count rounded align-center justify-center"
     style="width: 124px"
   >
-    <v-icon small @click="counter--" color="black" class="ma-1">
+    <v-icon small @click="handleClickMinus" color="black" class="ma-1">
       mdi-minus
     </v-icon>
     <v-text-field
@@ -27,6 +27,11 @@ export default {
     return {
       counter: 0,
     };
+  },
+  methods: {
+    handleClickMinus() {
+      if (this.counter > 1) this.counter--;
+    },
   },
   watch: {
     counter(val) {
