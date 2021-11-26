@@ -58,7 +58,6 @@ export const configRoutes = [
         component: DaftarNilai,
         meta: {
           requiresAuth: true,
-          privileges: "admin",
         },
       },
       {
