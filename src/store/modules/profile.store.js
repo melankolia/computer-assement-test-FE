@@ -9,6 +9,9 @@ const getters = {
   getProfile(state) {
     return state.profile;
   },
+  isAdmin(state) {
+    return state.profile?.type?.toLowerCase() == "admin";
+  },
 };
 
 const mutations = {
