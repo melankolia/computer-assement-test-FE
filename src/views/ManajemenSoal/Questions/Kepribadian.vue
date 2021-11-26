@@ -296,56 +296,6 @@
 </template>
 
 <script>
-const answerListType4 = [
-  {
-    symbol: "A",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "B",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "C",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "D",
-    answer: null,
-    value: 0,
-  },
-];
-const answerListType5 = [
-  {
-    symbol: "A",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "B",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "C",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "D",
-    answer: null,
-    value: 0,
-  },
-  {
-    symbol: "E",
-    answer: null,
-    value: 0,
-  },
-];
-
 import GroupService from "@/services/resources/group.service";
 import QuestionService from "@/services/resources/Questions/kepribadian.service";
 const ContentNotFound = () => import("@/components/Content/NotFound");
@@ -385,7 +335,7 @@ export default {
           secureId: null,
         },
         modeAdd: false,
-        answerList: [...answerListType4],
+        answerList: [],
       },
       edited: {
         groupSecureId: null,
@@ -395,16 +345,70 @@ export default {
         },
         modeAdd: false,
         loadingDelete: false,
-        answerList: [...answerListType4],
+        answerList: [],
       },
       questions: [],
+
+      // Answer List Type properties
+      answerListType4: [
+        {
+          symbol: "A",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "B",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "C",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "D",
+          answer: null,
+          value: 0,
+        },
+      ],
+      answerListType5: [
+        {
+          symbol: "A",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "B",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "C",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "D",
+          answer: null,
+          value: 0,
+        },
+        {
+          symbol: "E",
+          answer: null,
+          value: 0,
+        },
+      ],
     };
   },
   activated() {
     this.getDetail();
     if (!this.isType4) {
-      this.item.answerList = [...answerListType5];
-      this.edited.answerList = [...answerListType5];
+      this.item.answerList = this.$_.cloneDeep(this.answerListType5);
+      this.edited.answerList = this.$_.cloneDeep(this.answerListType5);
+    } else {
+      this.item.answerList = this.$_.cloneDeep(this.answerListType4);
+      this.edited.answerList = this.$_.cloneDeep(this.answerListType4);
     }
   },
   methods: {
@@ -423,7 +427,7 @@ export default {
               type: result.type,
               is_active: result.is_active,
             };
-            this.questions = [...result.result];
+            this.questions = this.$_.cloneDeep(result.result);
           } else {
             this.$store.commit("snackbar/setSnack", {
               show: true,
@@ -446,18 +450,24 @@ export default {
       this.$router.replace({ query: null });
     },
     resetVariable() {
-      this.item = {
+      const answerListType4Clone = this.$_.cloneDeep(this.answerListType4);
+      const answerListType5Clone = this.$_.cloneDeep(this.answerListType5);
+
+      this.item = this.$_.cloneDeep({
         groupSecureId: null,
         question: {
           question: null,
           secureId: null,
         },
         modeAdd: false,
-        answerList: this.isType4 ? [...answerListType4] : [...answerListType5],
-      };
+        answerList: this.isType4 ? answerListType4Clone : answerListType5Clone,
+      });
     },
     resetEditVariable() {
-      this.edited = {
+      const answerListType4Clone = this.$_.cloneDeep(this.answerListType4);
+      const answerListType5Clone = this.$_.cloneDeep(this.answerListType5);
+
+      this.edited = this.$_.cloneDeep({
         groupSecureId: null,
         question: {
           question: null,
@@ -465,8 +475,8 @@ export default {
         },
         modeAdd: false,
         loadingDelete: false,
-        answerList: this.isType4 ? [...answerListType4] : [...answerListType5],
-      };
+        answerList: this.isType4 ? answerListType4Clone : answerListType5Clone,
+      });
     },
     handleClickActivation(event) {
       this.$confirm({
@@ -615,7 +625,7 @@ export default {
       this.modeAdd = false;
       this.questions[i].modeAdd = true;
       this.modeEdit = true;
-      this.edited = { ...item };
+      this.edited = this.$_.cloneDeep(item);
     },
     handleAdd() {
       this.modeAdd = true;

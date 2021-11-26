@@ -443,7 +443,7 @@ export default {
       this.$router.replace({ query: null });
     },
     resetVariable() {
-      this.item = {
+      this.item = this.$_.cloneDeep({
         question: {
           question: null,
           secureId: null,
@@ -476,10 +476,10 @@ export default {
             value: 0,
           },
         ],
-      };
+      });
     },
     resetEditVariable() {
-      this.edited = {
+      this.edited = this.$_.cloneDeep({
         question: {
           question: null,
           secureId: null,
@@ -514,7 +514,7 @@ export default {
             value: 0,
           },
         ],
-      };
+      });
     },
     handleClickActivation(event) {
       this.$confirm({
@@ -663,7 +663,7 @@ export default {
       this.modeAdd = false;
       this.questions[i].modeAdd = true;
       this.modeEdit = true;
-      this.edited = { ...item };
+      this.edited = this.$_.cloneDeep(item);
     },
     handleAdd() {
       this.modeAdd = true;
