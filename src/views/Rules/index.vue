@@ -4,36 +4,58 @@
     style="background: #f8f6fb; height: 100%"
   >
     <div class="d-flex flex-row white justify-space-between align-center py-5">
-      <v-btn-toggle
-        v-model="isComponent"
-        mandatory
-        borderless
-        color="deep-purple accent-3"
-        background-color="white"
-        class="mx-auto"
-      >
-        <v-btn class="no-uppercase" small value="Kecerdasan">
+      <div />
+      <div class="d-flex flex-row">
+        <v-btn
+          color="primary"
+          v-bind="{ text: !isKecerdasan }"
+          :disabled="!isKecerdasan"
+          class="no-uppercase"
+          small
+          depressed
+        >
           <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
             Kecerdasan
           </p>
         </v-btn>
-        <v-btn class="no-uppercase" small value="Kepribadian">
+        <v-btn
+          v-bind="{ text: !isKepribadian }"
+          :disabled="!isKepribadian"
+          color="primary"
+          class="no-uppercase"
+          small
+          depressed
+        >
           <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
             Kepribadian
           </p>
         </v-btn>
-        <v-btn class="no-uppercase" small value="Kejiwaan">
+        <v-btn
+          v-bind="{ text: !isKejiwaan }"
+          :disabled="!isKejiwaan"
+          color="primary"
+          class="no-uppercase"
+          small
+          depressed
+        >
           <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
             Kejiwaan
           </p>
         </v-btn>
-        <v-btn class="no-uppercase" small value="Kecermatan">
+        <v-btn
+          v-bind="{ text: !isKecermatan }"
+          :disabled="!isKecermatan"
+          color="primary"
+          class="no-uppercase"
+          small
+          depressed
+        >
           <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
             Kecermatan
           </p>
         </v-btn>
-      </v-btn-toggle>
-      <div class="mr-6">
+      </div>
+      <div class="mr-6 align-self-end">
         <v-menu rounded left min-width="188px">
           <template v-slot:activator="{ attrs, on }">
             <v-btn
@@ -80,12 +102,26 @@ export default {
   },
   data() {
     return {
-      isComponent: "Kecerdasan",
+      isComponent: "",
       isType: this.$route.query?.type,
     };
   },
   mounted() {
     this.isComponent = this.isType || "Kecerdasan";
+  },
+  computed: {
+    isKecerdasan() {
+      return this.isComponent === "Kecerdasan";
+    },
+    isKepribadian() {
+      return this.isComponent === "Kepribadian";
+    },
+    isKejiwaan() {
+      return this.isComponent === "Kejiwaan";
+    },
+    isKecermatan() {
+      return this.isComponent === "Kecermatan";
+    },
   },
   watch: {
     isComponent(val) {

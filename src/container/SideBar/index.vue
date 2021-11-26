@@ -21,7 +21,14 @@
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
-      <v-btn @click="logout" color="primary" outlined block depressed>
+      <v-btn
+        :loading="loading"
+        @click="logout"
+        color="primary"
+        outlined
+        block
+        depressed
+      >
         <p class="text-button ma-0">Keluar</p>
       </v-btn>
     </template>
@@ -31,7 +38,7 @@
 <script>
 import DefaultProfile from "@/assets/Pic.png";
 import Logo from "@/assets/Small.svg";
-import { FORCE_LOGOUT } from "@/store/constants/actions.type";
+import { LOGOUT } from "@/store/constants/actions.type";
 import { LOGIN } from "@/router/name.types";
 import { mapGetters } from "vuex";
 
@@ -40,6 +47,7 @@ export default {
     return {
       DefaultProfile,
       Logo,
+      loading: false,
       selectedItem: 0,
       items: [],
       itemsAdmin: [
@@ -81,9 +89,15 @@ export default {
       });
     },
     handleLogout() {
-      this.$store.dispatch(FORCE_LOGOUT).then(() => {
-        this.$router.push({ name: LOGIN });
-      });
+      this.loading = true;
+      this.$store
+        .dispatch(LOGOUT, {
+          username: this.getProfile.username,
+        })
+        .then(() => {
+          this.$router.push({ name: LOGIN });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };

@@ -7,7 +7,7 @@ import {
   PURGE_PROFILE,
   SET_PROFILE,
 } from "../constants/mutations.type";
-import { FORCE_LOGOUT, CHECK_AUTH } from "../constants/actions.type";
+import { FORCE_LOGOUT, LOGOUT, CHECK_AUTH } from "../constants/actions.type";
 
 import AuthService from "@/services/resources/auth.service";
 
@@ -40,7 +40,7 @@ const mutations = {
 const actions = {
   [LOGIN](context, payload) {
     return new Promise((resolve, reject) => {
-      AuthService.login(payload, {
+      AuthService.login({
         username: payload.username,
         password: payload.password,
       })
@@ -76,6 +76,33 @@ const actions = {
             reject(result);
           }
         );
+    });
+  },
+  [LOGOUT](context, payload) {
+    return new Promise((resolve, reject) => {
+      AuthService.logout({
+        username: payload.username,
+      })
+        .then(({ data: { message, result } }) => {
+          if (message == "OK") {
+            resolve(result);
+          } else {
+            reject(message);
+          }
+        })
+        .catch(
+          ({
+            response: {
+              data: { result },
+            },
+          }) => {
+            reject(result);
+          }
+        )
+        .finally(() => {
+          context.commit(PURGE_AUTH);
+          context.commit(PURGE_PROFILE);
+        });
     });
   },
   [FORCE_LOGOUT](context) {
