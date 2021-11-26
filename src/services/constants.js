@@ -77,3 +77,8 @@ export const QUESTIONS = {
     ACTIVATION: `${questions}/kecermatan/activation`,
   },
 };
+
+export const soal = `soal`;
+export const SOAL = {
+  LIST: `${soal}/list`,
+};
