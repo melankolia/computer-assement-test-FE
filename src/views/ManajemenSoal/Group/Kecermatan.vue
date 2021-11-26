@@ -125,7 +125,7 @@
             <p class="text-caption font-weight-light mb-1">
               Total Menit / Section
             </p>
-            <Counter @on-change="(e) => handleChange(e, index, 'edit')" />
+            <Counter @on-change="(e) => handleChange(e, 'edit')" />
           </div>
         </div>
         <div class="d-flex flex-row justify-space-between mt-2">
@@ -473,9 +473,9 @@ export default {
           this.loadingSubmit = false;
         });
     },
-    handleChange(e, i, type = "add") {
+    handleChange(e, type = "add") {
       if (type == "edit") {
-        this.items[i].time = parseInt(e);
+        this.edited.time = parseInt(e);
       } else {
         this.payload.time = parseInt(e);
       }

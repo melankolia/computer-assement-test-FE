@@ -146,7 +146,7 @@
               <p class="text-caption font-weight-light mb-1">
                 Total Menit / Paket
               </p>
-              <Counter @on-change="(e) => handleChange(e, index, 'edit')" />
+              <Counter @on-change="(e) => handleChange(e, 'edit')" />
             </div>
           </div>
         </div>
@@ -522,9 +522,9 @@ export default {
           this.loadingSubmit = false;
         });
     },
-    handleChange(e, i, type = "add") {
+    handleChange(e, type = "add") {
       if (type == "edit") {
-        this.items[i].time = parseInt(e);
+        this.edited.time = parseInt(e);
       } else {
         this.payload.time = parseInt(e);
       }
