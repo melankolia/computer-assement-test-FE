@@ -36,7 +36,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item link>
+            <v-list-item @click="confirmBack" link>
               <p class="selection-item ma-0">Keluar</p>
             </v-list-item>
           </v-list>
@@ -143,6 +143,7 @@
       :dialog="visible"
       :totalAnswer="totalAnswer"
       :handleSelesai="handleSelesai"
+      :title="title"
     />
   </div>
 </template>
@@ -224,12 +225,14 @@ export default {
     handlePrev() {
       if (this.questionIndex > 0) {
         this.questionIndex--;
+      } else {
+        this.confirmBack();
       }
     },
     confirmBack() {
       this.$confirm({
         title: "Confirm",
-        message: `Anda akan dinyatakan menyelesaikan Sections, jika kembali ke halaman sebelumnya`,
+        message: `Anda akan dinyatakan <b>menyelesaikan Sections</b>, jika kembali ke halaman sebelumnya`,
         button: {
           no: "No",
           yes: "Yes",

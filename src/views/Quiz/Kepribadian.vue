@@ -10,10 +10,10 @@
         py-5
         px-10
       "
-      :class="{ 'height-is-completed': isCompleted }"
+      :class="{ 'height-is-completed': isCompleted && visible }"
     >
       <!-- Answering Mode -->
-      <template v-if="!isCompleted">
+      <template v-if="!isCompleted && !visible">
         <div class="d-flex flex-column">
           <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
           <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
@@ -36,7 +36,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item link>
+            <v-list-item @click="confirmBack" link>
               <p class="selection-item ma-0">Keluar</p>
             </v-list-item>
           </v-list>
@@ -45,7 +45,7 @@
     </div>
     <v-expand-transition>
       <div
-        v-if="!isCompleted"
+        v-if="!isCompleted && !visible"
         class="d-flex flex-row justify-space-between"
         style="height: 100%"
       >
@@ -63,7 +63,7 @@
           style="width: 71%"
         >
           <div class="d-flex flex-column ma-0">
-            <p class="header-3 mb-12 text-center">Tes Kepribadian 1</p>
+            <p class="header-3 mb-12 text-center">{{ kepribadian.title }}</p>
             <transition name="slide-fade" mode="out-in">
               <Answer :data="questions[questionIndex]" />
             </transition>
@@ -83,6 +83,7 @@
               class="no-uppercase"
               @click="handlePrev"
               text
+              :disabled="loading"
             >
               Kembali
             </v-btn>
@@ -91,6 +92,7 @@
               class="no-uppercase"
               @click="handleNext"
               text
+              :loading="loading"
             >
               {{ isLast ? "Submit" : "Lanjut" }}
             </v-btn>
@@ -137,172 +139,49 @@
         </div>
       </div>
     </v-expand-transition>
-    <div v-if="isCompleted" class="d-flex flex-column align-center pa-12">
-      <div
-        class="d-flex flex-column align-center white pa-12 rounded-lg"
-        style="width: 450px"
-      >
-        <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
-        <p class="nilai-subtitle-font">Test Kepribadian 1</p>
-        <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
-        <v-btn
-          color="primary"
-          class="no-uppercase"
-          block
-          @click="handleSelesai"
-        >
-          Selesai
-        </v-btn>
-      </div>
-    </div>
+    <CompletedPopUp
+      :dialog="visible"
+      :totalAnswer="totalAnswer"
+      :handleSelesai="handleSelesai"
+      :title="title"
+    />
   </div>
 </template>
 
 <script>
+import { mapKepribadianField } from "@/store/helpers";
+import { mapGetters } from "vuex";
+import { DATA_SOAL } from "@/router/name.types";
+import SoalService from "@/services/resources/soal.service";
 const Answer = () => import("./Answer");
+const CompletedPopUp = () => import("@/components/Dialog/Completed");
 
 export default {
   components: {
     Answer,
+    CompletedPopUp,
   },
   data() {
     return {
-      duration: 240,
-      timer: 240,
-      minutes: "--",
-      seconds: "--",
-      nowDate: null,
-      nowHour: null,
-      totalAnswer: null,
-      questionIndex: 0,
-      questions: [
-        {
-          secureId: "50d7e340-e15c-4ad9-9e6e-a138e5cb76a3",
-          sessionTime: 12,
-          question: {
-            secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2c5",
-            question: "Pertanyaan Testing",
-          },
-          answer: {
-            answer: null,
-            symbol: null,
-            value: null,
-          },
-          answerList: [
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2c5",
-              symbol: "A",
-              answer: "6 Gram",
-              value: 1,
-            },
-            {
-              secureId: "af98ecb2-9d39-454f-b2b7-f29c0e0ea351",
-              symbol: "B",
-              answer: "8 Gram",
-              value: 0,
-            },
-            {
-              secureId: "dacc262d-a01f-4d61-a017-e9eac49b18b4",
-              symbol: "C",
-              answer: "12 Gram",
-              value: 0,
-            },
-            {
-              secureId: "efdb6751-d22b-4e7c-b156-ee2cf5f10f32",
-              symbol: "D",
-              answer: "16 Gram",
-              value: 0,
-            },
-          ],
-        },
-        {
-          secureId: "50d7e340-e15c-4ad9-9e6e-a138e5cb76a3",
-          sessionTime: 12,
-          question: {
-            secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2c5",
-            question: "Pertanyaan Testing",
-          },
-          answer: {
-            answer: null,
-            symbol: null,
-            value: null,
-          },
-          answerList: [
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2c5",
-              symbol: "A",
-              answer: "6 Gram",
-              value: 1,
-            },
-            {
-              secureId: "af98ecb2-9d39-454f-b2b7-f29c0e0ea351",
-              symbol: "B",
-              answer: "8 Gram",
-              value: 0,
-            },
-            {
-              secureId: "dacc262d-a01f-4d61-a017-e9eac49b18b4",
-              symbol: "C",
-              answer: "12 Gram",
-              value: 0,
-            },
-            {
-              secureId: "efdb6751-d22b-4e7c-b156-ee2cf5f10f32",
-              symbol: "D",
-              answer: "16 Gram",
-              value: 0,
-            },
-          ],
-        },
-        {
-          secureId: "50d7e340-e15c-4ad9-9e6e-a138e5cb76a3",
-          sessionTime: 12,
-          question: {
-            secureId: "f11040ac-c7d0-41c3-b6a2-13505593002e",
-            question: "Testing Update New Method Answer Dari Postman",
-          },
-          answer: {
-            answer: null,
-            symbol: null,
-            value: null,
-          },
-          answerList: [
-            {
-              secureId: "2b037e7c-e4c3-406c-89f1-6ba3a37105f4",
-              symbol: "D",
-              answer: "69 Gram",
-              value: 100,
-            },
-            {
-              secureId: "f6e593b8-802e-44ee-90b5-9385dcec66eb",
-              symbol: "C",
-              answer: "2 Gram",
-              value: 2,
-            },
-            {
-              secureId: "b50a4aa6-320f-4668-80c6-d6305926d0de",
-              symbol: "A",
-              answer: "30 Gram",
-              value: 73,
-            },
-            {
-              secureId: "71379192-631b-4575-a137-4e5b58f8f436",
-              symbol: "B",
-              answer: "99 Gram",
-              value: 23,
-            },
-            {
-              secureId: "ebc9d8db-dc1a-4458-b363-b321edd59519",
-              symbol: "E",
-              answer: "60 Gram",
-              value: 2,
-            },
-          ],
-        },
-      ],
+      visible: false,
+      loading: false,
     };
   },
   computed: {
+    ...mapKepribadianField({
+      kepribadian: "kepribadian",
+      title: "kepribadian.title",
+      duration: "kepribadian.duration",
+      timer: "kepribadian.timer",
+      minutes: "kepribadian.minutes",
+      seconds: "kepribadian.seconds",
+      nowDate: "kepribadian.nowDate",
+      nowHour: "kepribadian.nowHour",
+      totalAnswer: "kepribadian.totalAnswer",
+      questions: "kepribadian.questions",
+      questionIndex: "kepribadian.questionIndex",
+    }),
+    ...mapGetters(["getProfile"]),
     countMinutes() {
       return this.minutes;
     },
@@ -320,13 +199,9 @@ export default {
     },
   },
   mounted() {
+    if (this.isCompleted) this.visible = true;
     this.startCountDown();
     this.getDate();
-  },
-  watch: {
-    totalAnswer(val) {
-      console.log(val);
-    },
   },
   methods: {
     startCountDown() {
@@ -350,14 +225,64 @@ export default {
     handlePrev() {
       if (this.questionIndex > 0) {
         this.questionIndex--;
+      } else {
+        this.confirmBack();
       }
+    },
+    confirmBack() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Anda akan dinyatakan <b>menyelesaikan Sections</b>, jika kembali ke halaman sebelumnya`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.handleBack();
+          }
+        },
+      });
+    },
+    handleBack() {
+      this.$router.replace({
+        name: DATA_SOAL,
+      });
     },
     calculateAnswer() {
       this.totalAnswer = this.questions.reduce(
         (acc, cur) => acc + cur.answer.value,
         0
       );
-      console.log(this.totalAnswer);
+    },
+    requestInsert() {
+      this.lading = true;
+      SoalService.insertNilai({
+        userSecureId: this.getProfile.secureId,
+        type_nilai: "kepribadian",
+        paket_soal: this.title,
+        nilai: this.totalAnswer,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.visible = true;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil input nilai Kepribadian",
+              color: "success",
+            });
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal input nilai Kepribadian",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => (this.loading = false));
     },
     handleNext() {
       if (this.isLast) {
@@ -371,6 +296,7 @@ export default {
           callback: (confirm) => {
             if (confirm) {
               this.calculateAnswer();
+              this.requestInsert();
             }
           },
         });
@@ -380,7 +306,7 @@ export default {
       this.$router.replace({ path: "/data-soal" });
     },
     getDate() {
-      this.counterFunction = setInterval(() => {
+      this.dataFunction = setInterval(() => {
         const now = new Date().toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",

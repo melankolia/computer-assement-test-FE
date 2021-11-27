@@ -6,4 +6,5 @@ export const CHECK_AUTH = "checkAuth";
 export const GET_LIST_QUESTION = {
   KECERDASAN: `getListKecerdasanQuestion`,
   KEJIWAAN: `getListKejiwaanQuestion`,
+  KEPRIBADIAN: `getListKepribadianQuestion`,
 };

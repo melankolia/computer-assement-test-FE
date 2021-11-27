@@ -8,6 +8,7 @@ import auth from "./modules/auth.store";
 import snackbar from "./modules/snackbar.store";
 import kecerdasan from "./modules/kecerdasan.store";
 import kejiwaan from "./modules/kejiwaan.store";
+import kepribadian from "./modules/kepribadian.store";
 
 const debug = process.env.VUE_APP_DEBUG;
 const debugPlugin = debug == "true" ? [createLogger()] : [];
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     profile,
     kecerdasan,
     kejiwaan,
+    kepribadian,
   },
   strict: debug,
   plugins: [vuexLocal.plugin, ...debugPlugin],
