@@ -10,59 +10,82 @@
       pb-10
       px-12
       white
+      shadowing
     "
     style="width: 70%"
   >
-    <p class="header-3 mb-8 text-center">{{ item.title }}</p>
-    <transition name="slide-fade" mode="out-in">
-      <component :item="item" :rules="rules" :is="types[index]" />
-    </transition>
-    <div
-      v-if="!isLast"
-      class="d-flex flex-row justify-space-between align-center pt-12 mt-12"
+    <ContentNotFound
+      message="Kecermatan Rules Not Found"
+      :loading="loading"
+      v-if="!isAvailable"
     >
-      <v-btn
-        :loading="loadingPrev"
-        @click="handleBack"
-        color="primary"
-        class="no-uppercase"
-        text
-      >
-        Kembali
-      </v-btn>
-      <v-btn
-        :loading="loadingNext"
-        @click="handleNext"
-        color="primary"
-        class="no-uppercase"
-        outlined
-      >
-        Lanjut
-      </v-btn>
-    </div>
-    <v-row v-else align="center" justify="center" class="mt-12">
-      <v-col cols="12" xs="12" sm="3">
+      <template v-slot:action>
         <v-btn
-          @click="() => handleMulai()"
+          depressed
+          @click="() => getDetail()"
+          color="default"
+          class="px-10"
+        >
+          <v-icon class="mr-1" small>mdi-reload</v-icon>
+          Reload
+        </v-btn>
+      </template>
+    </ContentNotFound>
+    <template v-else>
+      <p class="header-3 mb-8 text-center">{{ item.title }}</p>
+      <transition name="slide-fade" mode="out-in">
+        <component :item="item" :rules="rules" :is="types[index]" />
+      </transition>
+      <div
+        v-if="!isLast"
+        class="d-flex flex-row justify-space-between align-center pt-12 mt-12"
+      >
+        <v-btn
+          :loading="loadingPrev"
+          @click="handleBack"
           color="primary"
           class="no-uppercase"
-          block
+          text
         >
-          Mulai
+          Kembali
         </v-btn>
-      </v-col>
-    </v-row>
+        <v-btn
+          :loading="loadingNext"
+          @click="handleNext"
+          color="primary"
+          class="no-uppercase"
+          outlined
+        >
+          Lanjut
+        </v-btn>
+      </div>
+      <v-row v-else align="center" justify="center" class="mt-12">
+        <v-col cols="12" xs="12" sm="3">
+          <v-btn
+            @click="() => handleMulai()"
+            color="primary"
+            class="no-uppercase"
+            block
+          >
+            Mulai
+          </v-btn>
+        </v-col>
+      </v-row>
+    </template>
   </div>
 </template>
 
 <script>
 import { QUIZ } from "@/router/name.types";
+import CoverService from "@/services/resources/cover.service";
+const ContentNotFound = () => import("@/components/Content/NotFound");
 const Cover = () => import("./Peraturan/Cover");
 const Soal = () => import("./Peraturan/Soal");
 const Siswa = () => import("./Peraturan/Siswa");
 
 export default {
   components: {
+    ContentNotFound,
     Cover,
     Soal,
     Siswa,
@@ -73,28 +96,16 @@ export default {
       index: 0,
       types: ["Cover", "Soal", "Siswa"],
       item: {
-        title: "Test Kecermatan",
-        desc: `ulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-                cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-                reprehenderit elit laborum. Nulla Lorem mollit cupidatat irure.
-                Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation
-                incididunt aliquip deserunt reprehenderit elit laborum.`,
-        soal: 50,
-        time: 50,
-        section: 4,
+        title: null,
+        description: null,
+        soal: null,
+        time: null,
+        section: null,
       },
       rules: {
-        soal: `Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.`,
+        soal: null,
 
-        siswa: `Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.`,
+        siswa: null,
       },
       loading: false,
       loadingNext: false,
@@ -102,6 +113,34 @@ export default {
     };
   },
   methods: {
+    getDetail() {
+      this.loading = true;
+      CoverService.findCover({
+        secureId: this.id,
+        type: "kecermatan",
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.item = { ...result.group };
+            this.rules = { ...result.rules };
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal memuat data Kecermatan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data Kecermatan",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
     handleBack() {
       if (this.index != 0) {
         this.loadingPrev = true;
@@ -128,9 +167,15 @@ export default {
       });
     },
   },
+  mounted() {
+    this.getDetail();
+  },
   computed: {
     isLast() {
       return this.types[this.index] == "Siswa";
+    },
+    isAvailable() {
+      return this.item?.secureId;
     },
   },
 };

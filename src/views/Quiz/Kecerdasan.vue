@@ -161,6 +161,7 @@
 </template>
 
 <script>
+import { DATA_SOAL } from "@/router/name.types";
 const Answer = () => import("./Answer");
 
 export default {
@@ -352,7 +353,29 @@ export default {
     handlePrev() {
       if (this.questionIndex > 0) {
         this.questionIndex--;
+      } else {
+        this.confirmBack();
       }
+    },
+    confirmBack() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Anda akan dinyatakan menyelesaikan Sections, jika kembali ke halaman sebelumnya`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.handleBack();
+          }
+        },
+      });
+    },
+    handleBack() {
+      this.$router.replace({
+        name: DATA_SOAL,
+      });
     },
     calculateAnswer() {
       this.totalAnswer = this.questions.reduce(

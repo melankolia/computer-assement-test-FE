@@ -9,13 +9,13 @@
         pb-2
       "
     >
-      {{ item.desc }}
+      {{ item.description }}
     </p>
     <div class="d-flex flex-row justify-center mb-12 pb-12">
       <div class="d-flex flex-row align-center mr-6">
         <img class="mr-2" src="@/assets/icons/sheet.svg" />
         <p class="selection-item font-weight-medium ma-0">
-          {{ item.soal }} Soal ({{ item.type }} Jawaban)
+          {{ item.total_soal }} Soal ({{ item.type }} Jawaban)
         </p>
       </div>
       <div class="d-flex flex-row align-center mr-6">
