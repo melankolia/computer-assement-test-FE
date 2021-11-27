@@ -15,6 +15,7 @@ const KecermatanQuiz = () => import("@/views/Quiz/Kecermatan");
 
 import {
   LOGIN,
+  HOME,
   MANAJEMEN_SOAL,
   PERATURAN_SOAL,
   DATA_PESERTA,
@@ -28,7 +29,9 @@ export const configRoutes = [
   {
     path: "/",
     component: TheContainer,
+    name: HOME,
     meta: {
+      requiresAuth: true,
       title: "Home",
     },
     children: [
@@ -38,6 +41,7 @@ export const configRoutes = [
         component: DaftarPeserta,
         meta: {
           requiresAuth: true,
+          privileges: "admin",
         },
       },
       {
@@ -62,6 +66,7 @@ export const configRoutes = [
         component: ManajemenSoal,
         meta: {
           requiresAuth: true,
+          privileges: "admin",
         },
       },
       {
@@ -70,6 +75,7 @@ export const configRoutes = [
         component: PeraturanSoal,
         meta: {
           requiresAuth: true,
+          privileges: "admin",
         },
       },
     ],

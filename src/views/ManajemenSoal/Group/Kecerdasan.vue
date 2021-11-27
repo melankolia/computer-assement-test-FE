@@ -102,59 +102,66 @@
         </div>
       </div>
       <!-- Edited Mode -->
-      <div
+      <v-form
         v-else
-        class="d-flex flex-column white my-6 px-8 py-10 rounded-lg"
+        id="edited-form"
+        ref="formEdit"
+        v-model="validEdited"
+        @submit.prevent="() => handleSubmit(index, 'edit')"
         :key="`else-${index}`"
       >
-        <div class="d-flex flex-row justify-space-between align-start">
-          <div class="d-flex flex-column" style="width: 344px">
-            <p class="label-style mb-1">Nama Paket Soal</p>
+        <div class="d-flex flex-column white my-6 px-8 py-10 rounded-lg">
+          <div class="d-flex flex-row justify-space-between align-start">
+            <div class="d-flex flex-column" style="width: 344px">
+              <p class="label-style mb-1">Nama Paket Soal</p>
+              <v-text-field
+                v-model="edited.title"
+                placeholder="Nama Paket Soal"
+                filled
+                outlined
+                dense
+                :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                class="rounded"
+              />
+            </div>
+            <div class="d-flex flex-column align-center">
+              <p class="text-caption font-weight-light mb-1">
+                Total Menit / Paket
+              </p>
+              <Counter @on-change="(e) => handleChange(e, 'edit')" />
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-space-between mt-2">
             <v-text-field
-              v-model="edited.title"
-              placeholder="Nama Paket Soal"
+              v-model="edited.description"
+              style="max-width: 344px"
+              placeholder="Deskripsi Paket Soal"
               hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
+              class="custom-padding"
             />
-          </div>
-          <div class="d-flex flex-column align-center">
-            <p class="text-caption font-weight-light mb-1">
-              Total Menit / Paket
-            </p>
-            <Counter @on-change="(e) => handleChange(e, index, 'edit')" />
-          </div>
-        </div>
-        <div class="d-flex flex-row justify-space-between mt-2">
-          <v-text-field
-            v-model="edited.description"
-            style="max-width: 344px"
-            placeholder="Deskripsi Paket Soal"
-            hide-details
-            class="custom-padding"
-          />
-          <div class="d-flex flex-row align-self-end mt-4">
-            <v-btn
-              color="primary"
-              @click="() => handleCancel(index, 'edit')"
-              class="no-uppercase depressed mr-6"
-              outlined
-            >
-              Batal
-            </v-btn>
-            <v-btn
-              :loading="item.loadingEdit"
-              color="primary"
-              @click="() => handleSubmit(index, 'edit')"
-              class="no-uppercase depressed"
-            >
-              Simpan
-            </v-btn>
+            <div class="d-flex flex-row align-self-end mt-4">
+              <v-btn
+                color="primary"
+                @click="() => handleCancel(index, 'edit')"
+                class="no-uppercase depressed mr-6"
+                outlined
+              >
+                Batal
+              </v-btn>
+              <v-btn
+                :loading="item.loadingEdit"
+                :disabled="!validEdited"
+                type="submit"
+                form="edited-form"
+                color="primary"
+                class="no-uppercase depressed"
+              >
+                Simpan
+              </v-btn>
+            </div>
           </div>
         </div>
-      </div>
+      </v-form>
     </template>
     <ContentNotFound
       message="Kecerdasan Group Not Found"
@@ -169,58 +176,65 @@
       </template>
     </ContentNotFound>
     <v-expand-transition>
-      <div
+      <v-form
         v-if="modeAdd"
-        class="d-flex flex-column white px-8 py-10 rounded-lg"
+        id="add-form"
+        ref="form"
+        v-model="validSubmit"
+        @submit.prevent="() => handleSubmit()"
       >
-        <div class="d-flex flex-row justify-space-between align-start">
-          <div class="d-flex flex-column" style="width: 344px">
-            <p class="label-style mb-1">Nama Paket Soal</p>
+        <div class="d-flex flex-column white px-8 py-10 rounded-lg">
+          <div class="d-flex flex-row justify-space-between align-start">
+            <div class="d-flex flex-column" style="width: 344px">
+              <p class="label-style mb-1">Nama Paket Soal</p>
+              <v-text-field
+                v-model="payload.title"
+                placeholder="Nama Paket Soal"
+                :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                filled
+                outlined
+                dense
+                class="rounded"
+              />
+            </div>
+            <div class="d-flex flex-column align-center">
+              <p class="text-caption font-weight-light mb-1">
+                Total Menit / Paket
+              </p>
+              <Counter @on-change="(e) => handleChange(e)" />
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-space-between mt-2">
             <v-text-field
-              v-model="payload.title"
-              placeholder="Nama Paket Soal"
+              v-model="payload.description"
+              style="max-width: 344px"
+              placeholder="Deskripsi Paket Soal"
               hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
+              class="custom-padding"
             />
-          </div>
-          <div class="d-flex flex-column align-center">
-            <p class="text-caption font-weight-light mb-1">
-              Total Menit / Paket
-            </p>
-            <Counter @on-change="(e) => handleChange(e)" />
-          </div>
-        </div>
-        <div class="d-flex flex-row justify-space-between mt-2">
-          <v-text-field
-            v-model="payload.description"
-            style="max-width: 344px"
-            placeholder="Deskripsi Paket Soal"
-            hide-details
-            class="custom-padding"
-          />
-          <div class="d-flex flex-row align-self-end mt-4">
-            <v-btn
-              color="primary"
-              @click="handleCancel"
-              class="no-uppercase depressed mr-6"
-              outlined
-            >
-              Batal
-            </v-btn>
-            <v-btn
-              :loading="loadingSubmit"
-              color="primary"
-              @click="handleSubmit"
-              class="no-uppercase depressed"
-            >
-              Simpan
-            </v-btn>
+            <div class="d-flex flex-row align-self-end mt-4">
+              <v-btn
+                color="primary"
+                @click="handleCancel"
+                class="no-uppercase depressed mr-6"
+                outlined
+              >
+                Batal
+              </v-btn>
+              <v-btn
+                :loading="loadingSubmit"
+                :disabled="!validSubmit"
+                type="submit"
+                form="add-form"
+                color="primary"
+                class="no-uppercase depressed"
+              >
+                Simpan
+              </v-btn>
+            </div>
           </div>
         </div>
-      </div>
+      </v-form>
     </v-expand-transition>
   </div>
 </template>
@@ -237,6 +251,8 @@ export default {
   },
   data() {
     return {
+      validEdited: false,
+      validSubmit: false,
       loading: false,
       items: [],
       payload: {
@@ -393,8 +409,10 @@ export default {
         .finally(() => (this.items[index].loadingActivate = false));
     },
     handleSubmit(index, type = "add") {
-      if (type == "edit") this.requestEdit(index);
-      else this.requestAdd();
+      if (this.$refs[type == "add" ? "form" : "formEdit"].validate()) {
+        if (type == "edit") this.requestEdit(index);
+        else this.requestAdd();
+      }
     },
     requestEdit(index) {
       this.items[index].loadingEdit = true;
@@ -472,9 +490,9 @@ export default {
           this.loadingSubmit = false;
         });
     },
-    handleChange(e, i, type = "add") {
+    handleChange(e, type = "add") {
       if (type == "edit") {
-        this.items[i].time = parseInt(e);
+        this.edited.time = parseInt(e);
       } else {
         this.payload.time = parseInt(e);
       }

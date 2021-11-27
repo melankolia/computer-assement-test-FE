@@ -6,80 +6,54 @@
     <p class="text-caption label-caption mb-5">
       {{ detail.description }}
     </p>
-    <div
-      class="d-flex flex-row justify-space-between white py-2 px-9 rounded-lg"
+    <ContentNotFound
+      message="Kecerdasan Question's Not Found"
+      :loading="loading"
+      v-if="!isAvailable"
     >
-      <div class="d-flex flex-row align-center">
-        <div class="d-flex flex-row align-center mr-6">
-          <img class="mr-2" src="@/assets/icons/sheet.svg" />
-          <p class="selection-item font-weight-medium ma-0">
-            {{ totalQuestion }} Soal
-          </p>
+      <template v-slot:action>
+        <v-btn
+          depressed
+          @click="() => getDetail()"
+          color="default"
+          class="px-10"
+        >
+          <v-icon class="mr-1" small>mdi-reload</v-icon>
+          Reload
+        </v-btn>
+      </template>
+    </ContentNotFound>
+    <template v-else>
+      <div
+        class="d-flex flex-row justify-space-between white py-2 px-9 rounded-lg"
+      >
+        <div class="d-flex flex-row align-center">
+          <div class="d-flex flex-row align-center mr-6">
+            <img class="mr-2" src="@/assets/icons/sheet.svg" />
+            <p class="selection-item font-weight-medium ma-0">
+              {{ totalQuestion }} Soal
+            </p>
+          </div>
+          <div class="d-flex flex-row align-center">
+            <img class="mr-2" src="@/assets/icons/time.svg" />
+            <p class="selection-item font-weight-medium ma-0">
+              {{ detail.time }} Menit
+            </p>
+          </div>
         </div>
         <div class="d-flex flex-row align-center">
-          <img class="mr-2" src="@/assets/icons/time.svg" />
-          <p class="selection-item font-weight-medium ma-0">
-            {{ detail.time }} Menit
+          <p class="label-style mb-0 mx-4">
+            {{ !detail.is_active ? "Tidak Aktif" : "Aktif" }}
           </p>
-        </div>
-      </div>
-      <div class="d-flex flex-row align-center">
-        <p class="label-style mb-0 mx-4">
-          {{ !detail.is_active ? "Tidak Aktif" : "Aktif" }}
-        </p>
-        <v-switch
-          @change="(e) => handleClickActivation(e)"
-          dense
-          :disabled="loadingActivate"
-          :loading="loadingActivate"
-          v-model="detail.is_active"
-          color="greentext"
-          inset
-        />
-        <v-menu rounded left min-width="188px">
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              small
-              depressed
-              icon
-              class="rounded-lg"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              :disabled="loadingDeleteGroup"
-              @click="() => handleDelete()"
-              link
-            >
-              <img
-                v-if="!loadingDeleteGroup"
-                class="mr-4"
-                src="@/assets/icons/delete-outlined.svg"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                :size="20"
-                color="primary"
-                class="mr-4"
-              ></v-progress-circular>
-              <p class="selection-item ma-0">Hapus Data</p>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
-    </div>
-    <template v-for="(e, i) in questions">
-      <div
-        v-if="!e.modeAdd"
-        :key="`question-${i}`"
-        class="d-flex flex-column white pa-12 mt-4 rounded-lg question"
-      >
-        <div class="d-flex flex-row justify-end">
+          <v-switch
+            @change="(e) => handleClickActivation(e)"
+            dense
+            :disabled="loadingActivate"
+            :loading="loadingActivate"
+            v-model="detail.is_active"
+            color="greentext"
+            inset
+          />
           <v-menu rounded left min-width="188px">
             <template v-slot:activator="{ attrs, on }">
               <v-btn
@@ -94,17 +68,13 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="() => handleEdit(e, i)" link>
-                <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
-                <p class="selection-item ma-0">Edit Data</p>
-              </v-list-item>
               <v-list-item
-                :disabled="e.loadingDelete"
-                @click="() => handleDelete(e, i)"
+                :disabled="loadingDeleteGroup"
+                @click="() => handleDelete()"
                 link
               >
                 <img
-                  v-if="!e.loadingDelete"
+                  v-if="!loadingDeleteGroup"
                   class="mr-4"
                   src="@/assets/icons/delete-outlined.svg"
                 />
@@ -120,166 +90,221 @@
             </v-list>
           </v-menu>
         </div>
-        <div class="px-12">
-          <p class="font-question font-inter mb-8">
-            {{ i + 1 }}. {{ e.question.question }}
-          </p>
-          <div
-            v-for="(e2, i2) in e.answerList"
-            :key="`answer-${i2}`"
-            class="d-flex flex-row mx-5 justify-space-between my-2"
-          >
-            <p class="font-answer font-inter">
-              {{ e2.symbol }}. {{ e2.answer }}
+      </div>
+      <template v-for="(e, i) in questions">
+        <div
+          v-if="!e.modeAdd"
+          :key="`question-${i}`"
+          class="d-flex flex-column white pa-12 mt-4 rounded-lg question"
+        >
+          <div class="d-flex flex-row justify-end">
+            <v-menu rounded left min-width="188px">
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  small
+                  depressed
+                  icon
+                  class="rounded-lg"
+                >
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click="() => handleEdit(e, i)" link>
+                  <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
+                  <p class="selection-item ma-0">Edit Data</p>
+                </v-list-item>
+                <v-list-item
+                  :disabled="e.loadingDelete"
+                  @click="() => handleDelete(e, i)"
+                  link
+                >
+                  <img
+                    v-if="!e.loadingDelete"
+                    class="mr-4"
+                    src="@/assets/icons/delete-outlined.svg"
+                  />
+                  <v-progress-circular
+                    v-else
+                    indeterminate
+                    :size="20"
+                    color="primary"
+                    class="mr-4"
+                  ></v-progress-circular>
+                  <p class="selection-item ma-0">Hapus Data</p>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+          <div class="px-12">
+            <p class="font-question font-inter mb-8">
+              {{ i + 1 }}. {{ e.question.question }}
             </p>
-            <p class="font-answer font-inter">{{ e2.value }} Poin</p>
+            <div
+              v-for="(e2, i2) in e.answerList"
+              :key="`answer-${i2}`"
+              class="d-flex flex-row mx-5 justify-space-between my-2"
+            >
+              <p class="font-answer font-inter">
+                {{ e2.symbol }}. {{ e2.answer }}
+              </p>
+              <p class="font-answer font-inter">{{ e2.value }} Poin</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        v-else
-        :key="`question-${i}`"
-        class="d-flex flex-column white pa-12 mt-4 rounded-lg"
-      >
-        <div class="d-flex flex-column px-12">
-          <div class="d-flex flex-column mb-4">
-            <p class="font-question-add">Pertanyaan No. {{ i + 1 }}</p>
-            <v-textarea
-              v-model="edited.question.question"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
-            />
-          </div>
-          <div
-            v-for="(ed, index) in edited.answerList"
-            :key="`answer-${index}`"
-            class="d-flex flex-row ml-3 my-2 align-center"
-          >
-            <p class="font-answer-add mr-5 mb-0">{{ ed.symbol }}.</p>
-            <v-text-field
-              v-model="ed.value"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded mr-3"
-              style="max-width: 50px"
-            />
-            <v-text-field
-              v-model="ed.answer"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
-            />
-          </div>
-          <div class="d-flex flex-row align-self-end mt-4">
-            <v-btn
-              color="primary"
-              @click="() => handleCancel(i, 'edit')"
-              class="no-uppercase depressed mr-6"
-              outlined
+        <div
+          v-else
+          :key="`question-${i}`"
+          class="d-flex flex-column white pa-12 mt-4 rounded-lg"
+        >
+          <div class="d-flex flex-column px-12">
+            <div class="d-flex flex-column mb-4">
+              <p class="font-question-add">Pertanyaan No. {{ i + 1 }}</p>
+              <v-textarea
+                v-model="edited.question.question"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded"
+              />
+            </div>
+            <div
+              v-for="(ed, index) in edited.answerList"
+              :key="`answer-${index}`"
+              class="d-flex flex-row ml-3 my-2 align-center"
             >
-              Batal
-            </v-btn>
-            <v-btn
-              :loading="loadingSubmit"
-              color="primary"
-              @click="() => handleSubmit(i, 'edit')"
-              class="no-uppercase depressed"
-            >
-              Simpan
-            </v-btn>
+              <p class="font-answer-add mr-5 mb-0">{{ ed.symbol }}.</p>
+              <v-text-field
+                v-model="ed.value"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded mr-3"
+                style="max-width: 50px"
+              />
+              <v-text-field
+                v-model="ed.answer"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded"
+              />
+            </div>
+            <div class="d-flex flex-row align-self-end mt-4">
+              <v-btn
+                color="primary"
+                @click="() => handleCancel(i, 'edit')"
+                class="no-uppercase depressed mr-6"
+                outlined
+              >
+                Batal
+              </v-btn>
+              <v-btn
+                :loading="loadingSubmit"
+                color="primary"
+                @click="() => handleSubmit(i, 'edit')"
+                class="no-uppercase depressed"
+              >
+                Simpan
+              </v-btn>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
+      <!-- Mode Add -->
+      <v-expand-transition>
+        <div
+          v-if="modeAdd"
+          class="d-flex flex-column white pa-12 mt-4 rounded-lg"
+        >
+          <div class="d-flex flex-column px-12">
+            <div class="d-flex flex-column mb-4">
+              <p class="font-question-add">
+                Pertanyaan No. {{ questionLength }}
+              </p>
+              <v-textarea
+                v-model="item.question.question"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded"
+              />
+            </div>
+            <div
+              v-for="(payload, index) in item.answerList"
+              :key="`answer-${index}`"
+              class="d-flex flex-row ml-3 my-2 align-center"
+            >
+              <p class="font-answer-add mr-5 mb-0">{{ payload.symbol }}.</p>
+              <v-text-field
+                v-model="payload.value"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded mr-3"
+                style="max-width: 50px"
+              />
+              <v-text-field
+                v-model="payload.answer"
+                hide-details
+                filled
+                outlined
+                dense
+                class="rounded"
+              />
+            </div>
+            <div class="d-flex flex-row align-self-end mt-4">
+              <v-btn
+                color="primary"
+                @click="handleCancel"
+                class="no-uppercase depressed mr-6"
+                outlined
+              >
+                Batal
+              </v-btn>
+              <v-btn
+                :loading="loadingSubmit"
+                color="primary"
+                @click="handleSubmit"
+                class="no-uppercase depressed"
+              >
+                Simpan
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </v-expand-transition>
+      <v-expand-transition>
+        <v-btn
+          v-if="!modeAdd && !modeEdit"
+          @click="handleAdd"
+          color="primary"
+          class="no-uppercase my-5"
+          outlined
+        >
+          Tambahkan Soal
+        </v-btn>
+      </v-expand-transition>
     </template>
-    <!-- Mode Add -->
-    <v-expand-transition>
-      <div
-        v-if="modeAdd"
-        class="d-flex flex-column white pa-12 mt-4 rounded-lg"
-      >
-        <div class="d-flex flex-column px-12">
-          <div class="d-flex flex-column mb-4">
-            <p class="font-question-add">Pertanyaan No. {{ questionLength }}</p>
-            <v-textarea
-              v-model="item.question.question"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
-            />
-          </div>
-          <div
-            v-for="(payload, index) in item.answerList"
-            :key="`answer-${index}`"
-            class="d-flex flex-row ml-3 my-2 align-center"
-          >
-            <p class="font-answer-add mr-5 mb-0">{{ payload.symbol }}.</p>
-            <v-text-field
-              v-model="payload.value"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded mr-3"
-              style="max-width: 50px"
-            />
-            <v-text-field
-              v-model="payload.answer"
-              hide-details
-              filled
-              outlined
-              dense
-              class="rounded"
-            />
-          </div>
-          <div class="d-flex flex-row align-self-end mt-4">
-            <v-btn
-              color="primary"
-              @click="handleCancel"
-              class="no-uppercase depressed mr-6"
-              outlined
-            >
-              Batal
-            </v-btn>
-            <v-btn
-              :loading="loadingSubmit"
-              color="primary"
-              @click="handleSubmit"
-              class="no-uppercase depressed"
-            >
-              Simpan
-            </v-btn>
-          </div>
-        </div>
-      </div>
-    </v-expand-transition>
-    <v-expand-transition>
-      <v-btn
-        v-if="!modeAdd && !modeEdit"
-        @click="handleAdd"
-        color="primary"
-        class="no-uppercase my-5"
-        outlined
-      >
-        Tambahkan Soal
-      </v-btn>
-    </v-expand-transition>
   </div>
 </template>
 
 <script>
 import GroupService from "@/services/resources/group.service";
 import QuestionService from "@/services/resources/Questions/kecerdasan.service";
+const ContentNotFound = () => import("@/components/Content/NotFound");
 
 export default {
+  components: {
+    ContentNotFound,
+  },
   props: {
     kecerdasanSecureId: {
       type: String,
@@ -297,6 +322,7 @@ export default {
       loadingActivate: false,
       loadingDeleteGroup: false,
       detail: {
+        secureId: null,
         title: null,
         description: null,
         time: null,
@@ -376,7 +402,7 @@ export default {
       questions: [],
     };
   },
-  mounted() {
+  activated() {
     this.getDetail();
   },
   methods: {
@@ -388,6 +414,7 @@ export default {
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.detail = {
+              secureId: result.secureId,
               title: result.title,
               description: result.description,
               time: result.time,
@@ -416,7 +443,7 @@ export default {
       this.$router.replace({ query: null });
     },
     resetVariable() {
-      this.item = {
+      this.item = this.$_.cloneDeep({
         question: {
           question: null,
           secureId: null,
@@ -449,10 +476,10 @@ export default {
             value: 0,
           },
         ],
-      };
+      });
     },
     resetEditVariable() {
-      this.edited = {
+      this.edited = this.$_.cloneDeep({
         question: {
           question: null,
           secureId: null,
@@ -487,7 +514,7 @@ export default {
             value: 0,
           },
         ],
-      };
+      });
     },
     handleClickActivation(event) {
       this.$confirm({
@@ -636,7 +663,7 @@ export default {
       this.modeAdd = false;
       this.questions[i].modeAdd = true;
       this.modeEdit = true;
-      this.edited = { ...item };
+      this.edited = this.$_.cloneDeep(item);
     },
     handleAdd() {
       this.modeAdd = true;
@@ -730,6 +757,9 @@ export default {
     },
     totalQuestion() {
       return this.questions.length;
+    },
+    isAvailable() {
+      return this.detail?.secureId;
     },
   },
 };

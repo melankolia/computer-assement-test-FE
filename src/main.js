@@ -11,7 +11,7 @@ import "./filter/case.filter";
 
 // Constant
 import { FORCE_LOGOUT, CHECK_AUTH } from "./store/constants/actions.type";
-import { LOGIN } from "./router/name.types";
+import { LOGIN, HOME, DATA_PESERTA, DATA_SOAL } from "./router/name.types";
 
 // Component
 import DialogConfirm from "./components/Confirm";
@@ -27,7 +27,12 @@ Vue.config.productionTip = false;
 
 // Ensure we checked auth before each page load.
 router.beforeEach((to, from, next) => {
-  // let route = router.resolve(to);
+  if (to.name == HOME) {
+    store.getters.isAdmin
+      ? next({ name: DATA_PESERTA })
+      : next({ name: DATA_SOAL });
+  }
+
   // Authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
@@ -50,6 +55,10 @@ router.beforeEach((to, from, next) => {
       });
     } else {
       Promise.all([store.dispatch(CHECK_AUTH)]).then(next);
+    }
+
+    if (to.meta?.privileges == "admin" && !store.getters.isAdmin) {
+      next({ name: HOME });
     }
   } else {
     next();

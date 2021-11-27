@@ -133,11 +133,7 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[
-                      (v) => !!v || 'Field ini tidak boleh kosong',
-                      (v) =>
-                        /^\S{1,}$/.test(v) || 'Format username harus sesuai',
-                    ]"
+                    :rules="userNameRules"
                   >
                   </v-text-field>
                 </div>
@@ -150,7 +146,7 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                    :rules="passwordRules"
                   >
                   </v-text-field>
                 </div>
@@ -258,11 +254,7 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[
-                      (v) => !!v || 'Field ini tidak boleh kosong',
-                      (v) =>
-                        /^\S{1,}$/.test(v) || 'Format username harus sesuai',
-                    ]"
+                    :rules="userNameRules"
                   >
                   </v-text-field>
                 </div>
@@ -275,7 +267,7 @@
                     solo
                     dense
                     class="rounded"
-                    :rules="[(v) => !!v || 'Field ini tidak boleh kosong']"
+                    :rules="passwordRules"
                   >
                   </v-text-field>
                 </div>
@@ -341,6 +333,17 @@ export default {
       validEdited: false,
       loadingSubmit: false,
       loadingEdit: false,
+
+      // RUles Properties
+      userNameRules: [
+        (v) => !!v || "Field ini tidak boleh kosong",
+        (v) => /^\S{1,}$/.test(v) || "Format username harus sesuai",
+        (v) => (v && v.length > 3) || "Username must be at least 4 characters",
+      ],
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) => (v && v.length > 4) || "Password must be at least 5 characters",
+      ],
 
       // Search Properties
       search: null,
@@ -416,7 +419,8 @@ export default {
           ? (this.loadingSubmit = true)
           : (this.loadingEdit = true);
         PesertaService.insertData(type == "submit" ? this.payload : this.edited)
-          .then(({ data: { message } }) => {
+          .then(({ data: { result, message } }) => {
+            console.log("GOOL");
             if (message == "OK") {
               type != "submit" && (this.expanded = []);
               this.$store.commit("snackbar/setSnack", {
@@ -429,15 +433,24 @@ export default {
             } else {
               this.$store.commit("snackbar/setSnack", {
                 show: true,
-                message: `Gagal ${
-                  type == "submit" ? "menambahkan" : "mengubah"
-                } data User`,
+                message:
+                  result ||
+                  `Gagal ${
+                    type == "submit" ? "menambahkan" : "mengubah"
+                  } data User`,
                 color: "error",
               });
             }
           })
           .catch((err) => {
             console.error(err);
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: `Gagal ${
+                type == "submit" ? "menambahkan" : "mengubah"
+              } data User`,
+              color: "error",
+            });
           })
           .finally(() => {
             this.getList(() => {

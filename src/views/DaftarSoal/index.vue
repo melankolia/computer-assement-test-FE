@@ -33,87 +33,114 @@
         </v-btn-toggle>
       </v-col>
     </v-row>
-    <div class="d-flex flex-row flex-wrap">
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        class="
-          d-flex
-          flex-column
-          justify-space-between
-          white
-          px-10
-          pb-10
-          pt-12
-          mr-9
-          mb-9
-          rounded-lg
-        "
-        style="width: 300px"
+    <v-expand-transition>
+      <ContentNotFound
+        :message="`${questionType} Question's Not Found`"
+        :loading="loading"
+        v-if="!isAvailable"
       >
-        <div class="d-flex flex-column mb-12">
-          <p class="header-3 mb-4">{{ item.title }}</p>
-          <p class="text-subtitle-2 font-weight-light subtitlegraytext--text">
-            {{ item.description || "-" }}
-          </p>
-        </div>
-        <div class="d-flex flex-column mt-12">
-          <div class="d-flex flex-row mr-6 mb-3">
-            <img class="mr-2" src="@/assets/icons/sheet.svg" />
-            <p class="selection-item font-weight-medium ma-0">
-              {{ item.soal }} Soal
-              <span v-if="questionType == 'Kepribadian'">
-                ({{ item.type }} Jawaban)
-              </span>
-            </p>
-          </div>
-          <div class="d-flex flex-row mr-6 mb-3">
-            <img class="mr-2" src="@/assets/icons/time.svg" />
-            <p class="selection-item font-weight-medium ma-0">
-              <span v-if="questionType != 'Kecermatan'">
-                {{ item.time }} Menit
-              </span>
-              <span v-else>90 ({{ item.time }} Menit / Section)</span>
-            </p>
-          </div>
-          <div
-            v-if="questionType == 'Kecermatan'"
-            class="d-flex flex-row mr-6 mb-3"
-          >
-            <img class="mr-2" src="@/assets/icons/three-line.svg" />
-            <p class="selection-item font-weight-medium ma-0">
-              {{ item.section }} Bagian
-            </p>
-          </div>
+        <template v-slot:action>
           <v-btn
-            @click="() => handleMulai(item)"
-            block
-            color="primary"
-            class="no-uppercase align-self-end mt-10"
+            depressed
+            @click="() => getList()"
+            color="default"
+            class="px-10"
           >
-            Mulai
+            <v-icon class="mr-1" small>mdi-reload</v-icon>
+            Reload
           </v-btn>
+        </template>
+      </ContentNotFound>
+      <div v-else class="d-flex flex-row flex-wrap">
+        <div
+          v-for="(item, index) in items"
+          :key="index"
+          class="
+            d-flex
+            flex-column
+            justify-space-between
+            white
+            px-10
+            pb-10
+            pt-12
+            mr-9
+            mb-9
+            rounded-lg
+          "
+          style="width: 300px"
+        >
+          <div class="d-flex flex-column mb-12">
+            <p class="header-3 mb-4">{{ item.title }}</p>
+            <p class="text-subtitle-2 font-weight-light subtitlegraytext--text">
+              {{ item.description || "-" }}
+            </p>
+          </div>
+          <div class="d-flex flex-column mt-12">
+            <div class="d-flex flex-row mr-6 mb-3">
+              <img class="mr-2" src="@/assets/icons/sheet.svg" />
+              <p class="selection-item font-weight-medium ma-0">
+                {{ item.soal }} Soal
+                <span v-if="questionType == 'Kepribadian'">
+                  ({{ item.type }} Jawaban)
+                </span>
+              </p>
+            </div>
+            <div class="d-flex flex-row mr-6 mb-3">
+              <img class="mr-2" src="@/assets/icons/time.svg" />
+              <p class="selection-item font-weight-medium ma-0">
+                <span v-if="questionType != 'Kecermatan'">
+                  {{ item.time }} Menit
+                </span>
+                <span v-else>
+                  {{ item.time }} Menit ({{ item.time }} Menit / Section)
+                </span>
+              </p>
+            </div>
+            <div
+              v-if="questionType == 'Kecermatan'"
+              class="d-flex flex-row mr-6 mb-3"
+            >
+              <img class="mr-2" src="@/assets/icons/three-line.svg" />
+              <p class="selection-item font-weight-medium ma-0">
+                {{ item.section }} Bagian
+              </p>
+            </div>
+            <v-btn
+              @click="() => handleMulai(item)"
+              block
+              color="primary"
+              class="no-uppercase align-self-end mt-10"
+            >
+              Mulai
+            </v-btn>
+          </div>
         </div>
       </div>
-    </div>
+    </v-expand-transition>
   </div>
 </template>
 
 <script>
 import { RULES } from "@/router/name.types";
+import SoalService from "@/services/resources/soal.service";
+const ContentNotFound = () => import("@/components/Content/NotFound");
 
 export default {
+  components: {
+    ContentNotFound,
+  },
   data() {
     return {
-      questionType: null,
+      questionType: "Kecerdasan",
+      loading: false,
       items: [],
     };
   },
   mounted() {
-    this.questionType = "Kecerdasan";
+    this.getDetail(this.questionType);
   },
   watch: {
-    questionType(val) {
+    questionTypes(val) {
       if (val == "Kecermatan") {
         this.items = [
           {
@@ -212,8 +239,41 @@ export default {
         ];
       }
     },
+    questionType(val) {
+      val && this.getDetail(val);
+    },
+  },
+  computed: {
+    isAvailable() {
+      return this.items.length > 0;
+    },
   },
   methods: {
+    getDetail(type) {
+      this.items = [];
+      this.loading = true;
+      SoalService.getAll({ type: type?.toLowerCase() })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || `Gagal memuat data ${this.questionType}`,
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: `Gagal memuat data ${this.questionType}`,
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
     handleMulai(item) {
       this.$router.replace({
         name: RULES,

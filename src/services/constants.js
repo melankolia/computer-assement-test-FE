@@ -8,7 +8,7 @@ export const AUTH_REGISTER = `auth/register`;
 export const RESET_PASSWORD = `auth/reset-password`;
 export const CHANGE_PASSWORD = `auth/me/change-password`;
 export const LOGIN = `users/login`;
-export const LOGOUT = `logout`;
+export const LOGOUT = `users/logout`;
 export const REFRESH_TOKEN = `refresh-token`;
 
 export const PERATURAN = `peraturan`;
@@ -76,4 +76,9 @@ export const QUESTIONS = {
     DELETE_QUESTION: `${questions}/kecermatan/question`,
     ACTIVATION: `${questions}/kecermatan/activation`,
   },
+};
+
+export const soal = `soal`;
+export const SOAL = {
+  LIST: `${soal}/list`,
 };
