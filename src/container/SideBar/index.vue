@@ -2,12 +2,19 @@
   <v-navigation-drawer app permanent class="px-5 py-6">
     <v-img width="129" height="27" :src="Logo" />
     <div class="d-flex flex-column align-center mt-10">
-      <v-avatar class="profile" color="grey" size="132">
-        <v-img :src="DefaultProfile" />
+      <v-avatar
+        size="132px"
+        :color="setColorFromString(getProfile.acronymName)"
+      >
+        <span class="white--text text-h2">{{ getProfile.acronymName }}</span>
       </v-avatar>
       <div class="d-flex flex-column align-center mt-4">
-        <p class="font-weight-medium text-h6 ma-0">Admin Pertama</p>
-        <p class="font-weight-light text-body-2 ma-0">Admin</p>
+        <p class="font-weight-medium text-h6 ma-0">
+          {{ getProfile.nama_lengkap }}
+        </p>
+        <p class="font-weight-light text-body-2 ma-0">
+          {{ getProfile.type | firstCapital }}
+        </p>
       </div>
     </div>
     <v-divider class="my-6" />
@@ -73,6 +80,35 @@ export default {
     }
   },
   methods: {
+    setColorFromString(string) {
+      var colors = [
+        "#D81B60",
+        "#8E24AA",
+        "#5E35B1",
+        "#3949AB",
+        "#1E88E5",
+        "#039BE5",
+        "#00ACC1",
+        "#00897B",
+        "#43A047",
+        "#7CB342",
+        "#F4511E",
+        "#6D4C41",
+        "#546E7A",
+        "#757575",
+      ];
+      if (string) {
+        var hash = 0;
+        if (string.length === 0) return hash;
+        for (var i = 0; i < string.length; i++) {
+          hash = string.charCodeAt(i) + ((hash << 5) - hash);
+          hash = hash & hash;
+        }
+        hash = ((hash % colors.length) + colors.length) % colors.length;
+        return colors[hash];
+      }
+      return colors[0];
+    },
     logout() {
       this.$confirm({
         title: "Confirm",

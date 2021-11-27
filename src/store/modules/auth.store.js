@@ -46,6 +46,12 @@ const actions = {
       })
         .then(({ data: { message, result } }) => {
           if (message == "OK") {
+            const acronymName = result.nama_lengkap
+              ? result.nama_lengkap
+                  .match(/\b(\w)/g)
+                  .join("")
+                  .substring(0, 2)
+              : "Anonymous";
             context.commit(SET_AUTH, {
               secureId: result.secureId,
               username: result.username,
@@ -53,6 +59,7 @@ const actions = {
               type: result.type,
               isAuthenticated: true,
               token: result.token,
+              acronymName,
             });
             context.commit(SET_PROFILE, {
               secureId: result.secureId,
@@ -61,6 +68,7 @@ const actions = {
               type: result.type,
               isAuthenticated: true,
               token: result.token,
+              acronymName,
             });
             resolve(result);
           } else {

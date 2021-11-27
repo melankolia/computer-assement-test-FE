@@ -5,4 +5,5 @@ export const initialAuthState = () => ({
   type: null,
   isAuthenticated: false,
   token: "",
+  acronymName: "Anonymous",
 });

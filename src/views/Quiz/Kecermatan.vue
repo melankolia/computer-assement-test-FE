@@ -47,11 +47,11 @@
       <div
         v-if="!isCompleted"
         class="d-flex flex-row justify-space-between"
-        style="max-height: 700px"
+        style="max-height: 100vh"
       >
         <!-- Answering Mode -->
         <div
-          class="d-flex flex-column ma-10 pb-12"
+          class="d-flex flex-column ma-10"
           style="width: 71%; overflow: scroll"
         >
           <div
@@ -68,7 +68,11 @@
           >
             <p class="header-3 my-6 text-center">Tes Kecermatan</p>
           </div>
-          <template>
+          <DefaultLoader
+            v-if="loadingChangeSection"
+            :loading="loadingChangeSection"
+          />
+          <div class="ma-0">
             <div class="d-flex flex-row align-center justify-center mb-5 mt-12">
               <v-divider />
               <p class="section-font mx-4 mb-0">
@@ -124,69 +128,74 @@
                 </table>
               </div>
               <v-divider />
-              <v-row
-                v-for="(q, qIndex) in sections[sectionIndex].question"
-                :key="`qIndex-${qIndex}`"
-                no-gutters
-                align="center"
-                justify="center"
-              >
-                <v-col cols="6" sm="6" class="px-12 py-2">
-                  <div class="d-flex flex-column align-end">
-                    <p v-if="qIndex == 0" class="mb-4 kecermatan-section-font">
-                      Soal
-                    </p>
-                    <div class="d-flex flex-row align-end">
-                      <p class="kecermatan-section-font mr-4">
-                        {{ qIndex + 1 }}.
+              <v-col cols="12" class="py-8">
+                <v-row
+                  v-for="(q, qIndex) in sections[sectionIndex].question"
+                  :key="`qIndex-${qIndex}`"
+                  no-gutters
+                  align="center"
+                  justify="center"
+                >
+                  <v-col cols="6" sm="6" class="px-12 py-2">
+                    <div class="d-flex flex-column align-end">
+                      <p
+                        v-if="qIndex == 0"
+                        class="mb-4 kecermatan-section-font"
+                      >
+                        Soal
                       </p>
-                      <table>
-                        <tr>
-                          <td
-                            v-for="(qTitle, qTitleIndex) in q.title"
-                            :key="`title-${qTitleIndex}`"
-                            class="px-5 py-3"
-                          >
-                            {{ qTitle }}
-                          </td>
-                        </tr>
-                      </table>
+                      <div class="d-flex flex-row align-end">
+                        <p class="kecermatan-section-font mr-4">
+                          {{ qIndex + 1 }}.
+                        </p>
+                        <table>
+                          <tr>
+                            <td
+                              v-for="(qTitle, qTitleIndex) in q.title"
+                              :key="`title-${qTitleIndex}`"
+                              class="px-5 py-3"
+                            >
+                              {{ qTitle }}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
                     </div>
-                  </div>
-                </v-col>
-                <v-divider vertical />
-                <v-col cols="6" sm="6" class="px-12">
-                  <div class="d-flex flex-column align-start py-2">
-                    <p
-                      v-if="qIndex == 0"
-                      class="mb-4 kecermatan-section-font mt-n2"
-                    >
-                      Jawaban
-                    </p>
-                    <div class="d-flex flex-row align-end ml-n4">
-                      <v-btn-toggle v-model="q.answer" tile group>
-                        <div
-                          v-for="(answer, aIndex) in q.answerList"
-                          :key="`answer-${aIndex}`"
-                          class="d-flex flex-row align-center ml-4"
-                          style="height: 40px; width: 40px"
-                        >
-                          <v-btn
-                            depressed
-                            :value="answer"
-                            :class="{
-                              active: q.answer.secureId == answer.secureId,
-                              'active-font':
-                                q.answer.secureId == answer.secureId,
-                            }"
-                            >{{ answer.symbol }}</v-btn
+                  </v-col>
+                  <v-divider vertical />
+                  <v-col cols="6" sm="6" class="px-12">
+                    <div class="d-flex flex-column align-start py-2">
+                      <p
+                        v-if="qIndex == 0"
+                        class="mb-4 kecermatan-section-font mt-n2"
+                      >
+                        Jawaban
+                      </p>
+                      <div class="d-flex flex-row align-end ml-n4">
+                        <v-btn-toggle v-model="q.answer" tile group>
+                          <div
+                            v-for="(answer, aIndex) in q.answerList"
+                            :key="`answer-${aIndex}`"
+                            class="d-flex flex-row align-center ml-4"
+                            style="height: 40px; width: 40px"
                           >
-                        </div>
-                      </v-btn-toggle>
+                            <v-btn
+                              depressed
+                              :value="answer"
+                              :class="{
+                                active: q.answer.secureId == answer.secureId,
+                                'active-font':
+                                  q.answer.secureId == answer.secureId,
+                              }"
+                              >{{ answer.symbol }}</v-btn
+                            >
+                          </div>
+                        </v-btn-toggle>
+                      </div>
                     </div>
-                  </div>
-                </v-col>
-              </v-row>
+                  </v-col>
+                </v-row>
+              </v-col>
             </div>
             <v-btn
               @click="handleSubmit"
@@ -198,13 +207,13 @@
             >
               Submit
             </v-btn>
-          </template>
+          </div>
         </div>
         <div
-          class="d-flex flex-column white my-10 mr-10 rounded-lg"
+          class="d-flex flex-column white py-6 my-10 mr-10 rounded-lg"
           style="width: 29%"
         >
-          <p class="ma-0 daftar-soal-font mt-6 mb-8">Daftar Soal</p>
+          <p class="ma-0 daftar-soal-font mb-8">Daftar Soal</p>
           <div
             v-for="(e, iSections) in sections"
             class="d-flex flex-column"
@@ -226,6 +235,7 @@
                   mb-3
                 "
                 :class="{
+                  answered: iSections >= sectionIndex,
                   'number-answer-not-answered-yet':
                     sections[iSections].question[i2].answer.secureId == null,
                   'number-answer-active':
@@ -274,14 +284,17 @@
 </template>
 
 <script>
+const DefaultLoader = () => import("@/components/Loader/Default");
 // const Section = () => import("./Sections");
 
 export default {
   components: {
+    DefaultLoader,
     // Section,
   },
   data() {
     return {
+      loadingChangeSection: false,
       duration: 240,
       timer: 240,
       minutes: "--",
@@ -537,7 +550,7 @@ export default {
     handleSubmit() {
       this.$confirm({
         title: "Confirm",
-        message: `Are you sure you want to submit your answer's ?`,
+        message: `Are you sure you want to <b>submit</b> your answer's ?`,
         button: {
           no: "No",
           yes: "Yes",
@@ -559,19 +572,25 @@ export default {
       this.totalAnswer = total;
     },
     handlePick(i) {
-      this.$confirm({
-        title: "Confirm",
-        message: `Are you sure you want to change section's ?`,
-        button: {
-          no: "No",
-          yes: "Yes",
-        },
-        callback: (confirm) => {
-          if (confirm) {
-            this.sectionIndex = i;
-          }
-        },
-      });
+      if (i > this.sectionIndex) {
+        this.$confirm({
+          title: "Confirm",
+          message: `Are you sure you want to change section's ?`,
+          button: {
+            no: "No",
+            yes: "Yes",
+          },
+          callback: (confirm) => {
+            if (confirm) {
+              this.loadingChangeSection = true;
+              setTimeout(() => {
+                this.sectionIndex = i;
+                this.loadingChangeSection = false;
+              }, 500);
+            }
+          },
+        });
+      }
     },
     handleSelesai() {
       this.$router.replace({ path: "/data-soal" });

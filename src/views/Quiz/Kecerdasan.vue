@@ -307,7 +307,7 @@ export default {
       if (this.isLast) {
         this.$confirm({
           title: "Confirm",
-          message: `Are you sure you want to submit your answer's ?`,
+          message: `Are you sure you want to <b>submit</b> your answer's ?`,
           button: {
             no: "No",
             yes: "Yes",
