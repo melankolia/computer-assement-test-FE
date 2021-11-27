@@ -78,8 +78,14 @@ export const QUESTIONS = {
   },
 };
 
-export const soal = `soal`;
+const soal = `soal`;
 export const SOAL = {
   LIST: `${soal}/list`,
   COVER: `${soal}/cover`,
+};
+
+const nilai = `nilai`;
+export const NILAI = {
+  LIST: `${nilai}`,
+  INSERT: `${nilai}`,
 };

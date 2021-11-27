@@ -6,6 +6,7 @@ import VuexPersistence from "vuex-persist";
 import profile from "./modules/profile.store";
 import auth from "./modules/auth.store";
 import snackbar from "./modules/snackbar.store";
+import kecerdasan from "./modules/kecerdasan.store";
 
 const debug = process.env.VUE_APP_DEBUG;
 const debugPlugin = debug == "true" ? [createLogger()] : [];
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     auth,
     snackbar,
     profile,
+    kecerdasan,
   },
   strict: debug,
   plugins: [vuexLocal.plugin, ...debugPlugin],
