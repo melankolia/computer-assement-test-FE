@@ -8,6 +8,7 @@ import "./config/cookie.config";
 
 // Filter
 import "./filter/case.filter";
+import "./filter/date.filter";
 
 // Constant
 import { FORCE_LOGOUT, CHECK_AUTH } from "./store/constants/actions.type";

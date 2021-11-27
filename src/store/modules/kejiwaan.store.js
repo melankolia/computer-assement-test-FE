@@ -1,19 +1,19 @@
-import { initialKecerdasanQuestion } from "../states";
+import { initialKejiwaanQuestion } from "../states";
 import { getField, updateField } from "vuex-map-fields";
 import { GET_LIST_QUESTION } from "../constants/actions.type";
 import { SET_QUESTION } from "../constants/mutations.type";
-import QuizService from "@/services/resources/Quiz/kecerdasan.service";
+import QuizService from "@/services/resources/Quiz/kejiwaan.service";
 
 const state = {
-  kecerdasan: initialKecerdasanQuestion(),
+  kejiwaan: initialKejiwaanQuestion(),
 };
 
 const getters = {
   getRootField(state) {
     return getField(state);
   },
-  getKecerdasan(state) {
-    return state.kecerdasan;
+  getKejiwaan(state) {
+    return state.kejiwaan;
   },
 };
 
@@ -21,13 +21,13 @@ const mutations = {
   updateRootField(state, field) {
     updateField(state, field);
   },
-  [SET_QUESTION.KECERDASAN](state, payload) {
-    state.kecerdasan = { ...initialKecerdasanQuestion(), ...payload };
+  [SET_QUESTION.KEJIWAAN](state, payload) {
+    state.kejiwaan = { ...initialKejiwaanQuestion(), ...payload };
   },
 };
 
 const actions = {
-  [GET_LIST_QUESTION.KECERDASAN]({ commit }, payload) {
+  [GET_LIST_QUESTION.KEJIWAAN]({ commit }, payload) {
     return new Promise((resolve, reject) => {
       QuizService.getList(payload)
         .then(({ data: { message, result } }) => {
@@ -37,7 +37,7 @@ const actions = {
               timer: result.time * 60,
               questions: result.result,
             };
-            commit(SET_QUESTION.KECERDASAN, Payload);
+            commit(SET_QUESTION.KEJIWAAN, Payload);
             resolve();
           } else {
             reject(result);

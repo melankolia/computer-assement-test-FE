@@ -145,12 +145,13 @@
       :dialog="visible"
       :totalAnswer="totalAnswer"
       :handleSelesai="handleSelesai"
+      :title="title"
     />
   </div>
 </template>
 
 <script>
-import { mapFields } from "vuex-map-fields";
+import { mapKecerdasanField } from "@/store/helpers";
 import { mapGetters } from "vuex";
 import { DATA_SOAL } from "@/router/name.types";
 import SoalService from "@/services/resources/soal.service";
@@ -169,7 +170,7 @@ export default {
     };
   },
   computed: {
-    ...mapFields({
+    ...mapKecerdasanField({
       kecerdasan: "kecerdasan",
       title: "kecerdasan.title",
       duration: "kecerdasan.duration",
@@ -203,11 +204,6 @@ export default {
     if (this.isCompleted) this.visible = true;
     this.startCountDown();
     this.getDate();
-  },
-  watch: {
-    totalAnswer(val) {
-      console.log(val);
-    },
   },
   methods: {
     startCountDown() {
@@ -267,7 +263,7 @@ export default {
         userSecureId: this.getProfile.secureId,
         type_nilai: "kecerdasan",
         paket_soal: this.title,
-        totalAnswer: this.totalAnswer,
+        nilai: this.totalAnswer,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {

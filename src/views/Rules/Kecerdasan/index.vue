@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getList: "getListKecerdasanQuestion",
+      getList: "kecerdasan/getListKecerdasanQuestion",
     }),
     getDetail() {
       this.loading = true;

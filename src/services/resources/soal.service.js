@@ -5,6 +5,9 @@ const SoalService = {
   getAll(params) {
     return MainInstance.query(SOAL.LIST, { params });
   },
+  getListNilai(params) {
+    return MainInstance.query(NILAI.LIST, { params });
+  },
   insertNilai(data) {
     return MainInstance.post(NILAI.INSERT, data);
   },

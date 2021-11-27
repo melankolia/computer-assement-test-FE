@@ -1,4 +1,4 @@
-export const initialKecerdasanQuestion = () => ({
+export const initialKejiwaanQuestion = () => ({
   title: null,
   duration: 0,
   timer: 0,

@@ -10,4 +10,5 @@ export const PURGE_PROFILE = "purgeProfile";
 
 export const SET_QUESTION = {
   KECERDASAN: "setQuestionKecerdasan",
+  KEJIWAAN: "setQuestionKejiwaan",
 };

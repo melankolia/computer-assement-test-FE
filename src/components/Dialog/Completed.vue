@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="450" persistent>
     <div class="d-flex flex-column align-center white pa-12 rounded-lg">
       <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
-      <p class="nilai-subtitle-font">Test Kecerdasan 1</p>
+      <p class="nilai-subtitle-font">{{ title }}</p>
       <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
       <v-btn color="primary" class="no-uppercase" block @click="handleSelesai">
         Selesai
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  props: ["dialog", "handleSelesai", "totalAnswer"],
+  props: ["dialog", "handleSelesai", "totalAnswer", "title"],
 };
 </script>
 
