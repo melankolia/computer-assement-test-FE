@@ -13,3 +13,9 @@ export const SET_QUESTION = {
   KEJIWAAN: "setQuestionKejiwaan",
   KEPRIBADIAN: "setQuestionKepribadian",
 };
+
+export const PURGE_QUESTION = {
+  KEJIWAAN: "purgeKejiwaan",
+  KECERDASAN: "purgeKecerdasan",
+  KEPRIBADIAN: "purgeKepribadian",
+};

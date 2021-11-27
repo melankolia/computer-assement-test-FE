@@ -1,4 +1,5 @@
 export const initialKecerdasanQuestion = () => ({
+  secureId: null,
   title: null,
   duration: 0,
   timer: 0,

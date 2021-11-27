@@ -152,7 +152,8 @@
 
 <script>
 import { mapKecerdasanField } from "@/store/helpers";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
+import { PURGE_QUESTION } from "@/store/constants/mutations.type";
 import { DATA_SOAL } from "@/router/name.types";
 import SoalService from "@/services/resources/soal.service";
 const Answer = () => import("./Answer");
@@ -199,13 +200,21 @@ export default {
     nowHourComputed() {
       return this.nowHour;
     },
+    isResume() {
+      return this.kecerdasan?.secureId;
+    },
   },
   mounted() {
     if (this.isCompleted) this.visible = true;
+    if (!this.isResume) clearInterval(this.counterFunction);
+
     this.startCountDown();
     this.getDate();
   },
   methods: {
+    ...mapMutations({
+      purgeData: `kecerdasan/${PURGE_QUESTION.KECERDASAN}`,
+    }),
     startCountDown() {
       this.counterFunction = setInterval(() => {
         this.minutes = parseInt(this.timer / 60, 10);
@@ -241,7 +250,7 @@ export default {
         },
         callback: (confirm) => {
           if (confirm) {
-            this.handleBack();
+            this.handleSubmit();
           }
         },
       });
@@ -283,8 +292,16 @@ export default {
         })
         .catch((err) => {
           console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal input nilai Kecerdasan",
+            color: "error",
+          });
         })
-        .finally(() => (this.loading = false));
+        .finally(() => {
+          this.purgeData();
+          this.loading = false;
+        });
     },
     handleNext() {
       if (this.isLast) {
@@ -297,8 +314,7 @@ export default {
           },
           callback: (confirm) => {
             if (confirm) {
-              this.calculateAnswer();
-              this.requestInsert();
+              this.handleSubmit();
             }
           },
         });
@@ -323,6 +339,10 @@ export default {
         this.nowDate = now;
         this.nowHour = hour;
       }, 1000);
+    },
+    handleSubmit(cb) {
+      this.calculateAnswer();
+      this.requestInsert(cb);
     },
   },
 };

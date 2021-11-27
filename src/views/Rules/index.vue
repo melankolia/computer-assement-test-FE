@@ -70,7 +70,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item link>
+            <v-list-item @click="confirmBack" link>
               <p class="selection-item ma-0">Keluar</p>
             </v-list-item>
           </v-list>
@@ -121,6 +121,23 @@ export default {
     },
     isKecermatan() {
       return this.isComponent === "Kecermatan";
+    },
+  },
+  methods: {
+    confirmBack() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Apakah anda yakin akan kembali ke halaman <b>HOME</b> ?`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.$router.replace({ path: "/data-soal" });
+          }
+        },
+      });
     },
   },
 };

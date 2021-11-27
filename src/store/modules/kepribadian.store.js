@@ -1,7 +1,7 @@
 import { initialKepribadianQuestion } from "../states";
 import { getField, updateField } from "vuex-map-fields";
 import { GET_LIST_QUESTION } from "../constants/actions.type";
-import { SET_QUESTION } from "../constants/mutations.type";
+import { SET_QUESTION, PURGE_QUESTION } from "../constants/mutations.type";
 import QuizService from "@/services/resources/Quiz/kepribadian.service";
 
 const state = {
@@ -23,6 +23,10 @@ const mutations = {
   },
   [SET_QUESTION.KEPRIBADIAN](state, payload) {
     state.kepribadian = { ...initialKepribadianQuestion(), ...payload };
+  },
+  [PURGE_QUESTION.KEPRIBADIAN](state) {
+    clearInterval(this.counterFunction);
+    Object.assign(state.kepribadian, initialKepribadianQuestion());
   },
 };
 
@@ -47,6 +51,9 @@ const actions = {
           reject(err);
         });
     });
+  },
+  [PURGE_QUESTION.KEPRIBADIAN](state) {
+    Object.assign(state.kepribadian, initialKepribadianQuestion());
   },
 };
 

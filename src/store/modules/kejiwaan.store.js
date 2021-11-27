@@ -1,7 +1,7 @@
 import { initialKejiwaanQuestion } from "../states";
 import { getField, updateField } from "vuex-map-fields";
 import { GET_LIST_QUESTION } from "../constants/actions.type";
-import { SET_QUESTION } from "../constants/mutations.type";
+import { SET_QUESTION, PURGE_QUESTION } from "../constants/mutations.type";
 import QuizService from "@/services/resources/Quiz/kejiwaan.service";
 
 const state = {
@@ -23,6 +23,10 @@ const mutations = {
   },
   [SET_QUESTION.KEJIWAAN](state, payload) {
     state.kejiwaan = { ...initialKejiwaanQuestion(), ...payload };
+  },
+  [PURGE_QUESTION.KEJIWAAN](state) {
+    clearInterval(this.counterFunction);
+    Object.assign(state.kejiwaan, initialKejiwaanQuestion());
   },
 };
 
