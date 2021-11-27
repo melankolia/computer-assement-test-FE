@@ -81,4 +81,5 @@ export const QUESTIONS = {
 export const soal = `soal`;
 export const SOAL = {
   LIST: `${soal}/list`,
+  COVER: `${soal}/cover`,
 };

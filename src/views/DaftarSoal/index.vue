@@ -66,6 +66,7 @@
             mr-9
             mb-9
             rounded-lg
+            shadowing
           "
           style="width: 300px"
         >

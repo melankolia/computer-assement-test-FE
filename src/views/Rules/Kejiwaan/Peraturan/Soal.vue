@@ -3,8 +3,10 @@
     Peraturan Soal
     <br />
     <br />
-    <span class="text-subtitle-2 font-weight-light subtitlegraytext--text">
-      {{ rules.soal }}
+    <span
+      class="text-subtitle-2 font-weight-light subtitlegraytext--text"
+      v-html="rules.soal"
+    >
     </span>
   </p>
 </template>

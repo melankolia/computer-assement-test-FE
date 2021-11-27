@@ -123,22 +123,5 @@ export default {
       return this.isComponent === "Kecermatan";
     },
   },
-  watch: {
-    isComponent(val) {
-      if (val == "Kecermatan") {
-        this.item = {
-          title: "Test Kecermatan",
-          desc: `ulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-          cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Nulla Lorem mollit cupidatat irure.
-          Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum.`,
-          soal: 50,
-          time: 50,
-          section: 4,
-        };
-      }
-    },
-  },
 };
 </script>

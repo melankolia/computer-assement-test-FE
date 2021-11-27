@@ -3,9 +3,10 @@
     Peraturan Siswa
     <br />
     <br />
-    <span class="text-subtitle-2 font-weight-light subtitlegraytext--text">
-      {{ rules.siswa }}
-    </span>
+    <span
+      class="text-subtitle-2 font-weight-light subtitlegraytext--text"
+      v-html="rules.siswa"
+    />
   </p>
 </template>
 
