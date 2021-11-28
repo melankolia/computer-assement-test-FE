@@ -412,9 +412,10 @@ export default {
         .finally(() => (this.items[index].loadingActivate = false));
     },
     handleSubmit(index, type = "add") {
-      if (this.$refs[type == "add" ? "form" : "formEdit"].validate()) {
-        if (type == "edit") this.requestEdit(index);
-        else this.requestAdd();
+      if (type == "add") this.$refs.form.validate() && this.requestAdd();
+      else {
+        this.$refs.formEdit.every((e) => e.validate()) &&
+          this.requestEdit(index);
       }
     },
     requestEdit(index) {
