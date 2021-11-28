@@ -9,6 +9,7 @@ import snackbar from "./modules/snackbar.store";
 import kecerdasan from "./modules/kecerdasan.store";
 import kejiwaan from "./modules/kejiwaan.store";
 import kepribadian from "./modules/kepribadian.store";
+import kecermatan from "./modules/kecermatan.store";
 
 const debug = process.env.VUE_APP_DEBUG;
 const debugPlugin = debug == "true" ? [createLogger()] : [];
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     kecerdasan,
     kejiwaan,
     kepribadian,
+    kecermatan,
   },
   strict: debug,
   plugins: [vuexLocal.plugin, ...debugPlugin],

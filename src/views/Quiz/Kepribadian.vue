@@ -13,14 +13,16 @@
       :class="{ 'height-is-completed': isCompleted && visible }"
     >
       <!-- Answering Mode -->
-      <template v-if="!isCompleted && !visible">
+      <template v-if="!visible">
         <div class="d-flex flex-column">
           <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
           <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
         </div>
         <div class="d-flex flex-row align-center">
           <img width="20" height="22" src="@/assets/icons/time.svg" />
-          <p class="timer-font mb-0 mx-2">{{ minutes }}:{{ seconds }}</p>
+          <p class="timer-font mb-0 mx-2">
+            {{ minutes || "--" }}:{{ seconds || "--" }}
+          </p>
         </div>
         <v-menu rounded left min-width="188px">
           <template v-slot:activator="{ attrs, on }">
@@ -45,7 +47,7 @@
     </div>
     <v-expand-transition>
       <div
-        v-if="!isCompleted && !visible"
+        v-if="!visible"
         class="d-flex flex-row justify-space-between"
         style="height: 100%"
       >
@@ -204,6 +206,8 @@ export default {
   },
   mounted() {
     if (this.isCompleted) this.visible = true;
+    if (!this.isResume) clearInterval(this.counterFunction);
+
     this.startCountDown();
     this.getDate();
   },
@@ -295,7 +299,6 @@ export default {
           });
         })
         .finally(() => {
-          this.purgeData();
           this.loading = false;
         });
     },
@@ -317,6 +320,7 @@ export default {
       } else this.questionIndex++;
     },
     handleSelesai() {
+      this.purgeData();
       this.$router.replace({ path: "/data-soal" });
     },
     getDate() {
@@ -341,6 +345,10 @@ export default {
       this.calculateAnswer();
       this.requestInsert();
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.dateFunction);
+    clearInterval(this.counterFunction);
   },
 };
 </script>

@@ -14,6 +14,9 @@ const SoalService = {
   insertNilai(data) {
     return MainInstance.post(NILAI.INSERT, data);
   },
+  insertNilaiKecermatan(data) {
+    return MainInstance.post(NILAI.INSERT_KECERMATAN, data);
+  },
 };
 
 export default SoalService;

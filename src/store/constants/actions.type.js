@@ -7,4 +7,5 @@ export const GET_LIST_QUESTION = {
   KECERDASAN: `getListKecerdasanQuestion`,
   KEJIWAAN: `getListKejiwaanQuestion`,
   KEPRIBADIAN: `getListKepribadianQuestion`,
+  KECERMATAN: `getListKecermatanQuestion`,
 };

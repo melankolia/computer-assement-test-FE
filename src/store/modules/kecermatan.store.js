@@ -1,19 +1,19 @@
-import { initialKecerdasanQuestion } from "../states";
+import { initialKecermatanQuestion } from "../states";
 import { getField, updateField } from "vuex-map-fields";
 import { GET_LIST_QUESTION } from "../constants/actions.type";
 import { SET_QUESTION, PURGE_QUESTION } from "../constants/mutations.type";
-import QuizService from "@/services/resources/Quiz/kecerdasan.service";
+import QuizService from "@/services/resources/Quiz/kecermatan.service";
 
 const state = {
-  kecerdasan: initialKecerdasanQuestion(),
+  kecermatan: initialKecermatanQuestion(),
 };
 
 const getters = {
   getRootField(state) {
     return getField(state);
   },
-  getKecerdasan(state) {
-    return state.kecerdasan;
+  getKecermatan(state) {
+    return state.kecermatan;
   },
 };
 
@@ -21,17 +21,17 @@ const mutations = {
   updateRootField(state, field) {
     updateField(state, field);
   },
-  [SET_QUESTION.KECERDASAN](state, payload) {
-    state.kecerdasan = { ...initialKecerdasanQuestion(), ...payload };
+  [SET_QUESTION.KECERMATAN](state, payload) {
+    state.kecermatan = { ...initialKecermatanQuestion(), ...payload };
   },
-  [PURGE_QUESTION.KECERDASAN](state) {
+  [PURGE_QUESTION.KECERMATAN](state) {
     clearInterval(this.counterFunction);
-    Object.assign(state.kecerdasan, initialKecerdasanQuestion());
+    Object.assign(state.kecermatan, initialKecermatanQuestion());
   },
 };
 
 const actions = {
-  [GET_LIST_QUESTION.KECERDASAN]({ commit }, payload) {
+  [GET_LIST_QUESTION.KECERMATAN]({ commit }, payload) {
     return new Promise((resolve, reject) => {
       QuizService.getList(payload)
         .then(({ data: { message, result } }) => {
@@ -40,9 +40,9 @@ const actions = {
               secureId: result.secureId,
               title: result.title,
               timer: result.time * 60,
-              questions: result.result,
+              sections: result.result,
             };
-            commit(SET_QUESTION.KECERDASAN, Payload);
+            commit(SET_QUESTION.KECERMATAN, Payload);
             resolve();
           } else {
             reject(result);

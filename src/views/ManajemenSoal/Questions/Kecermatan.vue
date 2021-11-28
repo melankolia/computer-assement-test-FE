@@ -66,7 +66,7 @@
         </div>
         <div class="d-flex flex-row align-center">
           <p class="label-style mb-0 mx-4">
-            {{ !item.is_active ? "Tidak Aktif" : "Aktif" }}
+            {{ !detail.is_active ? "Tidak Aktif" : "Aktif" }}
           </p>
           <v-switch
             @change="(e) => handleClickActivation(e)"
@@ -906,7 +906,7 @@ export default {
               color: "success",
             });
           } else {
-            this.deatil.is_active = !event;
+            this.detail.is_active = !event;
             this.$store.commit("snackbar/setSnack", {
               show: true,
               message:

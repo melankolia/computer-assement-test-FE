@@ -10,17 +10,19 @@
         py-5
         px-10
       "
-      :class="{ 'height-is-completed': isCompleted }"
+      :class="{ 'height-is-completed': isCompleted && visible }"
     >
       <!-- Answering Mode -->
-      <template v-if="!isCompleted">
+      <template v-if="!visible">
         <div class="d-flex flex-column">
           <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
           <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
         </div>
         <div class="d-flex flex-row align-center">
           <img width="20" height="22" src="@/assets/icons/time.svg" />
-          <p class="timer-font mb-0 mx-2">{{ minutes }}:{{ seconds }}</p>
+          <p class="timer-font mb-0 mx-2">
+            {{ minutes || "--" }}:{{ seconds || "--" }}
+          </p>
         </div>
         <v-menu rounded left min-width="188px">
           <template v-slot:activator="{ attrs, on }">
@@ -36,7 +38,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item link>
+            <v-list-item @click="confirmBack" link>
               <p class="selection-item ma-0">Keluar</p>
             </v-list-item>
           </v-list>
@@ -45,7 +47,7 @@
     </div>
     <v-expand-transition>
       <div
-        v-if="!isCompleted"
+        v-if="!visible"
         class="d-flex flex-row justify-space-between"
         style="max-height: 100vh"
       >
@@ -66,13 +68,13 @@
               rounded-lg
             "
           >
-            <p class="header-3 my-6 text-center">Tes Kecermatan</p>
+            <p class="header-3 my-6 text-center">{{ kecermatan.title }}</p>
           </div>
           <DefaultLoader
             v-if="loadingChangeSection"
             :loading="loadingChangeSection"
           />
-          <div class="ma-0">
+          <div v-else class="ma-0">
             <div class="d-flex flex-row align-center justify-center mb-5 mt-12">
               <v-divider />
               <p class="section-font mx-4 mb-0">
@@ -198,7 +200,7 @@
               </v-col>
             </div>
             <v-btn
-              @click="handleSubmit"
+              @click="() => handleNext()"
               v-if="isLast"
               class="mt-8 no-uppercase"
               color="primary"
@@ -262,134 +264,82 @@
         </div>
       </div>
     </v-expand-transition>
-    <div v-if="isCompleted" class="d-flex flex-column align-center pa-12">
-      <div
-        class="d-flex flex-column align-center white pa-12 rounded-lg"
-        style="width: 450px"
-      >
-        <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
-        <p class="nilai-subtitle-font">Test Kepribadian 1</p>
-        <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
-        <v-btn
-          color="primary"
-          class="no-uppercase"
-          block
-          @click="handleSelesai"
-        >
-          Selesai
-        </v-btn>
-      </div>
-    </div>
+    <CompletedPopUp
+      :dialog="visible"
+      :totalAnswer="totalAnswer"
+      :handleSelesai="handleSelesai"
+      :title="title"
+    >
+      <template v-slot:description>
+        <v-col cols="12">
+          <div
+            v-for="(e, i) in result"
+            class="d-flex flex-row justify-space-between"
+            :key="`description-${i}`"
+          >
+            <p class="section-row-font">{{ e.paket_soal }}</p>
+            <p class="section-row-font">
+              Benar <span class="ml-2">{{ e.benar }}</span>
+            </p>
+            <p class="section-row-font">
+              Salah <span class="ml-2">{{ e.salah }}</span>
+            </p>
+            <p class="section-row-font">
+              Total <span class="ml-2">{{ e.total }}</span>
+            </p>
+          </div>
+        </v-col>
+      </template>
+    </CompletedPopUp>
   </div>
 </template>
 
 <script>
+import { mapKecermatanField } from "@/store/helpers";
+import { mapGetters, mapMutations } from "vuex";
+import { PURGE_QUESTION } from "@/store/constants/mutations.type";
+import SoalService from "@/services/resources/soal.service";
+import { DATA_SOAL } from "@/router/name.types";
 const DefaultLoader = () => import("@/components/Loader/Default");
+const CompletedPopUp = () => import("@/components/Dialog/Completed");
 // const Section = () => import("./Sections");
 
 export default {
   components: {
     DefaultLoader,
+    CompletedPopUp,
     // Section,
   },
   data() {
     return {
       loadingChangeSection: false,
-      title: null,
-      duration: 240,
-      timer: 240,
-      minutes: "--",
-      seconds: "--",
-      nowDate: null,
-      nowHour: null,
-      totalAnswer: null,
-      sectionIndex: 0,
-      sections: [
+      loading: false,
+      visible: false,
+      result: [
         {
-          secureId: null,
-          title: null,
-          tableName: "Tabel Kolom Acuan",
-          firstRow: ["A", "B", "C", "D", "E"],
-          secondRow: ["0", "0", "0", "0", "0"],
-          question: [
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff3c9",
-              title: ["5", "9", "8", "5"],
-              answer: {
-                secureId: null,
-                symbol: null,
-                value: null,
-              },
-              answerList: [
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e2",
-                  symbol: "A",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e3",
-                  symbol: "B",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e4",
-                  symbol: "C",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e5",
-                  symbol: "D",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e6",
-                  symbol: "E",
-                  value: 1,
-                },
-              ],
-            },
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff3d8",
-              title: ["5", "9", "8", "4"],
-              answer: {
-                secureId: null,
-                symbol: null,
-                value: null,
-              },
-              answerList: [
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e2",
-                  symbol: "A",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e3",
-                  symbol: "B",
-                  value: 1,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e4",
-                  symbol: "C",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e5",
-                  symbol: "D",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e6",
-                  symbol: "E",
-                  value: 0,
-                },
-              ],
-            },
-          ],
+          paket_soal: null,
+          benar: null,
+          salah: null,
+          total: null,
         },
       ],
     };
   },
   computed: {
+    ...mapKecermatanField({
+      kecermatan: "kecermatan",
+      title: "kecermatan.title",
+      duration: "kecermatan.duration",
+      timer: "kecermatan.timer",
+      minutes: "kecermatan.minutes",
+      seconds: "kecermatan.seconds",
+      nowDate: "kecermatan.nowDate",
+      nowHour: "kecermatan.nowHour",
+      totalAnswer: "kecermatan.totalAnswer",
+      sections: "kecermatan.sections",
+      sectionIndex: "kecermatan.sectionIndex",
+    }),
+    ...mapGetters(["getProfile"]),
     countMinutes() {
       return this.minutes;
     },
@@ -405,17 +355,20 @@ export default {
     isLast() {
       return this.sections.length == this.sectionIndex + 1;
     },
+    isResume() {
+      return this.kecermatan?.secureId;
+    },
   },
   mounted() {
+    if (this.isCompleted) this.visible = true;
+
     this.startCountDown();
     this.getDate();
   },
-  watch: {
-    totalAnswer(val) {
-      console.log(val);
-    },
-  },
   methods: {
+    ...mapMutations({
+      purgeData: `kecermatan/${PURGE_QUESTION.KECERMATAN}`,
+    }),
     startCountDown() {
       this.counterFunction = setInterval(() => {
         this.minutes = parseInt(this.timer / 60, 10);
@@ -431,7 +384,7 @@ export default {
         }
       }, 1000);
     },
-    handleSubmit() {
+    handleNext() {
       this.$confirm({
         title: "Confirm",
         message: `Are you sure you want to <b>submit</b> your answer's ?`,
@@ -441,19 +394,45 @@ export default {
         },
         callback: (confirm) => {
           if (confirm) {
-            this.calculateAnswer();
+            this.handleSubmit();
           }
         },
       });
     },
-    calculateAnswer() {
-      let total = 0;
-      this.sections.forEach((section) => {
+    handleSubmit() {
+      let payload = [];
+      this.sections.forEach((section, index) => {
+        payload.push({
+          paket_soal: this.title,
+          section: section.title,
+          total: 0,
+          benar: 0,
+          salah: 0,
+        });
         section.question.forEach((question) => {
-          total += question.answer.value;
+          if (question.answer.value) {
+            payload[index].total += question.answer.value;
+            payload[index].benar++;
+          } else payload[index].salah++;
         });
       });
-      this.totalAnswer = total;
+
+      const Payload = {
+        secureId: this.getProfile.secureId,
+        kecermatanVO: [...payload],
+      };
+
+      this.result = [...payload];
+
+      // Calculate Answer
+      const total = payload.reduce((a, b) => a + b.total, 0) / payload.length;
+      this.totalAnswer = total.toFixed(0);
+
+      console.log(Payload);
+      this.visible = true;
+
+      // handle Submit
+      // this.requestInsert(Payload);
     },
     handlePick(i) {
       if (i > this.sectionIndex) {
@@ -477,10 +456,11 @@ export default {
       }
     },
     handleSelesai() {
+      this.purgeData();
       this.$router.replace({ path: "/data-soal" });
     },
     getDate() {
-      this.counterFunction = setInterval(() => {
+      this.dataFunction = setInterval(() => {
         const now = new Date().toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",
@@ -497,6 +477,61 @@ export default {
         this.nowHour = hour;
       }, 1000);
     },
+    confirmBack() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Anda akan dinyatakan <b>menyelesaikan Sections</b>, jika kembali ke halaman sebelumnya`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.handleSubmit();
+          }
+        },
+      });
+    },
+    handleBack() {
+      this.$router.replace({
+        name: DATA_SOAL,
+      });
+    },
+    requestInsert(payload) {
+      this.lading = true;
+      SoalService.insertNilaiKecermatan({ ...payload })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.visible = true;
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Berhasil input nilai Kecermatan",
+              color: "success",
+            });
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: result || "Gagal input nilai Kecermatan",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal input nilai Kecermatan",
+            color: "error",
+          });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
+  beforeDestroy() {
+    clearInterval(this.dateFunction);
+    clearInterval(this.counterFunction);
   },
 };
 </script>
@@ -604,5 +639,13 @@ th {
 
 .active-font {
   color: #53319a !important;
+}
+
+.section-row-font {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  line-height: 140%;
 }
 </style>

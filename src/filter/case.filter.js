@@ -7,6 +7,11 @@ import Vue from "vue";
  * @param  {String} str the string to convert
  * @return {String}
  */
+
+Vue.filter("currency", (str) => {
+  return str && !isNaN(str) ? (str / 1).toFixed(1) : "-";
+});
+
 Vue.filter("snakeToTitle", (str) => {
   return (
     str &&
