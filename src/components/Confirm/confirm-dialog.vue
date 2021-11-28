@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <v-dialog v-model="isShow" persistent max-width="290">
+    <v-dialog v-model="isShow" persistent max-width="320">
       <v-card>
         <v-card-title v-if="dialog.title" class="headline">{{
           dialog.title

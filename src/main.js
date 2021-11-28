@@ -8,10 +8,17 @@ import "./config/cookie.config";
 
 // Filter
 import "./filter/case.filter";
+import "./filter/date.filter";
 
 // Constant
 import { FORCE_LOGOUT, CHECK_AUTH } from "./store/constants/actions.type";
-import { LOGIN, HOME, DATA_PESERTA, DATA_SOAL } from "./router/name.types";
+import {
+  LOGIN,
+  HOME,
+  DATA_PESERTA,
+  DATA_SOAL,
+  QUIZ,
+} from "./router/name.types";
 
 // Component
 import DialogConfirm from "./components/Confirm";
@@ -33,8 +40,8 @@ router.beforeEach((to, from, next) => {
       : next({ name: DATA_SOAL });
   }
 
-  // Authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Authentication
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters.isAuthenticated) {
@@ -59,6 +66,41 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta?.privileges == "admin" && !store.getters.isAdmin) {
       next({ name: HOME });
+    }
+
+    if (
+      store.getters["kecerdasan/getKecerdasan"].secureId &&
+      to.name !== QUIZ.KECERDASAN
+    ) {
+      next({
+        replace: true,
+        name: QUIZ.KECERDASAN,
+        params: {
+          secureId: store.getters["kecerdasan/getKecerdasan"].secureId,
+        },
+      });
+    } else if (
+      store.getters["kepribadian/getKepribadian"].secureId &&
+      to.name !== QUIZ.KEPRIBADIAN
+    ) {
+      next({
+        replace: true,
+        name: QUIZ.KEPRIBADIAN,
+        params: {
+          secureId: store.getters["kepribadian/getKepribadian"].secureId,
+        },
+      });
+    } else if (
+      store.getters["kejiwaan/getKejiwaan"].secureId &&
+      to.name !== QUIZ.KEJIWAAN
+    ) {
+      next({
+        replace: true,
+        name: QUIZ.KEJIWAAN,
+        params: {
+          secureId: store.getters["kejiwaan/getKejiwaan"].secureId,
+        },
+      });
     }
   } else {
     next();

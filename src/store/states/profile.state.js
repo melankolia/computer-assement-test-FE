@@ -3,4 +3,5 @@ export const initialProfileState = () => ({
   username: null,
   nama_lengkap: null,
   type: null,
+  acronymName: "Anonymous",
 });

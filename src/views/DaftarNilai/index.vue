@@ -10,22 +10,22 @@
           color="deep-purple accent-3"
           background-color="white"
         >
-          <v-btn class="no-uppercase" small value="Kecerdasan">
+          <v-btn class="no-uppercase" small value="kecerdasan">
             <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kecerdasan
             </p>
           </v-btn>
-          <v-btn class="no-uppercase" small value="Kepribadian">
+          <v-btn class="no-uppercase" small value="kepribadian">
             <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kepribadian
             </p>
           </v-btn>
-          <v-btn class="no-uppercase" small value="Kejiwaan">
+          <v-btn class="no-uppercase" small value="kejiwaan">
             <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kejiwaan
             </p>
           </v-btn>
-          <v-btn class="no-uppercase" small value="Kecermatan">
+          <v-btn class="no-uppercase" small value="kecermatan">
             <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
               Kecermatan
             </p>
@@ -42,10 +42,16 @@
           item-key="nama"
           style="border-spacing: 10px !important"
         >
-          <template #item.title="{ item }">
+          <template #item.paket_soal="{ item }">
             <p class="ma-0 paket-soal-font">
-              {{ item.title }}
+              {{ item.paket_soal | firstCapital }}
             </p>
+          </template>
+          <template #item.nilai="{ item }">
+            <span>{{ item.nilai || "-" }}</span>
+          </template>
+          <template #item.createdDate="{ item }">
+            <span>{{ item.createdDate | date }}</span>
           </template>
           <template #item.section="{ item }">
             <tr v-for="(e, i) in item.section" :key="`section-${i}`">
@@ -55,7 +61,7 @@
                   'pb-4': i == item.section.length - 1,
                 }"
               >
-                {{ e.title }}
+                {{ e.title | firstCapital }}
               </td>
             </tr>
           </template>
@@ -91,7 +97,7 @@
                   'pb-4': i == item.section.length - 1,
                 }"
               >
-                {{ e.total }}
+                {{ e.benar * 10 }}
               </td>
             </tr>
           </template>
@@ -107,14 +113,18 @@
 </template>
 
 <script>
+import SoalService from "@/services/resources/soal.service";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      questionType: "Kecerdasan",
+      loading: false,
+      questionType: "kecerdasan",
       headers: [
         {
           text: "Paket Soal",
-          value: "title",
+          value: "paket_soal",
           sortable: false,
           width: "33%",
         },
@@ -126,7 +136,7 @@ export default {
         },
         {
           text: "Waktu",
-          value: "date",
+          value: "createdDate",
           sortable: false,
           width: "33%",
         },
@@ -134,7 +144,7 @@ export default {
       kecermatanHeaders: [
         {
           text: "Paket Soal",
-          value: "title",
+          value: "paket_soal",
           sortable: false,
         },
         {
@@ -166,190 +176,74 @@ export default {
       items: [],
     };
   },
+  methods: {
+    getList(type) {
+      this.loading = true;
+      SoalService.getListNilai({
+        secureId: this.getProfile.secureId,
+        type,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal memuat data nilai",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data nilai",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
+    getListKecermatan() {
+      this.loading = true;
+      SoalService.getListNilaiKecermatan({
+        secureId: this.getProfile.secureId,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal memuat data nilai",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data nilai",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
+  },
+  mounted() {
+    this.getList(this.questionType);
+  },
   computed: {
+    ...mapGetters(["getProfile"]),
     isKecermatan() {
-      return this.questionType == "Kecermatan";
+      return this.questionType == "kecermatan";
     },
   },
   watch: {
     questionType(val) {
-      if (val == "Kecerdasan") {
-        this.items = [
-          {
-            title: "Tes Kecerdasan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecerdasan",
-            nilai: "20",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecerdasan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecerdasan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-        ];
-      } else if (val == "Kepribadian") {
-        this.items = [
-          {
-            title: "Tes Kepribadian",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kepribadian",
-            nilai: "20",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kepribadian",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kepribadian",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-        ];
-      } else if (val == "Kejiwaan") {
-        this.items = [
-          {
-            title: "Tes Kejiwaan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kejiwaan",
-            nilai: "20",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kejiwaan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kejiwaan",
-            nilai: "80",
-            date: "19/08/2021   8.42 AM",
-          },
-        ];
-      } else if (val == "Kecermatan") {
-        this.items = [
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "20",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-        ];
-      }
+      if (val != "kecermatan") this.getList(val);
+      else this.getListKecermatan();
     },
   },
 };

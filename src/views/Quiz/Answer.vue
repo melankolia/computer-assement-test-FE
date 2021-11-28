@@ -20,8 +20,8 @@
           :value="e"
           class="mr-4"
           :class="{
-            active: e.answer == data.answer.answer,
-            'active-font': e.answer == data.answer.answer,
+            active: e.secureId == data.answer.secureId,
+            'active-font': e.secureId == data.answer.secureId,
           }"
           >{{ e.symbol }}</v-btn
         >

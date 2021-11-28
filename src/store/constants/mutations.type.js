@@ -7,3 +7,15 @@ export const CHECK_AUTH = "checkAuth";
 
 export const SET_PROFILE = "setProfile";
 export const PURGE_PROFILE = "purgeProfile";
+
+export const SET_QUESTION = {
+  KECERDASAN: "setQuestionKecerdasan",
+  KEJIWAAN: "setQuestionKejiwaan",
+  KEPRIBADIAN: "setQuestionKepribadian",
+};
+
+export const PURGE_QUESTION = {
+  KEJIWAAN: "purgeKejiwaan",
+  KECERDASAN: "purgeKecerdasan",
+  KEPRIBADIAN: "purgeKepribadian",
+};
