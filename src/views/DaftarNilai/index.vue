@@ -44,7 +44,7 @@
         >
           <template #item.paket_soal="{ item }">
             <p class="ma-0 paket-soal-font">
-              {{ item.paket_soal }}
+              {{ item.paket_soal | firstCapital }}
             </p>
           </template>
           <template #item.nilai="{ item }">
@@ -61,7 +61,7 @@
                   'pb-4': i == item.section.length - 1,
                 }"
               >
-                {{ e.title }}
+                {{ e.title | firstCapital }}
               </td>
             </tr>
           </template>
@@ -97,7 +97,7 @@
                   'pb-4': i == item.section.length - 1,
                 }"
               >
-                {{ e.total }}
+                {{ e.benar * 10 }}
               </td>
             </tr>
           </template>
@@ -204,6 +204,32 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
+    getListKecermatan() {
+      this.loading = true;
+      SoalService.getListNilaiKecermatan({
+        secureId: this.getProfile.secureId,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal memuat data nilai",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data nilai",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
   },
   mounted() {
     this.getList(this.questionType);
@@ -216,116 +242,8 @@ export default {
   },
   watch: {
     questionType(val) {
-      if (val != "kecermatan") {
-        this.getList(val);
-      } else {
-        this.items = [
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "20",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-          {
-            title: "Tes Kecermatan",
-            grandTotal: 10,
-            nilai: "80",
-            section: [
-              {
-                title: "Section 1",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 2",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-              {
-                title: "Section 3",
-                benar: 8,
-                salah: 2,
-                total: 80,
-              },
-            ],
-            date: "19/08/2021   8.42 AM",
-          },
-        ];
-      }
+      if (val != "kecermatan") this.getList(val);
+      else this.getListKecermatan();
     },
   },
 };

@@ -8,6 +8,9 @@ const SoalService = {
   getListNilai(params) {
     return MainInstance.query(NILAI.LIST, { params });
   },
+  getListNilaiKecermatan(params) {
+    return MainInstance.query(NILAI.LIST_KECERMATAN, { params });
+  },
   insertNilai(data) {
     return MainInstance.post(NILAI.INSERT, data);
   },

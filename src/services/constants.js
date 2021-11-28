@@ -87,5 +87,6 @@ export const SOAL = {
 const nilai = `nilai`;
 export const NILAI = {
   LIST: `${nilai}`,
+  LIST_KECERMATAN: `${nilai}/kecermatan`,
   INSERT: `${nilai}`,
 };

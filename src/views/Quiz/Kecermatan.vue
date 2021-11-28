@@ -295,6 +295,7 @@ export default {
   data() {
     return {
       loadingChangeSection: false,
+      title: null,
       duration: 240,
       timer: 240,
       minutes: "--",
@@ -305,11 +306,11 @@ export default {
       sectionIndex: 0,
       sections: [
         {
-          secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2d1",
-          title: "Section 1",
-          tableName: "Kolom Acuan Soal",
+          secureId: null,
+          title: null,
+          tableName: "Tabel Kolom Acuan",
           firstRow: ["A", "B", "C", "D", "E"],
-          secondRow: ["3", "6", "7", "9", "2"],
+          secondRow: ["0", "0", "0", "0", "0"],
           question: [
             {
               secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff3c9",
@@ -380,123 +381,6 @@ export default {
                   secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e6",
                   symbol: "E",
                   value: 0,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2d2",
-          title: "Section 2",
-          tableName: "Kolom Acuan Soal",
-          firstRow: ["A", "B", "C", "D", "E"],
-          secondRow: ["6", "6", "6", "6", "2"],
-          question: [
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619eeff",
-              title: ["5", "9", "8", "4"],
-              answer: {
-                secureId: null,
-                symbol: null,
-                value: null,
-              },
-              answerList: [
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e2",
-                  symbol: "A",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e3",
-                  symbol: "B",
-                  value: 1,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e4",
-                  symbol: "C",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e5",
-                  symbol: "D",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e6",
-                  symbol: "E",
-                  value: 0,
-                },
-              ],
-            },
-            {
-              secureId: "a9e9e79b-5d29-42fc-ae35-6139619ccdd",
-              title: ["5", "9", "8", "4"],
-              answer: {
-                secureId: null,
-                symbol: null,
-                value: null,
-              },
-              answerList: [
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e2",
-                  symbol: "A",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e3",
-                  symbol: "B",
-                  value: 1,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e4",
-                  symbol: "C",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e5",
-                  symbol: "D",
-                  value: 0,
-                },
-                {
-                  secureId: "a9e9e79b-5d29-42fc-ae35-6139619ff2e6",
-                  symbol: "E",
-                  value: 0,
-                },
-              ],
-            },
-            {
-              secureId: "74b57af2-ab3b-4203-bdef-c3405cb15266",
-              title: ["69", "1", "1", "3"],
-              answer: {
-                secureId: null,
-                symbol: null,
-                value: null,
-              },
-              answerList: [
-                {
-                  secureId: "b7c66a7e-a43b-4ed4-8cce-9e6611239e6d",
-                  symbol: "A",
-                  value: 69,
-                },
-                {
-                  secureId: "c45b07c1-d8ae-41d7-baa1-1c73fb4d5150",
-                  symbol: "B",
-                  value: 2,
-                },
-                {
-                  secureId: "9b9fdb86-a94c-4f19-9cd9-30d92a193eba",
-                  symbol: "C",
-                  value: 2,
-                },
-                {
-                  secureId: "27eb661f-6b7f-47d5-9d0c-57361e1c4ece",
-                  symbol: "D",
-                  value: 2,
-                },
-                {
-                  secureId: "f18ae936-62c0-4c46-9e6a-0f18b8636493",
-                  symbol: "E",
-                  value: 9999,
                 },
               ],
             },
