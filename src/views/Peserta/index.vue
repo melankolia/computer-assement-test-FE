@@ -420,7 +420,6 @@ export default {
           : (this.loadingEdit = true);
         PesertaService.insertData(type == "submit" ? this.payload : this.edited)
           .then(({ data: { result, message } }) => {
-            console.log("GOOL");
             if (message == "OK") {
               type != "submit" && (this.expanded = []);
               this.$store.commit("snackbar/setSnack", {
