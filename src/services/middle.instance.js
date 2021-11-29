@@ -5,7 +5,7 @@ import router from "@/router";
 import store from "@/store";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://stg.cbt-konseling.online:9000",
 });
 
 instance.CancelToken = axios.CancelToken;
