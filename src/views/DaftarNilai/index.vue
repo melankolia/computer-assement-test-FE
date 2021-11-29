@@ -38,6 +38,7 @@
         <v-data-table
           :headers="isKecermatan ? kecermatanHeaders : headers"
           :items="items"
+          :loading="loading"
           hide-default-footer
           item-key="nama"
           style="border-spacing: 10px !important"
