@@ -16,6 +16,7 @@
         :key="i"
       >
         <v-btn
+          :disabled="disabled"
           depressed
           :value="e"
           class="mr-4"
@@ -39,6 +40,11 @@ export default {
     data: {
       type: Object,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
 };

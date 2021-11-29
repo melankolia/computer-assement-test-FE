@@ -78,6 +78,7 @@
 <script>
 import { QUIZ } from "@/router/name.types";
 import CoverService from "@/services/resources/cover.service";
+import { mapActions } from "vuex";
 const ContentNotFound = () => import("@/components/Content/NotFound");
 const Cover = () => import("./Peraturan/Cover");
 const Soal = () => import("./Peraturan/Soal");
@@ -113,6 +114,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      getList: "kecermatan/getListKecermatanQuestion",
+    }),
     getDetail() {
       this.loading = true;
       CoverService.findCover({
@@ -161,10 +165,25 @@ export default {
       }
     },
     handleMulai() {
-      this.$router.push({
-        name: QUIZ.KECERMATAN,
-        params: { secureId: this.id },
-      });
+      this.loadingNext = true;
+      this.getList({
+        secureId: this.id,
+      })
+        .then(() => {
+          this.$router.replace({
+            name: QUIZ.KECERMATAN,
+            params: { secureId: this.id },
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat Soal Kecermatan",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loadingNext = false));
     },
   },
   mounted() {

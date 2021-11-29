@@ -470,7 +470,7 @@ export default {
           if (confirm) {
             this.activateData(event);
           } else {
-            this.is_active = !event;
+            this.detail.is_active = !event;
           }
         },
       });
@@ -483,7 +483,7 @@ export default {
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
-            this.is_active = event;
+            this.detail.is_active = event;
             this.$store.commit("snackbar/setSnack", {
               show: true,
               message: `Berhasil ${
@@ -492,7 +492,7 @@ export default {
               color: "success",
             });
           } else {
-            this.is_active = !event;
+            this.detail.is_active = !event;
             this.$store.commit("snackbar/setSnack", {
               show: true,
               message:
@@ -504,7 +504,7 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-          this.is_active = !event;
+          this.detail.is_active = !event;
           this.$store.commit("snackbar/setSnack", {
             show: true,
             message: `Gagal ${

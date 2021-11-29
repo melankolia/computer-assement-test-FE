@@ -48,7 +48,7 @@
             </p>
           </template>
           <template #item.nilai="{ item }">
-            <span>{{ item.nilai || "-" }}</span>
+            <span>{{ item.nilai || "0" }}</span>
           </template>
           <template #item.createdDate="{ item }">
             <span>{{ item.createdDate | date }}</span>
@@ -97,13 +97,13 @@
                   'pb-4': i == item.section.length - 1,
                 }"
               >
-                {{ e.benar * 10 }}
+                {{ e.total }}
               </td>
             </tr>
           </template>
           <template #item.grandTotal="{ item }">
             <p class="mb-0 grand-total-font">
-              {{ item.grandTotal }}
+              {{ item.grandTotal | currency }}
             </p>
           </template>
         </v-data-table>
@@ -171,6 +171,7 @@ export default {
           text: "Grand Total",
           value: "grandTotal",
           sortable: false,
+          align: "center",
         },
       ],
       items: [],
@@ -179,6 +180,7 @@ export default {
   methods: {
     getList(type) {
       this.loading = true;
+      this.items = [];
       SoalService.getListNilai({
         secureId: this.getProfile.secureId,
         type,
@@ -242,6 +244,7 @@ export default {
   },
   watch: {
     questionType(val) {
+      this.items = [];
       if (val != "kecermatan") this.getList(val);
       else this.getListKecermatan();
     },

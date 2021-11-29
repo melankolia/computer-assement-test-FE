@@ -6,7 +6,7 @@
         size="132px"
         :color="setColorFromString(getProfile.acronymName)"
       >
-        <span class="white--text text-h2">{{ getProfile.acronymName }}</span>
+        <span class="white--text text-h3">{{ getProfile.acronymName }}</span>
       </v-avatar>
       <div class="d-flex flex-column align-center mt-4">
         <p class="font-weight-medium text-h6 ma-0">

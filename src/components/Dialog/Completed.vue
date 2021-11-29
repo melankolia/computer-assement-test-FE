@@ -3,7 +3,8 @@
     <div class="d-flex flex-column align-center white pa-12 rounded-lg">
       <p class="nilai-akhir-font mb-5">Nilai Akhir</p>
       <p class="nilai-subtitle-font">{{ title }}</p>
-      <p class="nilai-number-font my-12">{{ totalAnswer || "-" }}</p>
+      <p class="nilai-number-font my-12">{{ totalAnswer || "0" }}</p>
+      <slot name="description"></slot>
       <v-btn color="primary" class="no-uppercase" block @click="handleSelesai">
         Selesai
       </v-btn>

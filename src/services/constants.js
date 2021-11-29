@@ -89,4 +89,5 @@ export const NILAI = {
   LIST: `${nilai}`,
   LIST_KECERMATAN: `${nilai}/kecermatan`,
   INSERT: `${nilai}`,
+  INSERT_KECERMATAN: `${nilai}/kecermatan`,
 };

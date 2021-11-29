@@ -1,4 +1,4 @@
-export const initialKecerdasanQuestion = () => ({
+export const initialKecermatanQuestion = () => ({
   secureId: null,
   title: null,
   duration: 0,
@@ -8,51 +8,50 @@ export const initialKecerdasanQuestion = () => ({
   nowDate: null,
   nowHour: null,
   totalAnswer: null,
-  questionIndex: 0,
-  questions: [
+  sectionIndex: 0,
+  sections: [
     {
       secureId: null,
-      sessionTime: null,
-      question: {
-        secureId: null,
-        question: null,
-      },
-      answer: {
-        secureId: null,
-        answer: null,
-        symbol: null,
-        value: null,
-      },
-      answerList: [
+      title: null,
+      tableName: "Tabel Kolom Acuan",
+      firstRow: ["A", "B", "C", "D", "E"],
+      secondRow: ["0", "0", "0", "0", "0"],
+      question: [
         {
           secureId: null,
-          symbol: null,
-          answer: null,
-          value: null,
-        },
-        {
-          secureId: null,
-          symbol: null,
-          answer: null,
-          value: 0,
-        },
-        {
-          secureId: null,
-          symbol: null,
-          answer: null,
-          value: 0,
-        },
-        {
-          secureId: null,
-          symbol: null,
-          answer: null,
-          value: 0,
-        },
-        {
-          secureId: null,
-          symbol: null,
-          answer: null,
-          value: 0,
+          title: ["0", "0", "0", "0"],
+          answer: {
+            secureId: null,
+            symbol: null,
+            value: null,
+          },
+          answerList: [
+            {
+              secureId: null,
+              symbol: "A",
+              value: 0,
+            },
+            {
+              secureId: null,
+              symbol: "B",
+              value: 0,
+            },
+            {
+              secureId: null,
+              symbol: "C",
+              value: 0,
+            },
+            {
+              secureId: null,
+              symbol: "D",
+              value: 0,
+            },
+            {
+              secureId: null,
+              symbol: "E",
+              value: 0,
+            },
+          ],
         },
       ],
     },

@@ -12,10 +12,12 @@ export const SET_QUESTION = {
   KECERDASAN: "setQuestionKecerdasan",
   KEJIWAAN: "setQuestionKejiwaan",
   KEPRIBADIAN: "setQuestionKepribadian",
+  KECERMATAN: "setQuestionKecermatan",
 };
 
 export const PURGE_QUESTION = {
   KEJIWAAN: "purgeKejiwaan",
   KECERDASAN: "purgeKecerdasan",
   KEPRIBADIAN: "purgeKepribadian",
+  KECERMATAN: "purgeKecermatan",
 };
