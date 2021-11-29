@@ -451,9 +451,8 @@ export default {
 
       // Calculate Answer
       const total = payload.reduce((a, b) => a + b.total, 0) / payload.length;
-      this.totalAnswer = total.toFixed(0);
+      this.totalAnswer = total.toFixed(1);
 
-      console.log(Payload);
       this.visible = true;
 
       // handle Submit
