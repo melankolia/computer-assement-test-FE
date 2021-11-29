@@ -37,6 +37,7 @@ const actions = {
         .then(({ data: { message, result } }) => {
           if (message == "OK") {
             const Payload = {
+              secureId: result.secureId,
               title: result.title,
               timer: result.time * 60,
               questions: result.result,

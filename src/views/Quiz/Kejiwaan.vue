@@ -67,7 +67,10 @@
           <div class="d-flex flex-column ma-0">
             <p class="header-3 mb-12 text-center">{{ kejiwaan.title }}</p>
             <transition name="slide-fade" mode="out-in">
-              <Answer :data="questions[questionIndex]" />
+              <Answer
+                :data="questions[questionIndex]"
+                :disabled="isCompleted"
+              />
             </transition>
           </div>
           <div
@@ -111,6 +114,7 @@
               v-for="(e, i) in questions"
               class="
                 number-answer
+                answered
                 rounded
                 d-flex
                 flex-column
@@ -227,8 +231,23 @@ export default {
         if (this.timer < 0) {
           this.timer = this.duration;
           clearInterval(this.counterFunction);
+          this.handleForceSubmit();
         }
       }, 1000);
+    },
+    handleForceSubmit() {
+      this.$confirm({
+        title: "Waktu Habis",
+        message: `<br /> Klik <b>OK</b> untuk melihat nilai akhir`,
+        button: {
+          yes: "OK",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.handleSubmit();
+          }
+        },
+      });
     },
     handlePick(i) {
       this.questionIndex = i;
@@ -320,8 +339,9 @@ export default {
       } else this.questionIndex++;
     },
     handleSelesai() {
-      this.purgeData();
+      this.kejiwaan.secureId = null;
       this.$router.replace({ path: "/data-soal" });
+      this.purgeData();
     },
     getDate() {
       this.dataFunction = setInterval(() => {

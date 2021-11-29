@@ -379,18 +379,18 @@ export default {
 
         this.timer--;
         if (this.timer < 0) {
-          this.timer = this.duration;
           clearInterval(this.counterFunction);
+          this.timer = 0;
+          this.handleNext("countDown");
         }
       }, 1000);
     },
-    handleNext() {
+    handleForceSubmit() {
       this.$confirm({
-        title: "Confirm",
-        message: `Are you sure you want to <b>submit</b> your answer's ?`,
+        title: "Waktu Habis",
+        message: `<br /> Klik <b>OK</b> untuk melihat nilai akhir`,
         button: {
-          no: "No",
-          yes: "Yes",
+          yes: "OK",
         },
         callback: (confirm) => {
           if (confirm) {
@@ -398,6 +398,31 @@ export default {
           }
         },
       });
+    },
+    handleNext(type = "normal") {
+      if (!this.isLast) {
+        this.loadingChangeSection = true;
+        setTimeout(() => {
+          this.sectionIndex++;
+          this.timer = this.duration;
+          this.startCountDown();
+          this.loadingChangeSection = false;
+        }, 500);
+      } else {
+        if (type == "normal") {
+          this.$confirm({
+            title: "Confirm",
+            message: `Are you sure you want to <b>submit</b> your answer's ?`,
+            button: {
+              no: "No",
+              yes: "Yes",
+            },
+            callback: (confirm) => {
+              if (confirm) this.handleSubmit();
+            },
+          });
+        } else this.handleForceSubmit();
+      }
     },
     handleSubmit() {
       let payload = [];
@@ -432,7 +457,7 @@ export default {
       this.visible = true;
 
       // handle Submit
-      // this.requestInsert(Payload);
+      this.requestInsert(Payload);
     },
     handlePick(i) {
       if (i > this.sectionIndex) {
@@ -447,6 +472,7 @@ export default {
             if (confirm) {
               this.loadingChangeSection = true;
               setTimeout(() => {
+                this.timer = this.duration;
                 this.sectionIndex = i;
                 this.loadingChangeSection = false;
               }, 500);
@@ -456,8 +482,9 @@ export default {
       }
     },
     handleSelesai() {
-      this.purgeData();
+      this.kecermatan.secureId = null;
       this.$router.replace({ path: "/data-soal" });
+      this.purgeData();
     },
     getDate() {
       this.dataFunction = setInterval(() => {

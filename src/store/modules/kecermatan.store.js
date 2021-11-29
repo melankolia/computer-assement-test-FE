@@ -40,6 +40,7 @@ const actions = {
               secureId: result.secureId,
               title: result.title,
               timer: result.time * 60,
+              duration: result.time * 60,
               sections: result.result,
             };
             commit(SET_QUESTION.KECERMATAN, Payload);

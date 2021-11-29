@@ -23,10 +23,16 @@
 
 <script>
 export default {
+  props: {
+    initialCounter: { type: Number, default: 1 },
+  },
   data() {
     return {
       counter: 1,
     };
+  },
+  mounted() {
+    this.counter = this.initialCounter;
   },
   methods: {
     handleClickMinus() {

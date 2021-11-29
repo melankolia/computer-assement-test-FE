@@ -93,7 +93,8 @@
                   {{ item.time }} Menit
                 </span>
                 <span v-else>
-                  {{ item.time }} Menit ({{ item.time }} Menit / Section)
+                  {{ item.time * item.section }} Menit ({{ item.time }} Menit /
+                  Section)
                 </span>
               </p>
             </div>
