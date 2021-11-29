@@ -128,7 +128,10 @@
               <p class="text-caption font-weight-light mb-1">
                 Total Menit / Paket
               </p>
-              <Counter @on-change="(e) => handleChange(e, 'edit')" />
+              <Counter
+                :initialCounter="edited.time"
+                @on-change="(e) => handleChange(e, 'edit')"
+              />
             </div>
           </div>
           <div class="d-flex flex-row justify-space-between mt-2">
