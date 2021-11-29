@@ -46,14 +46,10 @@
       </template>
     </div>
     <v-expand-transition>
-      <div
-        v-if="!visible"
-        class="d-flex flex-row justify-space-between"
-        style="max-height: 100vh"
-      >
+      <div v-if="!visible" class="d-flex flex-row justify-space-between">
         <!-- Answering Mode -->
         <div
-          class="d-flex flex-column ma-10"
+          class="d-flex flex-column my-4 mx-10"
           style="width: 71%; overflow: scroll"
         >
           <div
@@ -75,7 +71,7 @@
             :loading="loadingChangeSection"
           />
           <div v-else class="ma-0">
-            <div class="d-flex flex-row align-center justify-center mb-5 mt-12">
+            <div class="d-flex flex-row align-center justify-center mb-5 mt-5">
               <v-divider />
               <p class="section-font mx-4 mb-0">
                 {{ sections[sectionIndex].title }}
@@ -93,15 +89,7 @@
               "
             >
               <div
-                class="
-                  d-flex
-                  flex-column
-                  align-center
-                  white
-                  pt-5
-                  pb-10
-                  rounded-lg
-                "
+                class="d-flex flex-column align-center white py-5 rounded-lg"
               >
                 <p class="tabel-kolom-font">
                   {{ sections[sectionIndex].tableName }}
@@ -130,7 +118,11 @@
                 </table>
               </div>
               <v-divider />
-              <v-col cols="12" class="py-8">
+              <div
+                cols="12"
+                class="py-8"
+                style="height: 500px; overflow: scroll"
+              >
                 <v-row
                   v-for="(q, qIndex) in sections[sectionIndex].question"
                   :key="`qIndex-${qIndex}`"
@@ -197,7 +189,7 @@
                     </div>
                   </v-col>
                 </v-row>
-              </v-col>
+              </div>
             </div>
             <v-btn
               @click="() => handleNext()"
@@ -212,7 +204,7 @@
           </div>
         </div>
         <div
-          class="d-flex flex-column white py-6 my-10 mr-10 rounded-lg"
+          class="d-flex flex-column white py-6 my-4 mr-10 rounded-lg"
           style="width: 29%"
         >
           <p class="ma-0 daftar-soal-font mb-8">Daftar Soal</p>
