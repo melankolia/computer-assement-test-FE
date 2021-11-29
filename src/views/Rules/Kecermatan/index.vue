@@ -63,6 +63,7 @@
         <v-col cols="12" xs="12" sm="3">
           <v-btn
             @click="() => handleMulai()"
+            :loading="loadingNext"
             color="primary"
             class="no-uppercase"
             block

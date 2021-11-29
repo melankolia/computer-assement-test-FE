@@ -68,10 +68,6 @@ router.beforeEach((to, from, next) => {
       next({ name: HOME });
     }
 
-    console.log(store.getters["kecerdasan/getKecerdasan"].secureId);
-    console.log(store.getters["kejiwaan/getKejiwaan"].secureId);
-    console.log(store.getters["kepribadian/getKepribadian"].secureId);
-
     if (
       store.getters["kecerdasan/getKecerdasan"].secureId &&
       to.name !== QUIZ.KECERDASAN
@@ -103,6 +99,17 @@ router.beforeEach((to, from, next) => {
         name: QUIZ.KEJIWAAN,
         params: {
           secureId: store.getters["kejiwaan/getKejiwaan"].secureId,
+        },
+      });
+    } else if (
+      store.getters["kecermatan/getKecermatan"].secureId &&
+      to.name !== QUIZ.KECERMATAN
+    ) {
+      next({
+        replace: true,
+        name: QUIZ.KECERMATAN,
+        params: {
+          secureId: store.getters["kecermatan/getKecermatan"].secureId,
         },
       });
     }

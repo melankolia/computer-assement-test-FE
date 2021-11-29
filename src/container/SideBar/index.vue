@@ -130,10 +130,10 @@ export default {
         .dispatch(LOGOUT, {
           username: this.getProfile.username,
         })
-        .then(() => {
+        .finally(() => {
           this.$router.push({ name: LOGIN });
-        })
-        .finally(() => (this.loading = false));
+          this.loading = false;
+        });
     },
   },
 };
