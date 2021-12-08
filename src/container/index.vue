@@ -1,7 +1,8 @@
 <template>
   <v-main>
     <Sidebar />
-    <v-container style="background: #f8f6fb; height: 100%" fluid>
+    <FloatingScrollButton />
+    <v-container class="pa-0" style="background: #f8f6fb; height: 100%" fluid>
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>
@@ -11,11 +12,13 @@
 </template>
 
 <script>
+const FloatingScrollButton = () => import("@/components/Button/FloatingScroll");
 const Sidebar = () => import("./SideBar");
 
 export default {
   components: {
     Sidebar,
+    FloatingScrollButton,
   },
 };
 </script>

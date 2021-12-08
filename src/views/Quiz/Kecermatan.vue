@@ -112,6 +112,16 @@
                 <table>
                   <tr>
                     <td
+                      v-for="(firstRow, iFirstRow) in sections[sectionIndex]
+                        .firstRow"
+                      class="px-4 py-2"
+                      :key="`first-row-${iFirstRow}`"
+                    >
+                      {{ firstRow }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
                       v-for="(secondRow, iSecondRow) in sections[sectionIndex]
                         .secondRow"
                       class="px-4 py-2"
@@ -274,7 +284,7 @@
             class="d-flex flex-row justify-space-between"
             :key="`description-${i}`"
           >
-            <p class="section-row-font">{{ e.paket_soal }}</p>
+            <p class="section-row-font">{{ e.section }}</p>
             <p class="section-row-font">
               Benar <span class="ml-2">{{ e.benar }}</span>
             </p>

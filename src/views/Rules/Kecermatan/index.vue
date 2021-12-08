@@ -60,13 +60,14 @@
         </v-btn>
       </div>
       <v-row v-else align="center" justify="center" class="mt-12">
-        <v-col cols="12" xs="12" sm="3">
+        <v-col cols="12" xs="12" sm="4">
           <v-btn
             @click="() => handleMulai()"
             :loading="loadingNext"
-            color="primary"
-            class="no-uppercase"
+            color="red accent-3"
+            class="no-uppercase white--text"
             block
+            x-large
           >
             Mulai
           </v-btn>

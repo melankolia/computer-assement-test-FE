@@ -27,20 +27,7 @@
             {{ detail.description }}
           </p>
         </div>
-        <v-expand-transition>
-          <v-btn
-            v-if="!modeAdd"
-            @click="handleAddSection"
-            text
-            class="no-uppercase"
-            color="primary"
-          >
-            <v-icon small>mdi-plus</v-icon>
-            <p class="mb-0">Tambah Section</p>
-          </v-btn>
-        </v-expand-transition>
       </div>
-
       <div
         class="d-flex flex-row justify-space-between white py-2 px-9 rounded-lg"
       >
@@ -402,7 +389,12 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="() => handleEdit(q, i, j)" link>
+              <v-list-item
+                :disabled="modeAdd || questionModeAdd"
+                @click="() => handleEdit(q, i, j)"
+                link
+                :class="{ disabledColor: modeAdd || questionModeAdd }"
+              >
                 <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
                 <p class="selection-item ma-0">Edit Data</p>
               </v-list-item>
@@ -428,17 +420,31 @@
             </v-list>
           </v-menu>
         </div>
-        <v-expand-transition :key="`part-3-${i}`">
+        <div
+          class="d-flex flex-row align-center justify-space-between my-4"
+          :key="`part-3-${i}`"
+        >
+          <v-btn
+            :disabled="modeAdd || questionModeAdd"
+            @click="handleAddSection"
+            text
+            class="no-uppercase"
+            color="primary"
+          >
+            <v-icon small>mdi-plus</v-icon>
+            <p class="mb-0">Tambah Kolom</p>
+          </v-btn>
           <v-btn
             v-if="e.question.every((e2) => e2.modeAdd == false)"
             @click="() => handleAddSoal(i)"
             color="primary"
-            class="no-uppercase my-5"
+            class="no-uppercase"
             outlined
+            :disabled="modeAdd || questionModeAdd"
           >
-            Tambahkan Soal
+            Tambah Soal
           </v-btn>
-        </v-expand-transition>
+        </div>
       </template>
     </template>
   </div>
@@ -757,11 +763,6 @@ export default {
         this.resetEditSectionVariable();
       } else {
         this.sections.splice(i, 1);
-        this.$vuetify.goTo(0, {
-          duration: 500,
-          offset: 0,
-          easing: "easeInOutCubic",
-        });
         this.modeAdd = false;
       }
     },
@@ -1101,6 +1102,11 @@ export default {
     },
     isAvailable() {
       return this.detail?.secureId;
+    },
+    questionModeAdd() {
+      return this.sections.some((e) =>
+        e.question.some((e2) => e2.modeAdd == true)
+      );
     },
   },
 };
