@@ -636,7 +636,10 @@ export default {
       };
     },
     handleSaveQuestion(q, i, j) {
-      this.sections[i].question[j].loadingSubmit = true;
+      this.sections[i].question.splice(j, 1, {
+        ...this.sections[i].question[j],
+        loadingSubmit: true,
+      });
 
       QuestionService.insertQuestion({
         sectionSecureId: this.sections[i].secureId,
@@ -671,7 +674,12 @@ export default {
             color: "error",
           });
         })
-        .finally(() => (this.sections[i].question[j].loadingSubmit = false));
+        .finally(() => {
+          this.sections[i].question.splice(j, 1, {
+            ...this.sections[i].question[j],
+            loadingSubmit: false,
+          });
+        });
     },
     handleSaveSection(i) {
       const Payload = {
@@ -689,7 +697,10 @@ export default {
       this.requestInsert(Payload, i);
     },
     requestInsert(payload, i) {
-      this.sections[i].loadingSubmit = true;
+      this.sections.splice(i, 1, {
+        ...this.sections[i],
+        loadingSubmit: true,
+      });
       QuestionService.insertSection({ ...payload })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -733,7 +744,12 @@ export default {
             color: "error",
           });
         })
-        .finally(() => (this.sections[i].loadingSubmit = false));
+        .finally(() => {
+          this.sections.splice(i, 1, {
+            ...this.sections[i],
+            loadingSubmit: false,
+          });
+        });
     },
     handleCancelSection(i, type = "edit") {
       if (this.sections[i]?.secureId && type == "edit") {
@@ -806,9 +822,11 @@ export default {
         e.modeAdd = false;
         e.question.map((e2, i3) => {
           if (e2.modeAdd == true) {
-            this.sections[i2].question[i3] = {
-              ...this.editedQuestion,
-            };
+            if (this.sections[i2].question[i3].secureId) {
+              this.sections[i2].question[i3] = {
+                ...this.editedQuestion,
+              };
+            } else this.sections[i2].question.splice(i3, 1);
           }
           e2.modeAdd = false;
         });
@@ -844,7 +862,7 @@ export default {
       });
 
       // Going to the last section of the website
-      this.$vuetify.goTo(9999, {
+      this.$vuetify.goTo("#last-section", {
         duration: 1500,
         offset: 0,
         easing: "easeInOutCubic",

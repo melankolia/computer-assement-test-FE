@@ -1,52 +1,67 @@
 <template>
-  <div class="d-flex flex-column" style="background: #f8f6fb; height: 100%">
-    <div
-      class="
-        d-flex
-        flex-row
-        white
-        justify-space-between
-        align-center
-        py-5
-        px-10
-      "
-      :class="{ 'height-is-completed': isCompleted && visible }"
-    >
-      <!-- Answering Mode -->
-      <template v-if="!visible">
-        <div class="d-flex flex-column">
-          <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
-          <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
-        </div>
-        <div class="d-flex flex-row align-center">
-          <img width="20" height="22" src="@/assets/icons/time.svg" />
-          <p class="timer-font mb-0 mx-2">
-            {{ minutes || "--" }}:{{ seconds || "--" }}
-          </p>
-        </div>
-        <v-menu rounded left min-width="188px">
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              small
-              depressed
-              icon
-              class="rounded-lg"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="confirmBack" link>
-              <p class="selection-item ma-0">Keluar</p>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-    </div>
+  <div
+    v-scroll="onScroll"
+    class="d-flex flex-column"
+    style="background: #f8f6fb; height: 100%"
+  >
     <v-expand-transition>
-      <div v-if="!visible" class="d-flex flex-row justify-space-between">
+      <div
+        class="
+          d-flex
+          flex-row
+          white
+          justify-space-between
+          align-center
+          py-5
+          px-10
+        "
+        :class="{
+          'height-is-completed': isCompleted && visible,
+          'fixed-div': floating,
+        }"
+      >
+        <!-- Answering Mode -->
+        <template v-if="!visible">
+          <div class="d-flex flex-column">
+            <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
+            <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
+          </div>
+          <div class="d-flex flex-row align-center">
+            <img width="20" height="22" src="@/assets/icons/time.svg" />
+            <p class="timer-font mb-0 mx-2">
+              {{ minutes || "--" }}:{{ seconds || "--" }}
+            </p>
+          </div>
+          <v-menu rounded left min-width="188px">
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                small
+                depressed
+                icon
+                class="rounded-lg"
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="confirmBack" link>
+                <p class="selection-item ma-0">Keluar</p>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </div>
+    </v-expand-transition>
+    <v-expand-transition>
+      <div
+        v-if="!visible"
+        class="d-flex flex-row justify-space-between"
+        :class="{
+          marginized: floating,
+        }"
+      >
         <!-- Answering Mode -->
         <div
           class="d-flex flex-column my-4 mx-10"
@@ -95,16 +110,6 @@
                   {{ sections[sectionIndex].tableName }}
                 </p>
                 <table>
-                  <tr>
-                    <td
-                      v-for="(firstRow, iFirstRow) in sections[sectionIndex]
-                        .firstRow"
-                      class="px-4 py-2"
-                      :key="`first-row-${iFirstRow}`"
-                    >
-                      {{ firstRow }}
-                    </td>
-                  </tr>
                   <tr>
                     <td
                       v-for="(secondRow, iSecondRow) in sections[sectionIndex]
@@ -304,6 +309,7 @@ export default {
   },
   data() {
     return {
+      floating: false,
       loadingChangeSection: false,
       loading: false,
       visible: false,
@@ -545,6 +551,11 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.floating = top > 40;
     },
   },
   beforeDestroy() {

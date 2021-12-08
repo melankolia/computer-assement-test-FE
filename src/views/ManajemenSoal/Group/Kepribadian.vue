@@ -377,7 +377,7 @@ export default {
       this.resetEditVariable();
 
       // Going to the last section of the website
-      this.$vuetify.goTo(9999, {
+      this.$vuetify.goTo("#last-section", {
         duration: 1500,
         offset: 0,
         easing: "easeInOutCubic",

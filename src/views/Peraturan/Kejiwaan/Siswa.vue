@@ -6,15 +6,12 @@
       v-html="items.kejiwaanVO.siswa.description"
     />
     <template v-else>
-      <v-textarea
-        v-model="items.kejiwaanVO.siswa.description"
-        auto-grow
-        hide-details
-        filled
-        outlined
-        dense
-        class="rounded"
-        :rows="16"
+      <quill-editor
+        class="editor"
+        ref="myTextEditor"
+        :value="items.kejiwaanVO.siswa.description"
+        :options="editorOption"
+        @change="onEditorChange"
       />
       <div class="d-flex flex-row mt-4 align-self-end">
         <v-btn
@@ -66,10 +63,32 @@ export default {
   },
   data() {
     return {
+      editorOption: {
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ size: ["small", false, "large", "huge"] }],
+            [{ font: [] }],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ script: "sub" }, { script: "super" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            [{ direction: "rtl" }],
+            ["clean"],
+          ],
+        },
+      },
       loading: false,
     };
   },
   methods: {
+    onEditorChange(value) {
+      this.debounce(() => {
+        this.items.kejiwaanVO.siswa.description = value.html;
+      });
+    },
     handleSubmit() {
       const Payload = {
         secureId: this.items.kejiwaanVO.siswa.secureId || "",

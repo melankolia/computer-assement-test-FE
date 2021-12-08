@@ -607,7 +607,7 @@ export default {
     },
     handleAdd() {
       this.modeAdd = true;
-      this.$vuetify.goTo(9999, {
+      this.$vuetify.goTo("#last-section", {
         duration: 1500,
         offset: 0,
         easing: "easeInOutCubic",

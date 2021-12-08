@@ -26,7 +26,9 @@
       v-model="selected"
       :headers="pesertaHeaders"
       :items="items"
-      hide-default-footer
+      :footer-props="{
+        'items-per-page-options': rowsPerPageItems,
+      }"
       show-select
       show-expand
       single-expand
@@ -312,6 +314,7 @@ export default {
       ],
       items: [],
       expanded: [],
+      rowsPerPageItems: [5, 10, 15, -1],
 
       // Form properties
       payload: {

@@ -6,6 +6,7 @@
         <router-view />
       </transition>
     </v-container>
+    <div id="last-section" />
   </v-main>
 </template>
 
