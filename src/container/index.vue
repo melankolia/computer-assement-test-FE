@@ -2,7 +2,11 @@
   <v-main>
     <Sidebar />
     <FloatingScrollButton />
-    <v-container class="pa-0" style="background: #f8f6fb; height: 100%" fluid>
+    <v-container
+      class="px-0 py-6"
+      style="background: #f8f6fb; height: 100%"
+      fluid
+    >
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>

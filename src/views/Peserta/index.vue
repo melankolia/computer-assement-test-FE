@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-12 mt-6">
+  <div class="px-6 py-12">
     <p class="text-h4 font-weight-bold ma-0">Daftar Peserta</p>
     <v-row dense class="mt-9" align="center" justify="space-between">
       <v-col cols="12" xs="12" sm="4">

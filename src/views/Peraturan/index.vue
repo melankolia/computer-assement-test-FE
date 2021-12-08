@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-12 mt-6">
+  <div class="px-6 py-12">
     <p class="text-h4 font-weight-bold mt-0 mb-9 font-inter">
       Peraturan Soal & Siswa
     </p>
