@@ -1,11 +1,27 @@
 <template>
   <div class="container-color d-flex flex-row justify-space-around pa-12">
-    <p class="welcome-text text-h2 white--text py-12">
-      Buktikan <br />
-      Dengan Nyata <br />
-      <span class="tagline-text text-h4"> Usahamu Meraih Mimpi </span>
-    </p>
-    <div class="d-flex flex-column justify-space-between card-login pa-12">
+    <div class="d-flex flex-column">
+      <p class="welcome-text text-h2 white--text">
+        Buktikan Dengan <br />
+        Nyata <br />
+      </p>
+      <v-img
+        src="@/assets/icons/asset_3.svg"
+        alt="Not Founds"
+        aspect-ratio="10"
+        contain
+      />
+    </div>
+    <div
+      class="
+        d-flex
+        flex-column
+        align-self-center
+        justify-space-between
+        card-login
+        pa-12
+      "
+    >
       <div class="section-label">
         <p class="ma-0 font-weight-bold login-text">Login</p>
         <p class="ma-0 login-sub-text">Masuk Untuk Mengerjakan Soal</p>
@@ -127,7 +143,7 @@ export default {
   font-style: normal;
   font-weight: bold;
   line-height: 120%;
-  margin-top: 140px;
+  margin-top: 80px;
 }
 
 .tagline-text {
@@ -144,7 +160,7 @@ export default {
 }
 
 .section-label {
-  padding-top: 140px;
+  /* padding-top: 140px; */
 }
 
 .login-text {

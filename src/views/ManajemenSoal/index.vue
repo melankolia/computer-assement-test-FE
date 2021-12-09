@@ -1,19 +1,24 @@
 <template>
-  <div>
+  <div v-scroll="onScroll">
     <v-expand-transition>
-      <v-btn
+      <div
+        class="d-flex flex-row white align-center fixed-div-soal"
+        :class="{ 'div-box-shadow': floating }"
         v-show="!isShown"
-        @click="handleBack"
-        color="primary"
-        depressed
-        text
-        class="rounded-lg no-uppercase mb-2"
       >
-        <p class="ma-0">
-          <v-icon class="mr-1" small>mdi-chevron-left</v-icon>
-          Back
-        </p>
-      </v-btn>
+        <v-btn
+          @click="handleBack"
+          color="primary"
+          depressed
+          text
+          class="rounded-lg no-uppercase my-1"
+        >
+          <p class="ma-0">
+            <v-icon class="mr-1" small>mdi-chevron-left</v-icon>
+            Back
+          </p>
+        </v-btn>
+      </div>
     </v-expand-transition>
     <div class="px-6 py-12 mt-6">
       <p class="text-h4 font-weight-bold mt-0 mb-9 font-inter">
@@ -82,12 +87,18 @@ export default {
   data() {
     return {
       isComponent: "Kecerdasan",
+      floating: false,
       query: {},
     };
   },
   methods: {
     handleBack() {
       this.$router.replace({ query: null });
+    },
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.floating = top > 40;
     },
   },
   computed: {

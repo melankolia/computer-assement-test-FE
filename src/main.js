@@ -4,7 +4,9 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 
+// Configuration
 import "./config/cookie.config";
+import "./config/vue-quill.config";
 
 // Filter
 import "./filter/case.filter";

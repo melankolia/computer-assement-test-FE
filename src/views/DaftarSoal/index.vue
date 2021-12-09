@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-12 mt-6">
+  <div class="px-6 py-12">
     <p class="text-h4 font-weight-bold mt-0 mb-9 font-inter">Daftar Soal</p>
     <v-row class="mb-12">
       <v-col cols="12" class="py-2">
