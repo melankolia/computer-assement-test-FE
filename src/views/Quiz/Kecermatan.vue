@@ -418,6 +418,7 @@ export default {
     handleNext(type = "normal") {
       if (!this.isLast) {
         this.loadingChangeSection = true;
+        clearInterval(this.counterFunction);
         setTimeout(() => {
           this.sectionIndex++;
           this.timer = this.duration;
@@ -486,7 +487,9 @@ export default {
           callback: (confirm) => {
             if (confirm) {
               this.loadingChangeSection = true;
+              clearInterval(this.counterFunction);
               setTimeout(() => {
+                this.startCountDown();
                 this.timer = this.duration;
                 this.sectionIndex = i;
                 this.loadingChangeSection = false;
