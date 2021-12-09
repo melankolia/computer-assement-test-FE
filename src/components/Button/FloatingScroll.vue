@@ -11,6 +11,7 @@
       small
       color="primary"
       @click="toTop"
+      style="bottom: 12px"
     >
       <v-icon>mdi-arrow-up</v-icon>
     </v-btn>
