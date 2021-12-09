@@ -125,7 +125,9 @@
               "
               :class="{
                 'number-answer-not-answered-yet':
-                  questions[i].answer.answer == null && i != questionIndex,
+                  questions[i].answer &&
+                  questions[i].answer.answer == null &&
+                  i != questionIndex,
                 'number-answer-active': i == questionIndex,
               }"
               :key="i"
@@ -134,7 +136,9 @@
                 class="mb-0 number-font"
                 :class="{
                   'number-font-not-answered-yet':
-                    questions[i].answer.answer == null && i != questionIndex,
+                    questions[i].answer &&
+                    questions[i].answer.answer == null &&
+                    i != questionIndex,
                   'number-font-active': i == questionIndex,
                 }"
               >

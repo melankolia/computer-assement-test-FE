@@ -6,6 +6,7 @@
     :right="type === 'right'"
     :left="type === 'left'"
     :color="color"
+    style="z-index: 9999999999999"
   >
     <v-icon color="white" v-if="color === 'success'">mdi-check-circle</v-icon>
     <v-icon color="white" v-if="color === 'info'">mdi-information</v-icon>
