@@ -450,9 +450,9 @@ export default {
           benar: 0,
           salah: 0,
         });
-        section.question.forEach((question) => {
-          if (question.answer.value) {
-            payload[index].total += question.answer.value;
+        section?.question.forEach((question) => {
+          if (question?.answer?.value) {
+            payload[index].total += question?.answer?.value;
             payload[index].benar++;
           } else payload[index].salah++;
         });
