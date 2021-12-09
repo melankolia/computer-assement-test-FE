@@ -192,8 +192,11 @@
                               depressed
                               :value="answer"
                               :class="{
-                                active: q.answer.secureId == answer.secureId,
+                                active:
+                                  q.answer &&
+                                  q.answer.secureId == answer.secureId,
                                 'active-font':
+                                  q.answer &&
                                   q.answer.secureId == answer.secureId,
                               }"
                               >{{ answer.symbol }}</v-btn
@@ -246,8 +249,10 @@
                 :class="{
                   answered: iSections >= sectionIndex,
                   'number-answer-not-answered-yet':
+                    sections[iSections].question[i2].answer &&
                     sections[iSections].question[i2].answer.secureId == null,
                   'number-answer-active':
+                    sections[iSections].question[i2].answer &&
                     sections[iSections].question[i2].answer.secureId != null &&
                     iSections == sectionIndex,
                 }"
@@ -257,10 +262,13 @@
                   class="mb-0 number-font"
                   :class="{
                     'number-font-not-answered-yet':
+                      sections[iSections].question[i2].answer &&
                       sections[iSections].question[i2].answer.secureId == null,
                     'number-font-active':
+                      sections[iSections].question[i2].answer &&
                       sections[iSections].question[i2].answer.secureId !=
-                        null && iSections == sectionIndex,
+                        null &&
+                      iSections == sectionIndex,
                   }"
                 >
                   {{ i2 + 1 }}
