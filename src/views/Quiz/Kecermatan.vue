@@ -109,13 +109,17 @@
                 <p class="tabel-kolom-font">
                   {{ sections[sectionIndex].tableName }}
                 </p>
-                <table>
+                <table style="border: 2px solid black !important">
                   <tr>
                     <td
                       v-for="(firstRow, iFirstRow) in sections[sectionIndex]
                         .firstRow"
                       class="px-4 py-2"
                       :key="`first-row-${iFirstRow}`"
+                      style="
+                        border: 2px solid black !important;
+                        font-weight: bold;
+                      "
                     >
                       {{ firstRow }}
                     </td>
@@ -126,6 +130,10 @@
                         .secondRow"
                       class="px-4 py-2"
                       :key="`second-row-${iSecondRow}`"
+                      style="
+                        border: 2px solid black !important;
+                        font-weight: bold;
+                      "
                     >
                       {{ secondRow }}
                     </td>
@@ -661,7 +669,7 @@ export default {
   text-align: center;
 }
 
-table,
+.table-kolom- table,
 td,
 th {
   border: 1px solid #e0e0e0 !important;

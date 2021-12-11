@@ -335,6 +335,7 @@
                     dense
                     class="rounded mr-3"
                     :disabled="!q.modeAdd"
+                    @keyup.enter="() => handleSaveQuestion(q, i, j)"
                   />
                 </div>
               </div>
