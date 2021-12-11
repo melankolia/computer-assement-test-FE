@@ -102,7 +102,21 @@
         </div>
       </div>
       <!-- Section Area -->
-      <template v-for="(e, i) in sections">
+      <div v-if="sections.length == 0" class="d-flex flex-row my-3">
+        <v-expand-transition>
+          <v-btn
+            :disabled="modeAdd || questionModeAdd"
+            @click="handleAddSection"
+            text
+            class="no-uppercase"
+            color="primary"
+          >
+            <v-icon small>mdi-plus</v-icon>
+            <p class="mb-0">Tambah Kolom</p>
+          </v-btn>
+        </v-expand-transition>
+      </div>
+      <template v-else v-for="(e, i) in sections">
         <div class="d-flex flex-row align-center" :key="`part-1-${i}`">
           <p class="section-font mb-0 mr-6">{{ e.title }}</p>
           <v-divider class="my-10" />
@@ -425,16 +439,6 @@
           :key="`part-3-${i}`"
         >
           <v-btn
-            :disabled="modeAdd || questionModeAdd"
-            @click="handleAddSection"
-            text
-            class="no-uppercase"
-            color="primary"
-          >
-            <v-icon small>mdi-plus</v-icon>
-            <p class="mb-0">Tambah Kolom</p>
-          </v-btn>
-          <v-btn
             v-if="e.question.every((e2) => e2.modeAdd == false)"
             @click="() => handleAddSoal(i)"
             color="primary"
@@ -443,6 +447,16 @@
             :disabled="modeAdd || questionModeAdd"
           >
             Tambah Soal
+          </v-btn>
+          <v-btn
+            :disabled="modeAdd || questionModeAdd"
+            @click="handleAddSection"
+            text
+            class="no-uppercase"
+            color="primary"
+          >
+            <v-icon small>mdi-plus</v-icon>
+            <p class="mb-0">Tambah Kolom</p>
           </v-btn>
         </div>
       </template>
