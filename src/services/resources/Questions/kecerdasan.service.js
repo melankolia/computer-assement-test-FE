@@ -11,6 +11,12 @@ const QuestionService = {
   deleteData(params) {
     return MainInstance.delete(QUESTIONS.KECERDASAN.DELETE, { params });
   },
+  uploadPhoto(data, params) {
+    return MainInstance.post(QUESTIONS.KECERDASAN.UPLOAD, data, { params });
+  },
+  deletePhoto(data) {
+    return MainInstance.delete(QUESTIONS.KECERDASAN.DELETE_PHOTO, { data });
+  },
 };
 
 export default QuestionService;
