@@ -1,7 +1,17 @@
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex flex-row justify-space-between align-center">
-      <p class="header-3 mb-0">Kejiwaan</p>
+      <div class="d-flex flex-column" style="width: 25%">
+        <p class="header-3 mb-5">Kejiwaan</p>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          placeholder="Cari Paket Soal"
+          solo
+          class="rounded"
+        >
+        </v-text-field>
+      </div>
       <v-expand-transition>
         <v-btn
           v-if="!modeAdd"
@@ -283,6 +293,7 @@ export default {
   },
   data() {
     return {
+      search: null,
       validEdited: false,
       validSubmit: false,
       loading: false,
@@ -320,14 +331,24 @@ export default {
       return this.items.length > 0;
     },
   },
+  watch: {
+    search: {
+      handler(val) {
+        this.fetchListDebounce(() => this.getList(val));
+      },
+      deep: true,
+    },
+  },
   activated() {
     this.getList();
   },
   methods: {
-    getList() {
+    getList(search = null) {
       this.loading = true;
       this.items = [];
-      GroupService.getListKejiwaan()
+      GroupService.getListKejiwaan({
+        search,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.items = [...result];
