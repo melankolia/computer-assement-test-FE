@@ -241,16 +241,13 @@
           style="width: 29%"
         >
           <p class="ma-0 daftar-soal-font mb-8">Daftar Soal</p>
-          <div
-            v-for="(e, iSections) in sections"
-            class="d-flex flex-column"
-            :key="`sections-${iSections}`"
-          >
-            <p class="ma-0 kecermatan-font mx-11 px-2 mb-2">{{ e.title }}</p>
+          <div class="d-flex flex-column" :key="`sections-active`">
+            <p class="ma-0 kecermatan-font mx-11 px-2 mb-2">
+              {{ sections[sectionIndex].title }}
+            </p>
             <div class="d-flex flex-row flex-wrap mx-11">
               <div
-                @click="() => handlePick(iSections)"
-                v-for="(e2, i2) in e.question"
+                v-for="(eActive, iActive) in sections[sectionIndex].question"
                 class="
                   number-answer
                   rounded
@@ -262,34 +259,90 @@
                   mb-3
                 "
                 :class="{
-                  answered: iSections >= sectionIndex,
                   'number-answer-not-answered-yet':
-                    sections[iSections].question[i2].answer &&
-                    sections[iSections].question[i2].answer.secureId == null,
+                    sections[sectionIndex].question[iActive].answer &&
+                    sections[sectionIndex].question[iActive].answer.secureId ==
+                      null,
                   'number-answer-active':
-                    sections[iSections].question[i2].answer &&
-                    sections[iSections].question[i2].answer.secureId != null &&
-                    iSections == sectionIndex,
+                    sections[sectionIndex].question[iActive].answer &&
+                    sections[sectionIndex].question[iActive].answer.secureId !=
+                      null &&
+                    sectionIndex == sectionIndex,
                 }"
-                :key="`question-kecermatan-${i2}`"
+                :key="`question-kecermatan-${iActive}`"
               >
                 <p
                   class="mb-0 number-font"
                   :class="{
                     'number-font-not-answered-yet':
+                      sections[sectionIndex].question[iActive].answer &&
+                      sections[sectionIndex].question[iActive].answer
+                        .secureId == null,
+                    'number-font-active':
+                      sections[sectionIndex].question[iActive].answer &&
+                      sections[sectionIndex].question[iActive].answer
+                        .secureId != null &&
+                      sectionIndex == sectionIndex,
+                  }"
+                >
+                  {{ iActive + 1 }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            v-for="(e, iSections) in sections"
+            class="d-flex flex-column"
+            :key="`sections-${iSections}`"
+          >
+            <template v-if="iSections !== sectionIndex">
+              <p class="ma-0 kecermatan-font mx-11 px-2 mb-2">{{ e.title }}</p>
+              <div class="d-flex flex-row flex-wrap mx-11">
+                <div
+                  @click="() => handlePick(iSections)"
+                  v-for="(e2, i2) in e.question"
+                  class="
+                    number-answer
+                    rounded
+                    d-flex
+                    flex-column
+                    align-center
+                    justify-center
+                    mx-2
+                    mb-3
+                  "
+                  :class="{
+                    answered: iSections >= sectionIndex,
+                    'number-answer-not-answered-yet':
                       sections[iSections].question[i2].answer &&
                       sections[iSections].question[i2].answer.secureId == null,
-                    'number-font-active':
+                    'number-answer-active':
                       sections[iSections].question[i2].answer &&
                       sections[iSections].question[i2].answer.secureId !=
                         null &&
                       iSections == sectionIndex,
                   }"
+                  :key="`question-kecermatan-${i2}`"
                 >
-                  {{ i2 + 1 }}
-                </p>
+                  <p
+                    class="mb-0 number-font"
+                    :class="{
+                      'number-font-not-answered-yet':
+                        sections[iSections].question[i2].answer &&
+                        sections[iSections].question[i2].answer.secureId ==
+                          null,
+                      'number-font-active':
+                        sections[iSections].question[i2].answer &&
+                        sections[iSections].question[i2].answer.secureId !=
+                          null &&
+                        iSections == sectionIndex,
+                    }"
+                  >
+                    {{ i2 + 1 }}
+                  </p>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
