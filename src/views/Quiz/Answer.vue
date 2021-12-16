@@ -61,7 +61,7 @@ export default {
     },
     image: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false,
     },
   },

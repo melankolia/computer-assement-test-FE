@@ -380,6 +380,7 @@ export default {
       this.loading = true;
       QuestionService.getDetail({
         secureId: this.kejiwaanSecureId || this.id,
+        type: "admin",
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
