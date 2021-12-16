@@ -1,8 +1,16 @@
 <template>
   <div>
-    <p class="question-text-font ml-8 mt-4">
-      {{ data.question.question }}
-    </p>
+    <template v-if="!image || data.question.type == 'text'">
+      <p class="question-text-font ml-8 mt-4">
+        {{ data.question.question }}
+      </p>
+    </template>
+    <div v-else class="d-flex ml-8 my-6">
+      <img
+        height="100px"
+        :src="`${data.question.question}?lastMod=${this.lastMod++}`"
+      />
+    </div>
     <v-btn-toggle
       v-bind="{ mandatory: data.answer.answer != null }"
       class="ml-12"
@@ -26,9 +34,14 @@
           }"
           >{{ e.symbol }}</v-btn
         >
-        <p class="mb-0">
+        <p v-if="!image || e.type == 'text'" class="mb-0">
           {{ e.answer }}
         </p>
+        <img
+          v-else
+          :src="`${e.answer}?lastMod=${this.lastMod++}`"
+          height="40px"
+        />
       </div>
     </v-btn-toggle>
   </div>
@@ -46,6 +59,16 @@ export default {
       required: true,
       default: false,
     },
+    image: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      lastMod: 0,
+    };
   },
 };
 </script>

@@ -1078,10 +1078,11 @@ export default {
     },
     handleRemoveImageAdd(type = "question", pertanyaanNo, index = 0) {
       if (type == "question") {
-        const fileName =
+        const fileNameRaw =
           this.item.question.question.split("/")[
             this.item.question.question.split("/").length - 1
           ];
+        const fileName = fileNameRaw.split("?lastMod=")[0];
         this.deleteImage(
           pertanyaanNo,
           fileName,
@@ -1094,10 +1095,11 @@ export default {
           }
         );
       } else {
-        const fileName =
+        const fileNameRaw =
           this.item.answerList[index].answer.split("/")[
             this.item.answerList[index].answer.split("/").length - 1
           ];
+        const fileName = fileNameRaw.split("?lastMod=")[0];
         this.deleteImage(
           pertanyaanNo,
           fileName,

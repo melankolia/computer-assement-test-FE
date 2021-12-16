@@ -70,6 +70,7 @@
               <Answer
                 :data="questions[questionIndex]"
                 :disabled="isCompleted"
+                image
               />
             </transition>
           </div>
