@@ -6,10 +6,7 @@
       </p>
     </template>
     <div v-else class="d-flex ml-8 my-6">
-      <img
-        height="100px"
-        :src="`${data.question.question}?lastMod=${this.lastMod++}`"
-      />
+      <img height="100px" :src="data.question.question" />
     </div>
     <v-btn-toggle
       v-bind="{ mandatory: data.answer.answer != null }"
@@ -37,11 +34,7 @@
         <p v-if="!image || e.type == 'text'" class="mb-0">
           {{ e.answer }}
         </p>
-        <img
-          v-else
-          :src="`${e.answer}?lastMod=${this.lastMod++}`"
-          height="40px"
-        />
+        <img v-else :src="e.answer" height="40px" />
       </div>
     </v-btn-toggle>
   </div>
@@ -64,11 +57,6 @@ export default {
       required: false,
       default: false,
     },
-  },
-  data() {
-    return {
-      lastMod: 0,
-    };
   },
 };
 </script>
