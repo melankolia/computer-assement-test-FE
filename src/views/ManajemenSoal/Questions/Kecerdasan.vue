@@ -139,17 +139,28 @@
             </v-menu>
           </div>
           <div class="px-12">
-            <p class="font-question font-inter mb-8">
+            <p
+              v-if="e.question.type == 'text'"
+              class="font-question font-inter mb-8"
+            >
               {{ i + 1 }}. {{ e.question.question }}
             </p>
+            <div v-else class="font-question font-inter mb-8 d-flex flex-row">
+              <p class="mr-2">{{ i + 1 }}.</p>
+              <img :src="e.question.question" height="100px" />
+            </div>
             <div
               v-for="(e2, i2) in e.answerList"
               :key="`answer-${i2}`"
               class="d-flex flex-row mx-5 justify-space-between my-2"
             >
-              <p class="font-answer font-inter">
+              <p v-if="e2.type == 'text'" class="font-answer font-inter">
                 {{ e2.symbol }}. {{ e2.answer }}
               </p>
+              <div v-else class="d-flex flex-row">
+                <p class="font-answer font-inter mr-2">{{ e2.symbol }}.</p>
+                <img :src="e2.answer" height="40px" />
+              </div>
               <p class="font-answer font-inter">{{ e2.value }} Poin</p>
             </div>
           </div>
@@ -162,14 +173,54 @@
           <div class="d-flex flex-column px-12">
             <div class="d-flex flex-column mb-4">
               <p class="font-question-add">Pertanyaan No. {{ i + 1 }}</p>
+              <input
+                accept="image/jpg"
+                type="file"
+                :ref="`dataFile-question-${i}`"
+                id="dataFile"
+                hidden
+                :value="file"
+                @change="
+                  (event) => handleUploadImageEdit('question', event, i + 1)
+                "
+              />
               <v-textarea
+                v-if="edited.question.type == 'text'"
                 v-model="edited.question.question"
                 hide-details
                 filled
                 outlined
                 dense
                 class="rounded"
-              />
+              >
+                <template #append>
+                  <v-icon
+                    @click="() => $refs[`dataFile-question-${i}`][0].click()"
+                    class="answered"
+                  >
+                    mdi-upload
+                  </v-icon>
+                </template>
+              </v-textarea>
+              <div v-else class="font-question font-inter mb-8 d-flex flex-row">
+                <p class="mr-2">{{ i + 1 }}.</p>
+                <div class="d-flex flex-row">
+                  <img
+                    height="100px"
+                    :src="edited.question.question"
+                    alt="answer image"
+                  />
+                  <v-btn
+                    @click="() => handleRemoveImageEdit('question', i + 1)"
+                    class="mx-2"
+                    color="red"
+                    icon
+                    :loading="edited.question.loadingUpload"
+                  >
+                    <v-icon> mdi-close </v-icon>
+                  </v-btn>
+                </div>
+              </div>
             </div>
             <div
               v-for="(ed, index) in edited.answerList"
@@ -186,14 +237,56 @@
                 class="rounded mr-3"
                 style="max-width: 50px"
               />
-              <v-text-field
-                v-model="ed.answer"
-                hide-details
-                filled
-                outlined
-                dense
-                class="rounded"
-              />
+              <template v-if="ed.type == 'text'">
+                <input
+                  accept="image/jpg"
+                  type="file"
+                  :ref="`dataFile-answer-${index}`"
+                  id="dataFile"
+                  hidden
+                  :value="file"
+                  @change="
+                    (event) =>
+                      handleUploadImageEdit('answer', event, i + 1, index)
+                  "
+                />
+                <v-text-field
+                  v-model="ed.answer"
+                  hide-details
+                  filled
+                  outlined
+                  dense
+                  class="rounded"
+                >
+                  <template #append>
+                    <v-icon
+                      @click="
+                        () => $refs[`dataFile-answer-${index}`][0].click()
+                      "
+                      class="answered"
+                    >
+                      mdi-upload
+                    </v-icon>
+                  </template>
+                </v-text-field>
+              </template>
+              <template v-else>
+                <img
+                  height="40px"
+                  width="40px"
+                  :src="ed.answer"
+                  alt="answer image"
+                />
+                <v-btn
+                  @click="() => handleRemoveImageEdit('answer', i + 1, index)"
+                  class="mx-2"
+                  color="red"
+                  icon
+                  :loading="edited.answerList[index].loadingUpload"
+                >
+                  <v-icon> mdi-close </v-icon>
+                </v-btn>
+              </template>
             </div>
             <div class="d-flex flex-row align-self-end mt-4">
               <v-btn
@@ -227,14 +320,56 @@
               <p class="font-question-add">
                 Pertanyaan No. {{ questionLength }}
               </p>
-              <v-textarea
-                v-model="item.question.question"
-                hide-details
-                filled
-                outlined
-                dense
-                class="rounded"
-              />
+              <template v-if="item.question.type == 'text'">
+                <input
+                  accept="image/jpg"
+                  type="file"
+                  ref="dataFile"
+                  id="dataFile"
+                  hidden
+                  :value="file"
+                  @change="
+                    (event) =>
+                      handleUploadImageAdd('question', event, questionLength)
+                  "
+                />
+                <v-textarea
+                  v-model="item.question.question"
+                  hide-details
+                  filled
+                  outlined
+                  dense
+                  class="rounded"
+                  :loading="item.question.loadingUpload"
+                >
+                  <template #append>
+                    <v-icon
+                      @click="() => $refs.dataFile.click()"
+                      class="answered"
+                    >
+                      mdi-upload
+                    </v-icon>
+                  </template>
+                </v-textarea>
+              </template>
+              <div v-else class="d-flex flex-row">
+                <img
+                  height="100px"
+                  :src="item.question.question"
+                  alt="answer image"
+                />
+                <v-btn
+                  @click="
+                    () => handleRemoveImageAdd('question', questionLength)
+                  "
+                  class="mx-2"
+                  color="red"
+                  icon
+                  :loading="item.question.loadingUpload"
+                >
+                  <v-icon> mdi-close </v-icon>
+                </v-btn>
+              </div>
             </div>
             <div
               v-for="(payload, index) in item.answerList"
@@ -251,14 +386,64 @@
                 class="rounded mr-3"
                 style="max-width: 50px"
               />
-              <v-text-field
-                v-model="payload.answer"
-                hide-details
-                filled
-                outlined
-                dense
-                class="rounded"
-              />
+              <template v-if="payload.type == 'text'">
+                <input
+                  accept="image/jpg"
+                  type="file"
+                  :ref="`dataFile-answer-${index}`"
+                  id="dataFile"
+                  hidden
+                  :value="file"
+                  @change="
+                    (event) =>
+                      handleUploadImageAdd(
+                        'answer',
+                        event,
+                        questionLength,
+                        index
+                      )
+                  "
+                />
+                <v-text-field
+                  v-model="payload.answer"
+                  hide-details
+                  filled
+                  outlined
+                  dense
+                  class="rounded"
+                  :loading="payload.loadingUpload"
+                >
+                  <template #append>
+                    <v-icon
+                      @click="
+                        () => $refs[`dataFile-answer-${index}`][0].click()
+                      "
+                      class="answered"
+                    >
+                      mdi-upload
+                    </v-icon>
+                  </template>
+                </v-text-field>
+              </template>
+              <template v-else>
+                <img
+                  height="40px"
+                  width="40px"
+                  :src="payload.answer"
+                  alt="answer image"
+                />
+                <v-btn
+                  @click="
+                    () => handleRemoveImageAdd('answer', questionLength, index)
+                  "
+                  class="mx-2"
+                  color="red"
+                  icon
+                  :loading="item.answerList[index].loadingUpload"
+                >
+                  <v-icon> mdi-close </v-icon>
+                </v-btn>
+              </template>
             </div>
             <div class="d-flex flex-row align-self-end mt-4">
               <v-btn
@@ -315,6 +500,8 @@ export default {
   data() {
     return {
       id: this.$route.query?.kecerdasanSecureId,
+      file: null,
+      lastMod: 0,
       modeAdd: false,
       modeEdit: false,
       loading: false,
@@ -333,6 +520,8 @@ export default {
         question: {
           question: null,
           secureId: null,
+          type: "text",
+          loadingUpload: false,
         },
         modeAdd: false,
         answerList: [
@@ -340,26 +529,36 @@ export default {
             symbol: "A",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "B",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "C",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "D",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "E",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
         ],
       },
@@ -368,6 +567,8 @@ export default {
         question: {
           question: null,
           secureId: null,
+          type: "text",
+          loadingUpload: false,
         },
         modeAdd: false,
         loadingDelete: false,
@@ -376,26 +577,36 @@ export default {
             symbol: "A",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "B",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "C",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "D",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
           {
             symbol: "E",
             answer: null,
             value: 0,
+            type: "text",
+            loadingUpload: false,
           },
         ],
       },
@@ -447,6 +658,7 @@ export default {
         question: {
           question: null,
           secureId: null,
+          type: "text",
         },
         groupSecureId: null,
         answerList: [
@@ -454,26 +666,31 @@ export default {
             symbol: "A",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "B",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "C",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "D",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "E",
             answer: null,
             value: 0,
+            type: "text",
           },
         ],
       });
@@ -483,6 +700,7 @@ export default {
         question: {
           question: null,
           secureId: null,
+          type: "text",
         },
         groupSecureId: null,
         loadingDelete: false,
@@ -492,26 +710,31 @@ export default {
             symbol: "A",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "B",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "C",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "D",
             answer: null,
             value: 0,
+            type: "text",
           },
           {
             symbol: "E",
             answer: null,
             value: 0,
+            type: "text",
           },
         ],
       });
@@ -673,7 +896,6 @@ export default {
         easing: "easeInOutCubic",
       });
     },
-
     handleDelete(element, index) {
       this.$confirm({
         title: "Confirm",
@@ -692,7 +914,9 @@ export default {
     deleteData(item, index) {
       this.questions[index].loadingDelete = true;
       QuestionService.deleteData({
+        groupSecureId: this.id,
         secureId: item?.question?.secureId,
+        question: `Pertanyaan-${index + 1}`,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -750,6 +974,194 @@ export default {
           });
         });
     },
+    async uploadImage(no, file, fileName, loading, callback) {
+      let formData = new FormData();
+      formData.append("file", file);
+      loading && loading(true);
+
+      QuestionService.uploadPhoto(formData, {
+        secureId: this.id,
+        question: `Pertanyaan-${no}`,
+        fileName,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            callback && callback(result);
+          } else {
+            console.error(result);
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal upload gambar",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal upload gambar",
+            color: "error",
+          });
+        })
+        .finally(() => {
+          loading && loading(false);
+        });
+    },
+    async deleteImage(no, fileName, loading, callback) {
+      loading && loading(true);
+      QuestionService.deletePhoto({
+        secureId: this.id,
+        question: `Pertanyaan-${no}`,
+        fileName,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            callback && callback();
+          } else {
+            console.error(result);
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal upload gambar",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal upload gambar",
+            color: "error",
+          });
+        })
+        .finally(() => {
+          loading && loading(false);
+        });
+    },
+    handleUploadImageAdd(type = "question", event, pertanyaanNo, index = 0) {
+      const file = event.target.files?.[0];
+
+      if (type == "question") {
+        this.uploadImage(
+          pertanyaanNo,
+          file,
+          `pertanyaan.jpg`,
+          (data) => {
+            this.item.question = { ...this.item.question, loadingUpload: data };
+          },
+          (data) => {
+            this.item.question.type = "image";
+            this.item.question.question = `${data.imageUri}?lastMod=${this
+              .lastMod++}`;
+          }
+        );
+      } else {
+        this.uploadImage(
+          pertanyaanNo,
+          file,
+          `jawaban-${index + 1}.jpg`,
+          (data) => {
+            this.item.answerList.splice(index, 1, {
+              ...this.item.answerList[index],
+              loadingUpload: data,
+            });
+          },
+          (data) => {
+            this.item.answerList[index].type = "image";
+            this.item.answerList[index].answer = `${
+              data.imageUri
+            }?lastMod=${this.lastMod++}`;
+          }
+        );
+      }
+    },
+    handleRemoveImageAdd(type = "question", pertanyaanNo, index = 0) {
+      if (type == "question") {
+        const fileNameRaw =
+          this.item.question.question.split("/")[
+            this.item.question.question.split("/").length - 1
+          ];
+        const fileName = fileNameRaw.split("?lastMod=")[0];
+        this.deleteImage(
+          pertanyaanNo,
+          fileName,
+          (data) => {
+            this.item.question.loadingUpload = data;
+          },
+          () => {
+            this.item.question.type = "text";
+            this.item.question.question = null;
+          }
+        );
+      } else {
+        const fileNameRaw =
+          this.item.answerList[index].answer.split("/")[
+            this.item.answerList[index].answer.split("/").length - 1
+          ];
+        const fileName = fileNameRaw.split("?lastMod=")[0];
+        this.deleteImage(
+          pertanyaanNo,
+          fileName,
+          (data) => {
+            this.item.answerList[index].loadingUpload = data;
+          },
+          () => {
+            this.item.answerList[index].type = "text";
+            this.item.answerList[index].answer = null;
+          }
+        );
+      }
+    },
+    handleUploadImageEdit(type = "question", event, pertanyaanNo, index = 0) {
+      const file = event.target.files?.[0];
+      console.log(event.target.files);
+      if (type == "question") {
+        this.uploadImage(
+          pertanyaanNo,
+          file,
+          `pertanyaan.jpg`,
+          (data) => {
+            this.edited.question = {
+              ...this.edited.question,
+              loadingUpload: data,
+            };
+          },
+          (data) => {
+            this.edited.question.type = "image";
+            this.edited.question.question = `${data.imageUri}?lastMod=${this
+              .lastMod++}`;
+          }
+        );
+      } else {
+        this.uploadImage(
+          pertanyaanNo,
+          file,
+          `jawaban-${index + 1}.jpg`,
+          (data) => {
+            this.edited.answerList.splice(index, 1, {
+              ...this.edited.answerList[index],
+              loadingUpload: data,
+            });
+          },
+          (data) => {
+            this.edited.answerList[index].type = "image";
+            this.edited.answerList[index].answer = `${
+              data.imageUri
+            }?lastMod=${this.lastMod++}`;
+          }
+        );
+      }
+    },
+    handleRemoveImageEdit(type = "question", pertanyaanNo, index = 0) {
+      if (type == "question") {
+        this.edited.question.type = "text";
+        this.edited.question.question = null;
+      } else {
+        this.edited.answerList[index].type = "text";
+        this.edited.answerList[index].answer = null;
+      }
+    },
   },
   computed: {
     questionLength() {
@@ -760,6 +1172,14 @@ export default {
     },
     isAvailable() {
       return this.detail?.secureId;
+    },
+  },
+  watch: {
+    file: {
+      handler(val) {
+        console.log(val);
+      },
+      deep: true,
     },
   },
 };

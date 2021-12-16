@@ -55,6 +55,8 @@ export const QUESTIONS = {
     INSERT: `${questions}/kecerdasan`,
     DELETE: `${questions}/kecerdasan`,
     ACTIVATION: `${questions}/kecerdasan/activation`,
+    UPLOAD: `${questions}/kecerdasan/upload`,
+    DELETE_PHOTO: `${questions}/kecerdasan/delete-photo`,
   },
   KEPRIBADIAN: {
     DETAIL: `${questions}/kepribadian`,
