@@ -1116,7 +1116,6 @@ export default {
     },
     handleUploadImageEdit(type = "question", event, pertanyaanNo, index = 0) {
       const file = event.target.files?.[0];
-      console.log(event.target.files);
       if (type == "question") {
         this.uploadImage(
           pertanyaanNo,

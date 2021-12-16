@@ -189,7 +189,14 @@
                         Jawaban
                       </p>
                       <div class="d-flex flex-row align-end ml-n4">
-                        <v-btn-toggle v-model="q.answer" tile group>
+                        <v-btn-toggle
+                          v-model="q.answer"
+                          tile
+                          group
+                          v-bind="{
+                            mandatory: q.answer && q.answer.value != null,
+                          }"
+                        >
                           <div
                             v-for="(answer, aIndex) in q.answerList"
                             :key="`answer-${aIndex}`"
@@ -295,22 +302,52 @@
     >
       <template v-slot:description>
         <v-col cols="12">
-          <div
-            v-for="(e, i) in result"
-            class="d-flex flex-row justify-space-between"
-            :key="`description-${i}`"
-          >
-            <p class="section-row-font">{{ e.section }}</p>
-            <p class="section-row-font">
-              Benar <span class="ml-2">{{ e.benar }}</span>
-            </p>
-            <p class="section-row-font">
-              Salah <span class="ml-2">{{ e.salah }}</span>
-            </p>
-            <p class="section-row-font">
-              Total <span class="ml-2">{{ e.total }}</span>
-            </p>
-          </div>
+          <table class="result-table text-center">
+            <thead>
+              <tr>
+                <th style="border: none !important" class="pr-2 text-left">
+                  <p class="section-row-font">Section</p>
+                </th>
+                <th style="border: none !important" class="px-2">
+                  <p class="section-row-font">Benar</p>
+                </th>
+                <th style="border: none !important" class="px-2">
+                  <p class="section-row-font">Salah</p>
+                </th>
+                <th style="border: none !important" class="px-2">
+                  <p class="section-row-font">Tidak Dijawab</p>
+                </th>
+                <th style="border: none !important" class="px-2">
+                  <p class="section-row-font">Total</p>
+                </th>
+              </tr>
+            </thead>
+            <tr v-for="(e, i) in result" :key="`description-${i}`">
+              <td style="border: none !important" class="pr-2 text-left">
+                <p class="section-row-font">{{ e.section }}</p>
+              </td>
+              <td style="border: none !important" class="px-2">
+                <p class="section-row-font-result">
+                  {{ e.benar }}
+                </p>
+              </td>
+              <td style="border: none !important" class="px-2">
+                <p class="section-row-font-result">
+                  {{ e.salah }}
+                </p>
+              </td>
+              <td style="border: none !important" class="px-2">
+                <p class="section-row-font-result">
+                  {{ e.tidak_dijawab }}
+                </p>
+              </td>
+              <td style="border: none !important" class="px-2">
+                <p class="section-row-font-result-total">
+                  {{ e.total }}
+                </p>
+              </td>
+            </tr>
+          </table>
         </v-col>
       </template>
     </CompletedPopUp>
@@ -344,6 +381,7 @@ export default {
           paket_soal: null,
           benar: null,
           salah: null,
+          tidak_dijawab: null,
           total: null,
         },
       ],
@@ -457,13 +495,18 @@ export default {
           section: section.title,
           total: 0,
           benar: 0,
+          tidak_dijawab: 0,
           salah: 0,
         });
         section?.question.forEach((question) => {
           if (question?.answer?.value) {
             payload[index].total += question?.answer?.value;
             payload[index].benar++;
-          } else payload[index].salah++;
+          } else if (question?.answer?.value === 0) {
+            payload[index].salah++;
+          } else {
+            payload[index].tidak_dijawab++;
+          }
         });
       });
 
@@ -705,5 +748,22 @@ th {
   font-weight: 500 !important;
   font-size: 14px !important;
   line-height: 140%;
+}
+
+.section-row-font-result {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 140%;
+}
+
+.section-row-font-result-total {
+  font-family: Inter !important;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 20px !important;
+  line-height: 140%;
+  color: #38d435;
 }
 </style>
