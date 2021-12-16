@@ -124,14 +124,27 @@
                 class="rounded"
               />
             </div>
-            <div class="d-flex flex-column align-center">
-              <p class="text-caption font-weight-light mb-1">
-                Total Menit / Paket
-              </p>
-              <Counter
-                :initialCounter="edited.time"
-                @on-change="(e) => handleChange(e, 'edit')"
-              />
+            <div class="d-flex flex-row">
+              <div class="d-flex flex-column align-end justify-end mb-1 mr-6">
+                <v-checkbox
+                  v-model="edited.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center">
+                <p class="text-caption font-weight-light mb-1">
+                  Total Menit / Paket
+                </p>
+                <Counter
+                  :initialCounter="edited.time"
+                  @on-change="(e) => handleChange(e, 'edit')"
+                />
+              </div>
             </div>
           </div>
           <div class="d-flex flex-row justify-space-between mt-2">
@@ -200,11 +213,24 @@
                 class="rounded"
               />
             </div>
-            <div class="d-flex flex-column align-center">
-              <p class="text-caption font-weight-light mb-1">
-                Total Menit / Paket
-              </p>
-              <Counter @on-change="(e) => handleChange(e)" />
+            <div class="d-flex flex-row">
+              <div class="d-flex flex-column align-end justify-end mb-1 mr-6">
+                <v-checkbox
+                  v-model="payload.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center">
+                <p class="text-caption font-weight-light mb-1">
+                  Total Menit / Paket
+                </p>
+                <Counter @on-change="(e) => handleChange(e)" />
+              </div>
             </div>
           </div>
           <div class="d-flex flex-row justify-space-between mt-2">
@@ -263,6 +289,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         modeAdd: false,
         loadingDelete: false,
@@ -274,6 +301,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         modeAdd: false,
         loadingDelete: false,
@@ -426,6 +454,7 @@ export default {
         description: this.edited.description,
         time: this.edited.time,
         is_active: this.edited.is_active,
+        is_random: this.edited.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -463,6 +492,7 @@ export default {
         description: this.payload.description,
         time: this.payload.time,
         is_active: this.payload.is_active,
+        is_random: this.payload.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -557,7 +587,8 @@ export default {
         title: null,
         description: null,
         is_active: false,
-        time: 0,
+        is_random: false,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };
@@ -568,7 +599,8 @@ export default {
         title: null,
         description: null,
         is_active: false,
-        time: 0,
+        is_random: false,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };

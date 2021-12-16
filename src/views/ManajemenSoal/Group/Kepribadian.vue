@@ -125,7 +125,18 @@
               />
             </div>
             <div class="d-flex flex-row">
-              <div class="d-flex flex-column align-center mx-12">
+              <div class="d-flex flex-column align-end justify-end mb-1">
+                <v-checkbox
+                  v-model="edited.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center ml-6 mr-12">
                 <p class="text-caption font-weight-light mb-1">
                   Jumlah Jawaban
                 </p>
@@ -226,7 +237,18 @@
               />
             </div>
             <div class="d-flex flex-row">
-              <div class="d-flex flex-column align-center mx-12">
+              <div class="d-flex flex-column align-end justify-end mb-1">
+                <v-checkbox
+                  v-model="payload.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center ml-6 mr-12">
                 <p class="text-caption font-weight-light mb-1">
                   Jumlah Jawaban
                 </p>
@@ -313,6 +335,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         type: "4",
         modeAdd: false,
@@ -325,6 +348,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         type: "4",
         modeAdd: false,
@@ -479,6 +503,7 @@ export default {
         time: this.edited.time,
         type: this.edited.type,
         is_active: this.edited.is_active,
+        is_random: this.edited.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -517,6 +542,7 @@ export default {
         time: this.payload.time,
         type: this.payload.type,
         is_active: this.payload.is_active,
+        is_random: this.payload.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -611,8 +637,9 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         type: "4",
-        time: 0,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };
@@ -623,8 +650,9 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         type: "4",
-        time: 0,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };

@@ -363,6 +363,7 @@
                       dense
                       class="rounded mr-8"
                       :disabled="!q.modeAdd"
+                      @keyup.enter="() => handleSaveQuestion(q, i, j)"
                     />
                   </template>
                 </div>
