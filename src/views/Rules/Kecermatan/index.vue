@@ -127,6 +127,12 @@ export default {
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
+            let totalTime = result?.group?.time * result?.group?.total_section;
+            result.group.totalMinutes = parseInt(totalTime / 60, 10);
+            result.group.totalSeconds = parseInt(totalTime % 60, 10);
+            result.group.minutes = parseInt(result?.group?.time / 60, 10);
+            result.group.seconds = parseInt(result?.group?.time % 60, 10);
+
             this.item = { ...result.group };
             this.rules = { ...result.rules };
           } else {

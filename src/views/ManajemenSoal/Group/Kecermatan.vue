@@ -106,8 +106,10 @@
           <div class="d-flex flex-row align-center">
             <img class="mr-2" src="@/assets/icons/time.svg" />
             <p class="selection-item font-weight-medium ma-0">
-              {{ item.total_section * item.time }} Menit ({{ item.time }} Menit
-              / Section)
+              {{ item.totalMinutes }} Menit {{ item.totalSeconds }} Detik ({{
+                item.minutes
+              }}
+              Menit {{ item.seconds }} Detik / Section)
             </p>
           </div>
         </div>
@@ -150,14 +152,26 @@
                   </template>
                 </v-checkbox>
               </div>
-              <div class="d-flex flex-column align-center">
+              <div class="d-flex flex-column">
                 <p class="text-caption font-weight-light mb-1">
-                  Total Menit / Section
+                  Total Waktu / Section
                 </p>
-                <Counter
-                  :initialCounter="edited.time"
-                  @on-change="(e) => handleChange(e, 'edit')"
-                />
+                <div class="d-flex flex-row">
+                  <div class="d-flex flex-column mr-4">
+                    <p class="text-caption font-weight-light mb-1">Menit</p>
+                    <Counter
+                      :data="edited.minutes"
+                      @on-change="(e) => handleChange(e, 'minutes', 'edit')"
+                    />
+                  </div>
+                  <div class="d-flex flex-column">
+                    <p class="text-caption font-weight-light mb-1">Detik</p>
+                    <Counter
+                      :data="edited.seconds"
+                      @on-change="(e) => handleChange(e, 'seconds', 'edit')"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -239,11 +253,26 @@
                   </template>
                 </v-checkbox>
               </div>
-              <div class="d-flex flex-column align-center">
+              <div class="d-flex flex-column">
                 <p class="text-caption font-weight-light mb-1">
-                  Total Menit / Section
+                  Total Waktu / Section
                 </p>
-                <Counter @on-change="(e) => handleChange(e)" />
+                <div class="d-flex flex-row">
+                  <div class="d-flex flex-column mr-4">
+                    <p class="text-caption font-weight-light mb-1">Menit</p>
+                    <Counter
+                      :data="payload.minutes"
+                      @on-change="(e) => handleChange(e, 'minutes')"
+                    />
+                  </div>
+                  <div class="d-flex flex-column">
+                    <p class="text-caption font-weight-light mb-1">Detik</p>
+                    <Counter
+                      :data="payload.seconds"
+                      @on-change="(e) => handleChange(e, 'seconds')"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -284,7 +313,7 @@
 
 <script>
 import GroupService from "@/services/resources/group.service";
-const Counter = () => import("@/components/Counter");
+const Counter = () => import("@/components/CounterKecermatan");
 const ContentNotFound = () => import("@/components/Content/NotFound");
 
 export default {
@@ -306,6 +335,8 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        minutes: 1,
+        seconds: 0,
         modeAdd: false,
         loadingDelete: false,
         loadingActivate: false,
@@ -318,6 +349,8 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        minutes: 1,
+        seconds: 0,
         modeAdd: false,
         loadingDelete: false,
         loadingActivate: false,
@@ -352,6 +385,13 @@ export default {
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
+            result.map((e) => {
+              let totalTime = e.time * e.total_section;
+              e.totalMinutes = parseInt(totalTime / 60, 10);
+              e.totalSeconds = parseInt(totalTime % 60, 10);
+              e.minutes = parseInt(e.time / 60, 10);
+              e.seconds = parseInt(e.time % 60, 10);
+            });
             this.items = [...result];
           } else {
             this.$store.commit("snackbar/setSnack", {
@@ -399,6 +439,7 @@ export default {
     },
     handleEdit(item, index) {
       this.edited = {
+        ...this.edited,
         ...item,
       };
       this.modeAdd = false;
@@ -473,11 +514,13 @@ export default {
     },
     requestEdit(index) {
       this.items[index].loadingEdit = true;
+      const time = this.edited.minutes * 60 + this.edited.seconds;
+
       GroupService.insertDataKecermatan({
         secureId: this.edited.secureId,
         title: this.edited.title,
         description: this.edited.description,
-        time: this.edited.time,
+        time,
         is_active: this.edited.is_active,
         is_random: this.edited.is_random,
       })
@@ -511,11 +554,13 @@ export default {
         });
     },
     requestAdd() {
+      const time = this.payload.minutes * 60 + this.payload.seconds;
+
       this.loadingSubmit = true;
       GroupService.insertDataKecermatan({
         title: this.payload.title,
         description: this.payload.description,
-        time: this.payload.time,
+        time,
         is_active: this.payload.is_active,
         is_random: this.payload.is_random,
       })
@@ -549,11 +594,20 @@ export default {
           this.loadingSubmit = false;
         });
     },
-    handleChange(e, type = "add") {
-      if (type == "edit") {
-        this.edited.time = parseInt(e);
-      } else {
-        this.payload.time = parseInt(e);
+    handleChange(e, unit = "seconds", type = "add") {
+      const mode = type == "add" ? "payload" : "edited";
+      if (unit == "seconds") {
+        if (+e >= 60) {
+          this[mode].minutes++;
+          this[mode].seconds = 0;
+        } else if (+e < 0 && this[mode].minutes > 0) {
+          this[mode].minutes--;
+          this[mode].seconds = 59;
+        } else if (+e <= 0 || !e) this[mode].seconds = 0;
+        else this[mode].seconds = +e;
+      } else if (unit == "minutes") {
+        if (+e >= 0) this[mode].minutes = parseInt(e);
+        else if (+e <= 0) this[mode].minutes = 0;
       }
     },
     handleDelete(item, index) {
@@ -614,6 +668,8 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        minutes: 1,
+        seconds: 0,
         modeAdd: false,
         loadingDelete: false,
       };
@@ -626,6 +682,8 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        minutes: 1,
+        seconds: 0,
         modeAdd: false,
         loadingDelete: false,
       };
