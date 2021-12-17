@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
+import "@mdi/font/css/materialdesignicons.css";
 
 Vue.use(Vuetify);
 
@@ -26,5 +27,8 @@ export default new Vuetify({
         disabledColor: "#b8b6ba",
       },
     },
+  },
+  icons: {
+    iconfont: "mdi",
   },
 });
