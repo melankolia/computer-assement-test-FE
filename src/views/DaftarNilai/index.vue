@@ -90,6 +90,18 @@
               </td>
             </tr>
           </template>
+          <template #item.tidak_dijawab="{ item }">
+            <tr v-for="(e, i) in item.section" :key="`section-${i}`">
+              <td
+                :class="{
+                  'pt-4': i == 0 % 2,
+                  'pb-4': i == item.section.length - 1,
+                }"
+              >
+                {{ e.tidak_dijawab }}
+              </td>
+            </tr>
+          </template>
           <template #item.total="{ item }">
             <tr v-for="(e, i) in item.section" :key="`section-${i}`">
               <td
@@ -161,6 +173,11 @@ export default {
         {
           text: "Salah",
           value: "salah",
+          sortable: false,
+        },
+        {
+          text: "Tidak Dijawab",
+          value: "tidak_dijawab",
           sortable: false,
         },
         {

@@ -1,7 +1,17 @@
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex flex-row justify-space-between align-center">
-      <p class="header-3 mb-0">Kepribadian</p>
+      <div class="d-flex flex-column" style="width: 25%">
+        <p class="header-3 mb-5">Kepribadian</p>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          placeholder="Cari Paket Soal"
+          solo
+          class="rounded"
+        >
+        </v-text-field>
+      </div>
       <v-expand-transition>
         <v-btn
           v-if="!modeAdd"
@@ -125,7 +135,18 @@
               />
             </div>
             <div class="d-flex flex-row">
-              <div class="d-flex flex-column align-center mx-12">
+              <div class="d-flex flex-column align-end justify-end mb-1">
+                <v-checkbox
+                  v-model="edited.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center ml-6 mr-12">
                 <p class="text-caption font-weight-light mb-1">
                   Jumlah Jawaban
                 </p>
@@ -226,7 +247,18 @@
               />
             </div>
             <div class="d-flex flex-row">
-              <div class="d-flex flex-column align-center mx-12">
+              <div class="d-flex flex-column align-end justify-end mb-1">
+                <v-checkbox
+                  v-model="payload.is_random"
+                  color="primary"
+                  hide-details
+                >
+                  <template #label>
+                    <p class="text-caption font-weight-light mb-0">Acak Soal</p>
+                  </template>
+                </v-checkbox>
+              </div>
+              <div class="d-flex flex-column align-center ml-6 mr-12">
                 <p class="text-caption font-weight-light mb-1">
                   Jumlah Jawaban
                 </p>
@@ -304,6 +336,7 @@ export default {
   },
   data() {
     return {
+      search: null,
       validEdited: false,
       validSubmit: false,
       loading: false,
@@ -313,6 +346,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         type: "4",
         modeAdd: false,
@@ -325,6 +359,7 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         time: 1,
         type: "4",
         modeAdd: false,
@@ -341,14 +376,24 @@ export default {
       return this.items.length > 0;
     },
   },
+  watch: {
+    search: {
+      handler(val) {
+        this.fetchListDebounce(() => this.getList(val));
+      },
+      deep: true,
+    },
+  },
   activated() {
     this.getList();
   },
   methods: {
-    getList() {
+    getList(search = null) {
       this.loading = true;
       this.items = [];
-      GroupService.getListKepribadian()
+      GroupService.getListKepribadian({
+        search,
+      })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.items = [...result];
@@ -479,6 +524,7 @@ export default {
         time: this.edited.time,
         type: this.edited.type,
         is_active: this.edited.is_active,
+        is_random: this.edited.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -517,6 +563,7 @@ export default {
         time: this.payload.time,
         type: this.payload.type,
         is_active: this.payload.is_active,
+        is_random: this.payload.is_random,
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -611,8 +658,9 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         type: "4",
-        time: 0,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };
@@ -623,8 +671,9 @@ export default {
         title: null,
         description: null,
         is_active: false,
+        is_random: false,
         type: "4",
-        time: 0,
+        time: 1,
         modeAdd: false,
         loadingDelete: false,
       };

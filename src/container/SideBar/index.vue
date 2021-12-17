@@ -4,9 +4,12 @@
     <div class="d-flex flex-column align-center mt-10">
       <v-avatar
         size="132px"
-        :color="setColorFromString(getProfile.acronymName)"
+        :color="isAdmin ? 'white' : setColorFromString(getProfile.acronymName)"
       >
-        <span class="white--text text-h3">{{ getProfile.acronymName }}</span>
+        <v-img v-if="isAdmin" :src="DefaultProfile" />
+        <span v-else class="white--text text-h3">{{
+          getProfile.acronymName
+        }}</span>
       </v-avatar>
       <div class="d-flex flex-column align-center mt-4">
         <p class="font-weight-medium text-h6 ma-0">
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import DefaultProfile from "@/assets/Pic.png";
+import DefaultProfile from "@/assets/images/admin-logo.png";
 import Logo from "@/assets/Small.svg";
 import { LOGOUT } from "@/store/constants/actions.type";
 import { LOGIN } from "@/router/name.types";
@@ -70,6 +73,9 @@ export default {
   },
   computed: {
     ...mapGetters(["getProfile"]),
+    isAdmin() {
+      return this.getProfile?.type?.toLowerCase() == "admin";
+    },
   },
   mounted() {
     const type = this.getProfile.type;
@@ -145,5 +151,9 @@ export default {
   font-size: 16px !important;
   line-height: 140%;
   text-transform: none !important;
+}
+
+.border-ava {
+  border: 2px solid #7c48ea !important;
 }
 </style>

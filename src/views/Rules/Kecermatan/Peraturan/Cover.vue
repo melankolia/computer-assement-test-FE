@@ -21,7 +21,7 @@
       <div class="d-flex flex-row align-center mr-6">
         <img class="mr-2" src="@/assets/icons/time.svg" />
         <p class="selection-item font-weight-medium ma-0">
-          {{ item.time }} Menit
+          {{ item.minutes }} Menit {{ item.seconds }} Detik
         </p>
       </div>
       <div class="d-flex flex-row align-center mr-6">

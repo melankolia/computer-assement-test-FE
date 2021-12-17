@@ -621,6 +621,7 @@ export default {
       this.loading = true;
       QuestionService.getDetail({
         secureId: this.kecerdasanSecureId || this.id,
+        type: "admin",
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -1115,7 +1116,6 @@ export default {
     },
     handleUploadImageEdit(type = "question", event, pertanyaanNo, index = 0) {
       const file = event.target.files?.[0];
-      console.log(event.target.files);
       if (type == "question") {
         this.uploadImage(
           pertanyaanNo,

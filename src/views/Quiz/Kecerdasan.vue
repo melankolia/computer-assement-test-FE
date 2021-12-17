@@ -285,7 +285,7 @@ export default {
     },
     calculateAnswer() {
       this.totalAnswer = this.questions.reduce(
-        (acc, cur) => acc + cur.answer.value,
+        (acc, cur) => +acc + +cur?.answer?.value,
         0
       );
     },

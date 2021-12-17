@@ -90,11 +90,12 @@
               <img class="mr-2" src="@/assets/icons/time.svg" />
               <p class="selection-item font-weight-medium ma-0">
                 <span v-if="questionType != 'Kecermatan'">
-                  {{ item.time }} Menit
+                  {{ item.minutes }} Menit {{ item.seconds }} Detik
                 </span>
                 <span v-else>
-                  {{ item.time * item.section }} Menit ({{ item.time }} Menit /
-                  Section)
+                  {{ item.totalMinutes }} Menit {{ item.totalSeconds }} Detik
+                  <br />
+                  ({{ item.minutes }} Menit {{ item.seconds }} Detik/ Section)
                 </span>
               </p>
             </div>
@@ -158,6 +159,15 @@ export default {
       SoalService.getAll({ type: type?.toLowerCase() })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
+            if (this.questionType == "Kecermatan") {
+              result.map((e) => {
+                let totalTime = e.time * e.section;
+                e.totalMinutes = parseInt(totalTime / 60, 10);
+                e.totalSeconds = parseInt(totalTime % 60, 10);
+                e.minutes = parseInt(e.time / 60, 10);
+                e.seconds = parseInt(e.time % 60, 10);
+              });
+            }
             this.items = [...result];
           } else {
             this.$store.commit("snackbar/setSnack", {

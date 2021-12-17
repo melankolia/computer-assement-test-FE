@@ -41,7 +41,7 @@
           <div class="d-flex flex-row align-center mr-6">
             <img class="mr-2" src="@/assets/icons/time.svg" />
             <p class="selection-item font-weight-medium ma-0">
-              {{ detail.time }} Menit
+              {{ detail.minutes }} Menit {{ detail.seconds }} Detik
             </p>
           </div>
           <div class="d-flex flex-row align-center">
@@ -142,7 +142,7 @@
               <div class="d-flex flex-row align-center mr-6">
                 <img class="mr-2" src="@/assets/icons/time.svg" />
                 <p class="selection-item font-weight-medium ma-0">
-                  {{ detail.time }} Menit
+                  {{ detail.minutes }} Menit {{ detail.seconds }} Detik
                 </p>
               </div>
             </div>
@@ -363,6 +363,7 @@
                       dense
                       class="rounded mr-8"
                       :disabled="!q.modeAdd"
+                      @keyup.enter="() => handleSaveQuestion(q, i, j)"
                     />
                   </template>
                 </div>
@@ -606,6 +607,7 @@ export default {
       this.loading = true;
       QuestionService.getDetail({
         secureId: this.kecermatanSecureId || this.id,
+        type: "admin",
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -614,6 +616,8 @@ export default {
               title: result.title,
               description: result.description,
               time: result.time,
+              minutes: parseInt(result.time / 60, 10),
+              seconds: parseInt(result.time % 60, 10),
               is_active: result.is_active,
             };
             this.sections = [...result.result];
