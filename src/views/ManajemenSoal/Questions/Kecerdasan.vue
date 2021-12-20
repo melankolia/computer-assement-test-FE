@@ -147,7 +147,7 @@
             </p>
             <div v-else class="font-question font-inter mb-8 d-flex flex-row">
               <p class="mr-2">{{ i + 1 }}.</p>
-              <img :src="e.question.question" height="100px" />
+              <img :src="e.question.question" />
             </div>
             <div
               v-for="(e2, i2) in e.answerList"
@@ -159,7 +159,7 @@
               </p>
               <div v-else class="d-flex flex-row">
                 <p class="font-answer font-inter mr-2">{{ e2.symbol }}.</p>
-                <img :src="e2.answer" height="40px" />
+                <img :src="e2.answer" />
               </div>
               <p class="font-answer font-inter">{{ e2.value }} Poin</p>
             </div>
@@ -205,11 +205,7 @@
               <div v-else class="font-question font-inter mb-8 d-flex flex-row">
                 <p class="mr-2">{{ i + 1 }}.</p>
                 <div class="d-flex flex-row">
-                  <img
-                    height="100px"
-                    :src="edited.question.question"
-                    alt="answer image"
-                  />
+                  <img :src="edited.question.question" alt="answer image" />
                   <v-btn
                     @click="() => handleRemoveImageEdit('question', i + 1)"
                     class="mx-2"
@@ -271,12 +267,7 @@
                 </v-text-field>
               </template>
               <template v-else>
-                <img
-                  height="40px"
-                  width="40px"
-                  :src="ed.answer"
-                  alt="answer image"
-                />
+                <img :src="ed.answer" alt="answer image" />
                 <v-btn
                   @click="() => handleRemoveImageEdit('answer', i + 1, index)"
                   class="mx-2"
@@ -353,11 +344,7 @@
                 </v-textarea>
               </template>
               <div v-else class="d-flex flex-row">
-                <img
-                  height="100px"
-                  :src="item.question.question"
-                  alt="answer image"
-                />
+                <img :src="item.question.question" alt="answer image" />
                 <v-btn
                   @click="
                     () => handleRemoveImageAdd('question', questionLength)
@@ -426,12 +413,7 @@
                 </v-text-field>
               </template>
               <template v-else>
-                <img
-                  height="40px"
-                  width="40px"
-                  :src="payload.answer"
-                  alt="answer image"
-                />
+                <img :src="payload.answer" alt="answer image" />
                 <v-btn
                   @click="
                     () => handleRemoveImageAdd('answer', questionLength, index)
@@ -1078,10 +1060,12 @@ export default {
       }
     },
     handleRemoveImageAdd(type = "question", pertanyaanNo, index = 0) {
+      const OperatingSystem = this.getOS();
+      const pathing = OperatingSystem?.toLowerCase() == "windows" ? "\\" : "/";
       if (type == "question") {
         const fileNameRaw =
-          this.item.question.question.split("/")[
-            this.item.question.question.split("/").length - 1
+          this.item.question.question.split(pathing)[
+            this.item.question.question.split(pathing).length - 1
           ];
         const fileName = fileNameRaw.split("?lastMod=")[0];
         this.deleteImage(
@@ -1097,8 +1081,8 @@ export default {
         );
       } else {
         const fileNameRaw =
-          this.item.answerList[index].answer.split("/")[
-            this.item.answerList[index].answer.split("/").length - 1
+          this.item.answerList[index].answer.split(pathing)[
+            this.item.answerList[index].answer.split(pathing).length - 1
           ];
         const fileName = fileNameRaw.split("?lastMod=")[0];
         this.deleteImage(

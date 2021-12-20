@@ -39,8 +39,10 @@
           :headers="isKecermatan ? kecermatanHeaders : headers"
           :items="items"
           :loading="loading"
-          hide-default-footer
           item-key="nama"
+          :footer-props="{
+            'items-per-page-options': rowsPerPageItems,
+          }"
           style="border-spacing: 10px !important"
         >
           <template #item.paket_soal="{ item }">
@@ -164,6 +166,7 @@ export default {
           text: "Section",
           value: "section",
           sortable: false,
+          width: "25%",
         },
         {
           text: "Benar",
@@ -193,6 +196,7 @@ export default {
         },
       ],
       items: [],
+      rowsPerPageItems: [5, 10, 15, -1],
     };
   },
   methods: {

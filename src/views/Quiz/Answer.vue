@@ -6,7 +6,7 @@
       </p>
     </template>
     <div v-else class="d-flex ml-8 my-6">
-      <img height="100px" :src="data.question.question" />
+      <img :src="data.question.question" />
     </div>
     <v-btn-toggle
       v-bind="{ mandatory: data.answer.answer != null }"
@@ -34,7 +34,7 @@
         <p v-if="!image || e.type == 'text'" class="mb-0">
           {{ e.answer }}
         </p>
-        <img v-else :src="e.answer" height="40px" />
+        <img v-else :src="e.answer" />
       </div>
     </v-btn-toggle>
   </div>

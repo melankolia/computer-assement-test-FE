@@ -90,7 +90,7 @@
               <img class="mr-2" src="@/assets/icons/time.svg" />
               <p class="selection-item font-weight-medium ma-0">
                 <span v-if="questionType != 'Kecermatan'">
-                  {{ item.minutes }} Menit {{ item.seconds }} Detik
+                  {{ item.time }} Menit
                 </span>
                 <span v-else>
                   {{ item.totalMinutes }} Menit {{ item.totalSeconds }} Detik
