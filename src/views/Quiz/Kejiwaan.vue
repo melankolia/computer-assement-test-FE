@@ -62,7 +62,7 @@
             pa-12
             rounded-lg
           "
-          style="width: 71%"
+          style="width: 71%; max-height: 800px"
         >
           <div class="d-flex flex-column ma-0">
             <p class="header-3 mb-12 text-center">{{ kejiwaan.title }}</p>

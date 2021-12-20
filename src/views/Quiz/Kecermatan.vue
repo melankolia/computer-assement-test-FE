@@ -65,7 +65,7 @@
         <!-- Answering Mode -->
         <div
           class="d-flex flex-column my-4 mx-10"
-          style="width: 71%; overflow: scroll"
+          style="width: 71%; overflow: scroll; max-height: 800px"
         >
           <div
             class="
@@ -144,7 +144,7 @@
               <div
                 cols="12"
                 class="py-8"
-                style="height: 500px; overflow: scroll"
+                style="height: 600px; overflow: scroll"
               >
                 <v-row
                   v-for="(q, qIndex) in sections[sectionIndex].question"
