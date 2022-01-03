@@ -897,7 +897,7 @@ export default {
     deleteData(item, index) {
       this.questions[index].loadingDelete = true;
       QuestionService.deleteData({
-        groupSecureId: this.id,
+        groupSecureId: this.$route.query?.kecerdasanSecureId,
         secureId: item?.question?.secureId,
         question: `Pertanyaan-${index + 1}`,
       })
@@ -963,7 +963,7 @@ export default {
       loading && loading(true);
 
       QuestionService.uploadPhoto(formData, {
-        secureId: this.id,
+        secureId: this.$route.query?.kecerdasanSecureId,
         question: `Pertanyaan-${no}`,
         fileName,
       })
