@@ -30,6 +30,11 @@
               Kecermatan
             </p>
           </v-btn>
+          <v-btn class="no-uppercase" small value="New_Kecermatan">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
+              New Kecermatan
+            </p>
+          </v-btn>
         </v-btn-toggle>
       </v-col>
     </v-row>

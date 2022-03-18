@@ -54,6 +54,18 @@
             Kecermatan
           </p>
         </v-btn>
+        <v-btn
+          v-bind="{ text: !isNewKecermatan }"
+          :disabled="!isNewKecermatan"
+          color="primary"
+          class="no-uppercase"
+          small
+          depressed
+        >
+          <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
+            New Kecermatan
+          </p>
+        </v-btn>
       </div>
       <div class="mr-6 align-self-end">
         <v-menu rounded left min-width="188px">
@@ -92,6 +104,7 @@ const Kecerdasan = () => import("./Kecerdasan");
 const Kecermatan = () => import("./Kecermatan");
 const Kepribadian = () => import("./Kepribadian");
 const Kejiwaan = () => import("./Kejiwaan");
+const New_Kecermatan = () => import("./New_Kecermatan");
 
 export default {
   components: {
@@ -99,6 +112,7 @@ export default {
     Kecermatan,
     Kepribadian,
     Kejiwaan,
+    New_Kecermatan,
   },
   data() {
     return {
@@ -121,6 +135,9 @@ export default {
     },
     isKecermatan() {
       return this.isComponent === "Kecermatan";
+    },
+    isNewKecermatan() {
+      return this.isComponent === "New_Kecermatan";
     },
   },
   methods: {

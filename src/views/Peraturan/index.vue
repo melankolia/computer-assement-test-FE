@@ -32,6 +32,11 @@
               Kecermatan
             </p>
           </v-btn>
+          <v-btn class="no-uppercase" small value="NewKecermatan">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
+              New Kecermatan
+            </p>
+          </v-btn>
         </v-btn-toggle>
       </v-col>
     </v-row>
@@ -73,6 +78,7 @@ const Kecerdasan = () => import("./Kecerdasan");
 const Kepribadian = () => import("./Kepribadian");
 const Kejiwaan = () => import("./Kejiwaan");
 const Kecermatan = () => import("./Kecermatan");
+const NewKecermatan = () => import("./NewKecermatan");
 const ContentNotFound = () => import("@/components/Content/NotFound");
 
 export default {
@@ -81,6 +87,7 @@ export default {
     Kepribadian,
     Kejiwaan,
     Kecermatan,
+    NewKecermatan,
     ContentNotFound,
   },
   data() {
