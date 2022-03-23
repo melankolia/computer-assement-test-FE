@@ -3,13 +3,13 @@
     <p
       v-if="!modeEdit"
       class="paragraph-font pt-10"
-      v-html="items.kecermatanVO.siswa.description"
+      v-html="items.new_kecermatanVO.siswa.description"
     />
     <template v-else>
       <quill-editor
         class="editor"
         ref="myTextEditor"
-        :value="items.kecermatanVO.siswa.description"
+        :value="items.new_kecermatanVO.siswa.description"
         :options="editorOption"
         @change="onEditorChange"
       />
@@ -38,7 +38,7 @@
 
 <script>
 const items = {
-  kecermatanVO: {
+  newKecermatanVO: {
     siswa: {
       secureId: null,
       description: null,
@@ -86,15 +86,15 @@ export default {
   methods: {
     onEditorChange(value) {
       this.debounce(() => {
-        this.items.kecermatanVO.siswa.description = value.html;
+        this.items.new_kecermatanVO.siswa.description = value.html;
       });
     },
     handleSubmit() {
       const Payload = {
-        secureId: this.items.kecermatanVO.siswa.secureId || "",
+        secureId: this.items.new_kecermatanVO.siswa.secureId || "",
         type: "siswa",
-        rule_type: "kecermatan",
-        description: this.items.kecermatanVO.siswa.description,
+        rule_type: "new_kecermatan",
+        description: this.items.new_kecermatanVO.siswa.description,
       };
       this.loading = true;
       PeraturanService.insertData(Payload)

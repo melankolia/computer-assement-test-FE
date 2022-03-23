@@ -49,7 +49,7 @@
 
 <script>
 const items = {
-  kecermatanVO: {
+  newKecermatanVO: {
     siswa: {
       secureId: null,
       description: null,
@@ -60,8 +60,8 @@ const items = {
     },
   },
 };
-const Soal = () => import("@/views/Peraturan/Kecermatan/Soal");
-const Siswa = () => import("@/views/Peraturan/Kecermatan/Siswa");
+const Soal = () => import("@/views/Peraturan/NewKecermatan/Soal");
+const Siswa = () => import("@/views/Peraturan/NewKecermatan/Siswa");
 
 export default {
   props: {
@@ -79,12 +79,12 @@ export default {
     return {
       isComponent: "Soal",
       modeEdit: false,
-      editedPeraturan: items.kecermatanVO,
+      editedPeraturan: items.new_kecermatanVO,
     };
   },
   methods: {
     handleEdit() {
-      this.editedPeraturan = this.$_.cloneDeep(this.items.kecermatanVO);
+      this.editedPeraturan = this.$_.cloneDeep(this.items.new_kecermatanVO);
       this.modeEdit = true;
     },
     handleSubmit() {
@@ -92,17 +92,17 @@ export default {
       this.modeEdit = false;
     },
     handleCancel() {
-      this.items.kecermatanVO = {
+      this.items.new_kecermatanVO = {
         ...this.editedPeraturan,
       };
-      this.editedPeraturan = { ...items.kecermatanVO };
+      this.editedPeraturan = { ...items.new_kecermatanVO };
       this.modeEdit = false;
     },
   },
   watch: {
     isComponent() {
       if (this.modeEdit) {
-        this.items.kecermatanVO = {
+        this.items.new_kecermatanVO = {
           ...this.editedPeraturan,
         };
       }

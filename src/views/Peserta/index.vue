@@ -195,7 +195,11 @@
                 <img class="mr-4" src="@/assets/icons/edit-outlined.svg" />
                 <p class="selection-item ma-0">Edit Data</p>
               </v-list-item>
-              <v-list-item @click="() => handleDelete(item)" link>
+              <v-list-item
+                @click="() => handleDelete(item)"
+                link
+                :disabled="() => !isAdmin(item)"
+              >
                 <img class="mr-4" src="@/assets/icons/delete-outlined.svg" />
                 <p class="selection-item ma-0">Hapus Data</p>
               </v-list-item>
@@ -396,6 +400,9 @@ export default {
           this.loading = false;
           cb && cb();
         });
+    },
+    isAdmin(item) {
+      return item.type !== "admin";
     },
     handleAdd() {
       this.addMode = true;

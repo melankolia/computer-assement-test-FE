@@ -123,7 +123,7 @@ export default {
       this.loading = true;
       CoverService.findCover({
         secureId: this.id,
-        type: "kecermatan",
+        type: "new_kecermatan",
       })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
@@ -138,7 +138,7 @@ export default {
           } else {
             this.$store.commit("snackbar/setSnack", {
               show: true,
-              message: result || "Gagal memuat data Kecermatan",
+              message: result || "Gagal memuat data New Kecermatan",
               color: "error",
             });
           }
@@ -147,7 +147,7 @@ export default {
           console.error(err);
           this.$store.commit("snackbar/setSnack", {
             show: true,
-            message: "Gagal memuat data Kecermatan",
+            message: "Gagal memuat data New Kecermatan",
             color: "error",
           });
         })
@@ -178,7 +178,6 @@ export default {
         secureId: this.id,
       })
         .then(() => {
-          console.log({ name: QUIZ.NEW_KECERMATAN });
           this.$router.replace({
             name: QUIZ.NEW_KECERMATAN,
             params: { secureId: this.id },

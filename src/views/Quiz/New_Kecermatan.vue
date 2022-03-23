@@ -26,12 +26,12 @@
             <p class="ma-0 timer-date-subtitle-font">{{ nowDate || "-" }}</p>
             <p class="ma-0 timer-date-font">{{ nowHourComputed || "-" }}</p>
           </div>
-          <div class="d-flex flex-row align-center">
+          <!-- <div class="d-flex flex-row align-center">
             <img width="20" height="22" src="@/assets/icons/time.svg" />
             <p class="timer-font mb-0 mx-2">
               {{ minutes || "--" }}:{{ seconds || "--" }}
             </p>
-          </div>
+          </div> -->
           <v-menu rounded left min-width="188px">
             <template v-slot:activator="{ attrs, on }">
               <v-btn
@@ -63,10 +63,7 @@
         }"
       >
         <!-- Answering Mode -->
-        <div
-          class="d-flex flex-column my-4 mx-10"
-          style="width: 100%; overflow: scroll; max-height: 800px"
-        >
+        <div class="d-flex flex-column my-4 mx-10" style="width: 100%">
           <div
             class="
               d-flex
@@ -106,24 +103,16 @@
               <div
                 class="d-flex flex-column align-center white py-5 rounded-lg"
               >
-                <p class="tabel-kolom-font">
-                  {{ sections[sectionIndex].tableName }}
-                </p>
+                <div
+                  class="d-flex flex-row align-center my-4 pa-2"
+                  style="min-width: 124px"
+                >
+                  <img width="20" height="22" src="@/assets/icons/time.svg" />
+                  <p class="timer-acuan-font mb-0 mx-2">
+                    {{ minutes || "--" }}:{{ seconds || "--" }}
+                  </p>
+                </div>
                 <table style="border: 2px solid black !important">
-                  <tr>
-                    <td
-                      v-for="(firstRow, iFirstRow) in sections[sectionIndex]
-                        .firstRow"
-                      class="px-4 py-2"
-                      :key="`first-row-${iFirstRow}`"
-                      style="
-                        border: 2px solid black !important;
-                        font-weight: bold;
-                      "
-                    >
-                      {{ firstRow }}
-                    </td>
-                  </tr>
                   <tr>
                     <td
                       v-for="(secondRow, iSecondRow) in sections[sectionIndex]
@@ -135,96 +124,95 @@
                         font-weight: bold;
                       "
                     >
-                      {{ secondRow }}
+                      <p class="ma-0 text-h2 font-weight-medium">
+                        {{ secondRow }}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      v-for="(firstRow, iFirstRow) in sections[sectionIndex]
+                        .firstRow"
+                      class="px-4 py-2"
+                      :key="`first-row-${iFirstRow}`"
+                      style="
+                        border: 2px solid black !important;
+                        font-weight: bold;
+                      "
+                    >
+                      <p
+                        class="ma-0 text-center text-body-1 font-weight-medium"
+                      >
+                        {{ firstRow }}
+                      </p>
                     </td>
                   </tr>
                 </table>
               </div>
-              <v-divider />
-              <div
-                cols="12"
-                class="py-8"
-                style="height: 600px; overflow: scroll"
-              >
-                <v-row
-                  v-for="(q, qIndex) in sections[sectionIndex].question"
-                  :key="`qIndex-${qIndex}`"
-                  no-gutters
-                  align="center"
-                  justify="center"
-                >
-                  <v-col cols="6" sm="6" class="px-12 py-2">
-                    <div class="d-flex flex-column align-end">
-                      <p
-                        v-if="qIndex == 0"
-                        class="mb-4 kecermatan-section-font"
-                      >
-                        Soal
-                      </p>
-                      <div class="d-flex flex-row align-end">
-                        <p class="kecermatan-section-font mr-4">
-                          {{ qIndex + 1 }}.
-                        </p>
-                        <table>
-                          <tr>
-                            <td
-                              v-for="(qTitle, qTitleIndex) in q.title"
-                              :key="`title-${qTitleIndex}`"
-                              class="px-5 py-3"
-                            >
-                              {{ qTitle }}
-                            </td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </v-col>
-                  <v-divider vertical />
-                  <v-col cols="6" sm="6" class="px-12">
-                    <div class="d-flex flex-column align-start py-2">
-                      <p
-                        v-if="qIndex == 0"
-                        class="mb-4 kecermatan-section-font mt-n2"
-                      >
-                        Jawaban
-                      </p>
-                      <div class="d-flex flex-row align-end ml-n4">
-                        <v-btn-toggle
-                          v-model="q.answer"
-                          tile
-                          group
-                          v-bind="{
-                            mandatory: q.answer && q.answer.value != null,
-                          }"
+              <v-divider class="mt-4" />
+              <div cols="12" class="py-8">
+                <v-row no-gutters align="center" justify="center">
+                  <div class="d-flex flex-column px-12 py-2">
+                    <table style="border: 2px solid black !important">
+                      <tr>
+                        <td
+                          v-for="(qTitle, qIndex) in sections[sectionIndex]
+                            .question[questionIndex].title"
+                          :key="qIndex"
+                          class="px-5 py-3"
+                          style="
+                            border: 2px solid black !important;
+                            font-weight: bold;
+                          "
                         >
-                          <div
-                            v-for="(answer, aIndex) in q.answerList"
-                            :key="`answer-${aIndex}`"
-                            class="d-flex flex-row align-center ml-4"
-                            style="height: 40px; width: 40px"
-                          >
-                            <v-btn
-                              depressed
-                              :value="answer"
-                              :class="{
-                                active:
-                                  q.answer &&
-                                  q.answer.secureId == answer.secureId,
-                                'active-font':
-                                  q.answer &&
-                                  q.answer.secureId == answer.secureId,
-                              }"
-                              >{{ answer.symbol }}</v-btn
-                            >
-                          </div>
-                        </v-btn-toggle>
-                      </div>
+                          <p class="ma-0 text-h1 font-weight-medium">
+                            {{ qTitle }}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                    <div class="d-flex flex-column py-2 align-center">
+                      <v-btn-toggle
+                        v-model="
+                          sections[sectionIndex].question[questionIndex].answer
+                        "
+                        v-bind="{
+                          mandatory:
+                            sections[sectionIndex].question[questionIndex] &&
+                            sections[sectionIndex].question[questionIndex]
+                              .answer.value != null,
+                        }"
+                        style="border: 2px black solid"
+                      >
+                        <v-btn
+                          v-for="(answer, aIndex) in sections[sectionIndex]
+                            .question[questionIndex].answerList"
+                          :key="`answer-${aIndex}`"
+                          :value="answer"
+                          :class="{
+                            active:
+                              sections[sectionIndex].question[questionIndex] &&
+                              sections[sectionIndex].question[questionIndex]
+                                .answer.secureId == answer.secureId,
+                            'active-font':
+                              sections[sectionIndex].question[questionIndex] &&
+                              sections[sectionIndex].question[questionIndex]
+                                .answer.secureId == answer.secureId,
+                          }"
+                          large
+                          @click="handleAnswer"
+                        >
+                          <p class="ma-0 text-h6">
+                            {{ answer.symbol }}
+                          </p>
+                        </v-btn>
+                      </v-btn-toggle>
                     </div>
-                  </v-col>
+                  </div>
                 </v-row>
               </div>
             </div>
-            <v-btn
+            <!-- <v-btn
               @click="() => handleNext()"
               v-if="isLast"
               class="mt-8 no-uppercase"
@@ -233,7 +221,7 @@
               block
             >
               Submit
-            </v-btn>
+            </v-btn> -->
           </div>
         </div>
       </div>
@@ -337,6 +325,10 @@ export default {
       title: "new_kecermatan.title",
       duration: "new_kecermatan.duration",
       timer: "new_kecermatan.timer",
+      questionTimer: "new_kecermatan.questionTimer",
+      questionSeconds: "new_kecermatan.questionSeconds",
+      questionDuration: "new_kecermatan.questionDuration",
+      questionIndex: "new_kecermatan.questionIndex",
       minutes: "new_kecermatan.minutes",
       seconds: "new_kecermatan.seconds",
       nowDate: "new_kecermatan.nowDate",
@@ -369,27 +361,63 @@ export default {
     if (this.isCompleted) this.visible = true;
 
     this.startCountDown();
+    this.startQuestionCountDown();
     this.getDate();
   },
   methods: {
     ...mapMutations({
-      purgeData: `new_kecermatan/${PURGE_QUESTION.KECERMATAN}`,
+      purgeData: `new_kecermatan/${PURGE_QUESTION.NEW_KECERMATAN}`,
     }),
+    converterTimer() {
+      this.minutes = parseInt(this.timer / 60, 10);
+      this.seconds = parseInt(this.timer % 60, 10);
+
+      this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
+      this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
+    },
     startCountDown() {
-      this.counterFunction = setInterval(() => {
-        this.minutes = parseInt(this.timer / 60, 10);
-        this.seconds = parseInt(this.timer % 60, 10);
+      this.counterFunction = setInterval(
+        function myFunction() {
+          this.converterTimer();
+          this.timer--;
+          if (this.timer < 0) {
+            clearInterval(this.counterFunction);
+            this.timer = 0;
+            this.handleNext("countDown");
+          }
+          console.log("Counter Function");
+          return myFunction;
+        }.bind(this),
+        1000
+      );
+    },
+    startQuestionCountDown() {
+      this.counterQuestionFunction = setInterval(
+        function myFunction() {
+          this.questionSeconds = parseInt(this.questionTimer % 60, 10);
+          this.questionTimer--;
+          if (this.questionTimer <= 0) {
+            clearInterval(this.counterQuestionFunction);
+            if (
+              this.questionIndex ==
+              this.sections[this.sectionIndex].question.length - 1
+            ) {
+              clearInterval(this.counterFunction);
+              this.questionTimer = 0;
+              this.timer = 0;
+              this.handleNext("countDown");
+            } else {
+              this.questionTimer = 0;
+              this.handleNextQuestion();
+            }
+          }
 
-        this.minutes = this.minutes < 10 ? "0" + this.minutes : this.minutes;
-        this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
+          console.log("Counter Question Function");
 
-        this.timer--;
-        if (this.timer < 0) {
-          clearInterval(this.counterFunction);
-          this.timer = 0;
-          this.handleNext("countDown");
-        }
-      }, 1000);
+          return myFunction;
+        }.bind(this),
+        1000
+      );
     },
     handleForceSubmit() {
       this.$confirm({
@@ -408,13 +436,26 @@ export default {
     handleNext(type = "normal") {
       if (!this.isLast) {
         this.loadingChangeSection = true;
+        this.questionTimer = this.questionDuration;
+        this.timer = this.duration;
+        this.minutes = 0;
+        this.seconds = 0;
+
         clearInterval(this.counterFunction);
-        setTimeout(() => {
-          this.sectionIndex++;
-          this.timer = this.duration;
-          this.startCountDown();
-          this.loadingChangeSection = false;
-        }, 500);
+        clearInterval(this.counterQuestionFunction);
+
+        setTimeout(
+          function myFunction() {
+            this.questionIndex = 0;
+            this.sectionIndex++;
+            this.startCountDown();
+            this.startQuestionCountDown();
+            this.loadingChangeSection = false;
+
+            return myFunction;
+          }.bind(this),
+          0
+        );
       } else {
         if (type == "normal") {
           this.$confirm({
@@ -428,7 +469,34 @@ export default {
               if (confirm) this.handleSubmit();
             },
           });
-        } else this.handleForceSubmit();
+        } else {
+          clearInterval(this.counterFunction);
+          clearInterval(this.counterQuestionFunction);
+
+          this.handleForceSubmit();
+        }
+      }
+    },
+    handleNextQuestion() {
+      setTimeout(() => {
+        this.questionTimer = this.questionDuration;
+        this.questionIndex++;
+        this.startQuestionCountDown();
+      }, 1);
+    },
+    handleAnswer() {
+      clearInterval(this.counterQuestionFunction);
+      if (
+        this.questionIndex ==
+        this.sections[this.sectionIndex].question.length - 1
+      ) {
+        clearInterval(this.counterFunction);
+        this.questionTimer = 0;
+        this.timer = 0;
+        this.handleNext("countDown");
+      } else {
+        this.questionTimer = 0;
+        this.handleNextQuestion();
       }
     },
     handleSubmit() {
@@ -515,19 +583,19 @@ export default {
     },
     requestInsert(payload) {
       this.lading = true;
-      SoalService.insertNilaiKecermatan({ ...payload })
+      SoalService.insertNilaiNewKecermatan({ ...payload })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
             this.visible = true;
             this.$store.commit("snackbar/setSnack", {
               show: true,
-              message: "Berhasil input nilai Kecermatan",
+              message: "Berhasil input nilai New Kecermatan",
               color: "success",
             });
           } else {
             this.$store.commit("snackbar/setSnack", {
               show: true,
-              message: result || "Gagal input nilai Kecermatan",
+              message: result || "Gagal input nilai New Kecermatan",
               color: "error",
             });
           }
@@ -536,7 +604,7 @@ export default {
           console.error(err);
           this.$store.commit("snackbar/setSnack", {
             show: true,
-            message: "Gagal input nilai Kecermatan",
+            message: "Gagal input nilai New Kecermatan",
             color: "error",
           });
         })
@@ -553,6 +621,7 @@ export default {
   beforeDestroy() {
     clearInterval(this.dateFunction);
     clearInterval(this.counterFunction);
+    clearInterval(this.counterQuestionFunction);
   },
 };
 </script>

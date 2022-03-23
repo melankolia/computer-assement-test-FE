@@ -30,6 +30,11 @@
               Kecermatan
             </p>
           </v-btn>
+          <v-btn class="no-uppercase" small value="new_kecermatan">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
+              New Kecermatan
+            </p>
+          </v-btn>
         </v-btn-toggle>
       </v-col>
     </v-row>
@@ -254,6 +259,32 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
+    getListNewKecermatan() {
+      this.loading = true;
+      SoalService.getListNilaiNewKecermatan({
+        secureId: this.getProfile.secureId,
+      })
+        .then(({ data: { result, message } }) => {
+          if (message == "OK") {
+            this.items = [...result];
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: "Gagal memuat data nilai",
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$store.commit("snackbar/setSnack", {
+            show: true,
+            message: "Gagal memuat data nilai",
+            color: "error",
+          });
+        })
+        .finally(() => (this.loading = false));
+    },
   },
   mounted() {
     this.getList(this.questionType);
@@ -261,14 +292,18 @@ export default {
   computed: {
     ...mapGetters(["getProfile"]),
     isKecermatan() {
-      return this.questionType == "kecermatan";
+      return (
+        this.questionType == "kecermatan" ||
+        this.questionType == "new_kecermatan"
+      );
     },
   },
   watch: {
     questionType(val) {
       this.items = [];
-      if (val != "kecermatan") this.getList(val);
-      else this.getListKecermatan();
+      if (val != "kecermatan" && val != "new_kecermatan") this.getList(val);
+      else if (val == "kecermatan") this.getListKecermatan();
+      else this.getListNewKecermatan();
     },
   },
 };

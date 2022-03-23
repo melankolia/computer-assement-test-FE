@@ -9,17 +9,17 @@ export const initialNewKecermatanQuestion = () => ({
   nowHour: null,
   totalAnswer: null,
   sectionIndex: 0,
+  questionDuration: 3,
+  questionIndex: 0,
+  questionTimer: 3,
+  questionSeconds: 0,
   sections: [
     {
       secureId: null,
       title: null,
       tableName: "Tabel Kolom Acuan",
-      listAcuan: [
-        {
-          firstRow: ["A", "B", "C", "D", "E"],
-          secondRow: ["0", "0", "0", "0", "0"],
-        },
-      ],
+      firstRow: ["A", "B", "C", "D", "E"],
+      secondRow: ["0", "0", "0", "0", "0"],
       question: [
         {
           secureId: null,

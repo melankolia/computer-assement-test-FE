@@ -136,6 +136,16 @@ export default {
             description: null,
           },
         },
+        new_kecermatanVO: {
+          siswa: {
+            secureId: null,
+            description: null,
+          },
+          soal: {
+            secureId: null,
+            description: null,
+          },
+        },
       },
     };
   },

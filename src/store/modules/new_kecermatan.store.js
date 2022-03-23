@@ -2,7 +2,7 @@ import { initialNewKecermatanQuestion } from "../states";
 import { getField, updateField } from "vuex-map-fields";
 import { GET_LIST_QUESTION } from "../constants/actions.type";
 import { SET_QUESTION, PURGE_QUESTION } from "../constants/mutations.type";
-import QuizService from "@/services/resources/Quiz/kecermatan.service";
+import QuizService from "@/services/resources/Quiz/new-kecermatan.service";
 
 const state = {
   new_kecermatan: initialNewKecermatanQuestion(),
@@ -26,6 +26,8 @@ const mutations = {
   },
   [PURGE_QUESTION.NEW_KECERMATAN](state) {
     clearInterval(this.counterFunction);
+    clearInterval(this.counterAcuanFunction);
+    clearInterval(this.counterQuestionFunction);
     Object.assign(state.new_kecermatan, initialNewKecermatanQuestion());
   },
 };
