@@ -8,4 +8,5 @@ export const GET_LIST_QUESTION = {
   KEJIWAAN: `getListKejiwaanQuestion`,
   KEPRIBADIAN: `getListKepribadianQuestion`,
   KECERMATAN: `getListKecermatanQuestion`,
+  NEW_KECERMATAN: `getListNewKecermatanQuestion`,
 };

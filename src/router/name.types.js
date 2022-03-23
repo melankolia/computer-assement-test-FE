@@ -15,4 +15,5 @@ export const QUIZ = {
   KECERMATAN: `${quiz}.kecermatan`,
   KEJIWAAN: `${quiz}.kejiwaan`,
   KEPRIBADIAN: `${quiz}.kepribadian`,
+  NEW_KECERMATAN: `${quiz}.newKecermatan`,
 };

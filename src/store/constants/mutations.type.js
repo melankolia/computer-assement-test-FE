@@ -13,6 +13,7 @@ export const SET_QUESTION = {
   KEJIWAAN: "setQuestionKejiwaan",
   KEPRIBADIAN: "setQuestionKepribadian",
   KECERMATAN: "setQuestionKecermatan",
+  NEW_KECERMATAN: "setQuestionNewKecermatan",
 };
 
 export const PURGE_QUESTION = {
@@ -20,4 +21,5 @@ export const PURGE_QUESTION = {
   KECERDASAN: "purgeKecerdasan",
   KEPRIBADIAN: "purgeKepribadian",
   KECERMATAN: "purgeKecermatan",
+  NEW_KECERMATAN: "purgeNewKecermatan",
 };

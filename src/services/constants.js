@@ -46,6 +46,12 @@ export const GROUPS = {
     DELETE: `${groups}/kecermatan`,
     ACTIVATION: `${groups}/kecermatan/activation`,
   },
+  NEW_KECERMATAN: {
+    LIST: `${groups}/new-kecermatan`,
+    INSERT: `${groups}/new-kecermatan`,
+    DELETE: `${groups}/new-kecermatan`,
+    ACTIVATION: `${groups}/new-kecermatan/activation`,
+  },
 };
 
 const questions = `questions`;
@@ -78,6 +84,14 @@ export const QUESTIONS = {
     DELETE_QUESTION: `${questions}/kecermatan/question`,
     ACTIVATION: `${questions}/kecermatan/activation`,
   },
+  NEW_KECERMATAN: {
+    DETAIL: `${questions}/new-kecermatan`,
+    INSERT_SECTION: `${questions}/new-kecermatan/section`,
+    INSERT_QUESTION: `${questions}/new-kecermatan/question`,
+    DELETE_SECTION: `${questions}/new-kecermatan/section`,
+    DELETE_QUESTION: `${questions}/new-kecermatan/question`,
+    ACTIVATION: `${questions}/new-kecermatan/activation`,
+  },
 };
 
 const soal = `soal`;
@@ -90,6 +104,8 @@ const nilai = `nilai`;
 export const NILAI = {
   LIST: `${nilai}`,
   LIST_KECERMATAN: `${nilai}/kecermatan`,
+  LIST_NEW_KECERMATAN: `${nilai}/new-kecermatan`,
   INSERT: `${nilai}`,
   INSERT_KECERMATAN: `${nilai}/kecermatan`,
+  INSERT_NEW_KECERMATAN: `${nilai}/new-kecermatan`,
 };

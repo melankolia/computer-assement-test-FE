@@ -12,6 +12,7 @@ const KecerdasanQuiz = () => import("@/views/Quiz/Kecerdasan");
 const KepribadianQuiz = () => import("@/views/Quiz/Kepribadian");
 const KejiwaanQuiz = () => import("@/views/Quiz/Kejiwaan");
 const KecermatanQuiz = () => import("@/views/Quiz/Kecermatan");
+const NewKecermatanQuiz = () => import("@/views/Quiz/New_Kecermatan");
 
 import {
   LOGIN,
@@ -134,6 +135,15 @@ export const configRoutes = [
         meta: {
           requiresAuth: true,
           title: "Kecermatan Quiz",
+        },
+      },
+      {
+        path: "/new-kecermatan/:secureId",
+        name: QUIZ.NEW_KECERMATAN,
+        component: NewKecermatanQuiz,
+        meta: {
+          requiresAuth: true,
+          title: "New Kecermatan Quiz",
         },
       },
     ],

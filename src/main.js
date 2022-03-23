@@ -114,6 +114,17 @@ router.beforeEach((to, from, next) => {
           secureId: store.getters["kecermatan/getKecermatan"].secureId,
         },
       });
+    } else if (
+      store.getters["new_kecermatan/getNewKecermatan"].secureId &&
+      to.name !== QUIZ.NEW_KECERMATAN
+    ) {
+      next({
+        replace: true,
+        name: QUIZ.NEW_KECERMATAN,
+        params: {
+          secureId: store.getters["new_kecermatan/getNewKecermatan"].secureId,
+        },
+      });
     }
   } else {
     next();

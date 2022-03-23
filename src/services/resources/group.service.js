@@ -50,6 +50,18 @@ const GroupService = {
   activationKecermatan(data) {
     return MainInstance.post(GROUPS.KECERMATAN.ACTIVATION, data);
   },
+  getListNewKecermatan(params) {
+    return MainInstance.query(GROUPS.NEW_KECERMATAN.LIST, { params });
+  },
+  insertDataNewKecermatan(data) {
+    return MainInstance.post(GROUPS.NEW_KECERMATAN.INSERT, data);
+  },
+  deleteNewKecermatan(id) {
+    return MainInstance.deleteSlug(GROUPS.NEW_KECERMATAN.DELETE, id);
+  },
+  activationNewKecermatan(data) {
+    return MainInstance.post(GROUPS.NEW_KECERMATAN.ACTIVATION, data);
+  },
 };
 
 export default GroupService;

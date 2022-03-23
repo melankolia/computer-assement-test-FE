@@ -10,6 +10,7 @@ import kecerdasan from "./modules/kecerdasan.store";
 import kejiwaan from "./modules/kejiwaan.store";
 import kepribadian from "./modules/kepribadian.store";
 import kecermatan from "./modules/kecermatan.store";
+import new_kecermatan from "./modules/new_kecermatan.store";
 
 const debug = process.env.VUE_APP_DEBUG;
 const debugPlugin = debug == "true" ? [createLogger()] : [];
@@ -35,6 +36,7 @@ export default new Vuex.Store({
     kejiwaan,
     kepribadian,
     kecermatan,
+    new_kecermatan,
   },
   strict: debug,
   plugins: [vuexLocal.plugin, ...debugPlugin],

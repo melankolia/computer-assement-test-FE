@@ -30,6 +30,11 @@
               Kecermatan
             </p>
           </v-btn>
+          <v-btn class="no-uppercase" small value="New_Kecermatan">
+            <p class="ma-0 mx-4 text-subtitle-2 font-weight-regular font-inter">
+              New Kecermatan
+            </p>
+          </v-btn>
         </v-btn-toggle>
       </v-col>
     </v-row>
@@ -89,7 +94,12 @@
             <div class="d-flex flex-row mr-6 mb-3">
               <img class="mr-2" src="@/assets/icons/time.svg" />
               <p class="selection-item font-weight-medium ma-0">
-                <span v-if="questionType != 'Kecermatan'">
+                <span
+                  v-if="
+                    questionType != 'Kecermatan' &&
+                    questionType != 'New_Kecermatan'
+                  "
+                >
                   {{ item.time }} Menit
                 </span>
                 <span v-else>
@@ -159,7 +169,10 @@ export default {
       SoalService.getAll({ type: type?.toLowerCase() })
         .then(({ data: { result, message } }) => {
           if (message == "OK") {
-            if (this.questionType == "Kecermatan") {
+            if (
+              this.questionType == "Kecermatan" ||
+              this.questionType == "New_Kecermatan"
+            ) {
               result.map((e) => {
                 let totalTime = e.time * e.section;
                 e.totalMinutes = parseInt(totalTime / 60, 10);
