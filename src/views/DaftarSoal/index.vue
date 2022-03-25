@@ -105,8 +105,14 @@
                 <span v-else>
                   {{ item.totalMinutes }} Menit {{ item.totalSeconds }} Detik
                   <br />
-                  ({{ item.minutes }} Menit {{ item.seconds }} Detik/ Section)
+                  ({{ item.minutes }} Menit {{ item.seconds }} Detik / Section)
                 </span>
+              </p>
+            </div>
+            <div class="d-flex flex-row align-center mr-6 mb-3">
+              <v-icon class="mr-1">mdi-timelapse</v-icon>
+              <p class="selection-item font-weight-medium ma-0">
+                {{ item.time_interval }} Interval
               </p>
             </div>
             <div

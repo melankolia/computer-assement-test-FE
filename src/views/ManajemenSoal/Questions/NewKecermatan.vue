@@ -44,6 +44,12 @@
               {{ detail.minutes }} Menit {{ detail.seconds }} Detik
             </p>
           </div>
+          <div class="d-flex flex-row align-center mr-6">
+            <v-icon class="mr-1">mdi-timelapse</v-icon>
+            <p class="selection-item font-weight-medium ma-0">
+              {{ detail.time_interval }} Detik
+            </p>
+          </div>
           <div class="d-flex flex-row align-center">
             <img class="mr-2" src="@/assets/icons/three-line.svg" />
             <p class="selection-item font-weight-medium ma-0">
@@ -494,6 +500,7 @@ export default {
         secureId: null,
         title: null,
         time: 0,
+        time_interval: 0,
         description: null,
         is_active: false,
       },
@@ -616,6 +623,7 @@ export default {
               title: result.title,
               description: result.description,
               time: result.time,
+              time_interval: result.time_interval,
               minutes: parseInt(result.time / 60, 10),
               seconds: parseInt(result.time % 60, 10),
               is_active: result.is_active,

@@ -25,6 +25,12 @@
         </p>
       </div>
       <div class="d-flex flex-row align-center mr-6">
+        <v-icon class="mr-1">mdi-timelapse</v-icon>
+        <p class="selection-item font-weight-medium ma-0">
+          {{ item.time_interval }} Interval
+        </p>
+      </div>
+      <div class="d-flex flex-row align-center mr-6">
         <img class="mr-2" src="@/assets/icons/three-line.svg" />
         <p class="selection-item font-weight-medium ma-0">
           {{ item.total_section }} Section
