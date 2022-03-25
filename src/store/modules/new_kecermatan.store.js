@@ -43,6 +43,8 @@ const actions = {
               title: result.title,
               timer: result.time,
               duration: result.time,
+              questionTimer: result.time_interval,
+              questionDuration: result.time_interval,
               sections: result.result,
             };
             commit(SET_QUESTION.NEW_KECERMATAN, Payload);

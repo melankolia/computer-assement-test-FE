@@ -112,6 +112,12 @@
               Menit {{ item.seconds }} Detik / Section)
             </p>
           </div>
+          <div class="d-flex flex-row align-center mx-4">
+            <v-icon class="mr-1">mdi-timelapse</v-icon>
+            <p class="selection-item font-weight-medium ma-0">
+              {{ item.time_interval }} Detik
+            </p>
+          </div>
         </div>
       </div>
       <!-- Edited Mode -->
@@ -171,6 +177,13 @@
                       @on-change="(e) => handleChange(e, 'seconds', 'edit')"
                     />
                   </div>
+                </div>
+                <div class="d-flex flex-column mr-4">
+                  <p class="text-caption font-weight-light mb-1">Detik</p>
+                  <Counter
+                    :data="edited.time_interval"
+                    @on-change="(e) => handleInterval(e, 'edited')"
+                  />
                 </div>
               </div>
             </div>
@@ -273,6 +286,13 @@
                     />
                   </div>
                 </div>
+                <div class="d-flex flex-column mr-4">
+                  <p class="text-caption font-weight-light mb-1">Detik</p>
+                  <Counter
+                    :data="payload.time_interval"
+                    @on-change="(e) => handleInterval(e)"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -335,6 +355,7 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        time_interval: 0,
         minutes: 1,
         seconds: 0,
         modeAdd: false,
@@ -349,6 +370,7 @@ export default {
         is_active: false,
         is_random: false,
         time: 1,
+        time_interval: 0,
         minutes: 1,
         seconds: 0,
         modeAdd: false,
@@ -521,6 +543,7 @@ export default {
         title: this.edited.title,
         description: this.edited.description,
         time,
+        time_interval: this.edited.time_interval,
         is_active: this.edited.is_active,
         is_random: this.edited.is_random,
       })
@@ -561,6 +584,7 @@ export default {
         title: this.payload.title,
         description: this.payload.description,
         time,
+        time_interval: this.payload.time_interval,
         is_active: this.payload.is_active,
         is_random: this.payload.is_random,
       })
@@ -609,6 +633,11 @@ export default {
         if (+e >= 0) this[mode].minutes = parseInt(e);
         else if (+e <= 0) this[mode].minutes = 0;
       }
+    },
+    handleInterval(e, type = "add") {
+      const mode = type == "add" ? "payload" : "edited";
+      if (+e >= 0) this[mode].time_interval = parseInt(e);
+      else if (+e <= 0) this[mode].time_interval = 0;
     },
     handleDelete(item, index) {
       this.$confirm({
