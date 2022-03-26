@@ -162,7 +162,7 @@
                           style="
                             border: 2px solid black !important;
                             font-weight: bold;
-                            min-width: 140px !important;
+                            min-width: 160px !important;
                           "
                           class="text-center px-4"
                         >
@@ -172,7 +172,7 @@
                         </td>
                       </tr>
                     </table>
-                    <div class="d-flex flex-column pb-2 pt-6 align-center">
+                    <div class="d-flex flex-column pb-2 pt-4 align-center">
                       <v-btn-toggle
                         v-model="
                           sections[sectionIndex].question[questionIndex].answer
@@ -183,7 +183,7 @@
                             sections[sectionIndex].question[questionIndex]
                               .answer.value != null,
                         }"
-                        style="border: 2px black solid"
+                        style="border: 1px black solid"
                       >
                         <v-btn
                           v-for="(answer, aIndex) in sections[sectionIndex]

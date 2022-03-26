@@ -114,7 +114,7 @@
           </div>
           <div class="d-flex flex-row align-center mx-4">
             <v-icon class="mr-1">mdi-timelapse</v-icon>
-            <p class="selection-item font-weight-medium mb-0 mt-2">
+            <p class="selection-item font-weight-medium mb-0">
               {{ item.time_interval }} Detik
             </p>
           </div>
