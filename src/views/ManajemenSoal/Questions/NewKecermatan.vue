@@ -213,42 +213,6 @@
                       v-if="!e.modeAdd"
                     >
                       <v-text-field
-                        v-for="(input, iInput) in e.firstRow"
-                        :key="`first-row-${iInput}`"
-                        v-model="sections[i].firstRow[iInput]"
-                        hide-details
-                        outlined
-                        solo
-                        dense
-                        class="rounded mr-3"
-                        disabled
-                      />
-                    </div>
-                    <div
-                      class="d-flex flex-row align-center"
-                      style="max-width: 253px"
-                      v-else
-                    >
-                      <v-text-field
-                        v-for="(edit, iEdit) in editedSection.firstRow"
-                        :key="`first-row-edit-${iEdit}`"
-                        v-model="editedSection.firstRow[iEdit]"
-                        hide-details
-                        outlined
-                        solo
-                        dense
-                        class="rounded mr-3"
-                      />
-                    </div>
-                  </div>
-                  <div class="d-flex flex-row align-center">
-                    <p class="mb-0 pr-5">Baris 2</p>
-                    <div
-                      class="d-flex flex-row align-center"
-                      style="max-width: 253px"
-                      v-if="!e.modeAdd"
-                    >
-                      <v-text-field
                         v-for="(input2, iInput2) in e.secondRow"
                         :key="`second-row-${iInput2}`"
                         v-model="sections[i].secondRow[iInput2]"
@@ -269,6 +233,42 @@
                         v-for="(edited2, iEdit2) in editedSection.secondRow"
                         :key="`second-edot-row-${iEdit2}`"
                         v-model="editedSection.secondRow[iEdit2]"
+                        hide-details
+                        outlined
+                        solo
+                        dense
+                        class="rounded mr-3"
+                      />
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row align-center mb-0">
+                    <p class="mb-0 pr-5">Baris 2</p>
+                    <div
+                      class="d-flex flex-row align-center"
+                      style="max-width: 253px"
+                      v-if="!e.modeAdd"
+                    >
+                      <v-text-field
+                        v-for="(input, iInput) in e.firstRow"
+                        :key="`first-row-${iInput}`"
+                        v-model="sections[i].firstRow[iInput]"
+                        hide-details
+                        outlined
+                        solo
+                        dense
+                        class="rounded mr-3"
+                        disabled
+                      />
+                    </div>
+                    <div
+                      class="d-flex flex-row align-center"
+                      style="max-width: 253px"
+                      v-else
+                    >
+                      <v-text-field
+                        v-for="(edit, iEdit) in editedSection.firstRow"
+                        :key="`first-row-edit-${iEdit}`"
+                        v-model="editedSection.firstRow[iEdit]"
                         hide-details
                         outlined
                         solo

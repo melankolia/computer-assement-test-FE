@@ -114,7 +114,7 @@
           </div>
           <div class="d-flex flex-row align-center mx-4">
             <v-icon class="mr-1">mdi-timelapse</v-icon>
-            <p class="selection-item font-weight-medium ma-0">
+            <p class="selection-item font-weight-medium mb-0 mt-2">
               {{ item.time_interval }} Detik
             </p>
           </div>
@@ -179,7 +179,10 @@
                   </div>
                 </div>
                 <div class="d-flex flex-column mr-4">
-                  <p class="text-caption font-weight-light mb-1">Detik</p>
+                  <p class="text-caption font-weight-light mb-1 mt-2">
+                    Interval <br />
+                    Detik
+                  </p>
                   <Counter
                     :data="edited.time_interval"
                     @on-change="(e) => handleInterval(e, 'edited')"
@@ -287,7 +290,10 @@
                   </div>
                 </div>
                 <div class="d-flex flex-column mr-4">
-                  <p class="text-caption font-weight-light mb-1">Detik</p>
+                  <p class="text-caption font-weight-light mb-1 mt-2">
+                    Interval <br />
+                    Detik
+                  </p>
                   <Counter
                     :data="payload.time_interval"
                     @on-change="(e) => handleInterval(e)"

@@ -117,14 +117,15 @@
                     <td
                       v-for="(secondRow, iSecondRow) in sections[sectionIndex]
                         .secondRow"
-                      class="px-4 py-2"
+                      class="px-4 py-2 text-center"
                       :key="`second-row-${iSecondRow}`"
                       style="
                         border: 2px solid black !important;
                         font-weight: bold;
+                        min-width: 78px;
                       "
                     >
-                      <p class="ma-0 text-h1 font-weight-medium">
+                      <p class="ma-0 text-h2 font-weight-medium">
                         {{ secondRow }}
                       </p>
                     </td>
@@ -138,6 +139,7 @@
                       style="
                         border: 2px solid black !important;
                         font-weight: bold;
+                        min-width: 78px;
                       "
                     >
                       <p class="ma-0 text-center text-h5 font-weight-medium">
@@ -157,20 +159,14 @@
                           v-for="(qTitle, qIndex) in sections[sectionIndex]
                             .question[questionIndex].title"
                           :key="qIndex"
-                          class="px-4"
                           style="
                             border: 2px solid black !important;
                             font-weight: bold;
+                            min-width: 140px !important;
                           "
+                          class="text-center px-4"
                         >
-                          <p
-                            class="
-                              ma-0
-                              text-answer-title
-                              font-weight-medium
-                              px-2
-                            "
-                          >
+                          <p class="text-answer-title font-weight-medium ma-0">
                             {{ qTitle }}
                           </p>
                         </td>
@@ -206,8 +202,12 @@
                           }"
                           large
                           @click="handleAnswer"
+                          style="
+                            border: 1px black solid !important;
+                            min-height: 60px;
+                          "
                         >
-                          <p class="ma-0 text-h5 px-6">
+                          <p class="ma-0 text-h5 px-10 font-weight-medium">
                             {{ answer.symbol }}
                           </p>
                         </v-btn>
