@@ -124,7 +124,7 @@
                         font-weight: bold;
                       "
                     >
-                      <p class="ma-0 text-h2 font-weight-medium">
+                      <p class="ma-0 text-h1 font-weight-medium">
                         {{ secondRow }}
                       </p>
                     </td>
@@ -140,9 +140,7 @@
                         font-weight: bold;
                       "
                     >
-                      <p
-                        class="ma-0 text-center text-body-1 font-weight-medium"
-                      >
+                      <p class="ma-0 text-center text-h5 font-weight-medium">
                         {{ firstRow }}
                       </p>
                     </td>
@@ -159,19 +157,26 @@
                           v-for="(qTitle, qIndex) in sections[sectionIndex]
                             .question[questionIndex].title"
                           :key="qIndex"
-                          class="px-5 py-3"
+                          class="px-4"
                           style="
                             border: 2px solid black !important;
                             font-weight: bold;
                           "
                         >
-                          <p class="ma-0 text-h1 font-weight-medium">
+                          <p
+                            class="
+                              ma-0
+                              text-answer-title
+                              font-weight-medium
+                              px-2
+                            "
+                          >
                             {{ qTitle }}
                           </p>
                         </td>
                       </tr>
                     </table>
-                    <div class="d-flex flex-column py-2 align-center">
+                    <div class="d-flex flex-column pb-2 pt-6 align-center">
                       <v-btn-toggle
                         v-model="
                           sections[sectionIndex].question[questionIndex].answer
@@ -202,7 +207,7 @@
                           large
                           @click="handleAnswer"
                         >
-                          <p class="ma-0 text-h6">
+                          <p class="ma-0 text-h5 px-6">
                             {{ answer.symbol }}
                           </p>
                         </v-btn>
