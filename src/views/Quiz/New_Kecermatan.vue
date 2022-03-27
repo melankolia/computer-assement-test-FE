@@ -100,56 +100,63 @@
                 black-border
               "
             >
-              <div
-                class="d-flex flex-column align-center white py-5 rounded-lg"
-              >
-                <div
-                  class="d-flex flex-row align-center my-4 pa-2"
-                  style="min-width: 124px"
-                >
-                  <img width="20" height="22" src="@/assets/icons/time.svg" />
-                  <p class="timer-acuan-font mb-0 mx-2">
-                    {{ minutes || "--" }}:{{ seconds || "--" }}
-                  </p>
-                </div>
-                <table style="border: 2px solid black !important">
-                  <tr>
-                    <td
-                      v-for="(secondRow, iSecondRow) in sections[sectionIndex]
-                        .secondRow"
-                      class="px-4 py-2 text-center"
-                      :key="`second-row-${iSecondRow}`"
-                      style="
-                        border: 2px solid black !important;
-                        font-weight: bold;
-                        min-width: 78px;
-                      "
-                    >
-                      <p class="ma-0 text-h2 font-weight-medium">
-                        {{ secondRow }}
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      v-for="(firstRow, iFirstRow) in sections[sectionIndex]
-                        .firstRow"
-                      class="px-4 py-2"
-                      :key="`first-row-${iFirstRow}`"
-                      style="
-                        border: 2px solid black !important;
-                        font-weight: bold;
-                        min-width: 78px;
-                      "
-                    >
-                      <p class="ma-0 text-center text-h5 font-weight-medium">
-                        {{ firstRow }}
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <v-divider class="mt-4" />
+              <v-row class="pt-5 pb-3" align="end">
+                <v-col cols="12" sm="4"> </v-col>
+                <v-col cols="12" sm="4" class="white rounded-lg">
+                  <table style="border: 2px solid black !important">
+                    <tr>
+                      <td
+                        v-for="(secondRow, iSecondRow) in sections[sectionIndex]
+                          .secondRow"
+                        class="px-4 py-2 text-center"
+                        :key="`second-row-${iSecondRow}`"
+                        style="
+                          border: 2px solid black !important;
+                          font-weight: bold;
+                          min-width: 78px;
+                        "
+                      >
+                        <p class="ma-0 text-h2 font-weight-medium">
+                          {{ secondRow }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        v-for="(firstRow, iFirstRow) in sections[sectionIndex]
+                          .firstRow"
+                        class="px-4 py-2"
+                        :key="`first-row-${iFirstRow}`"
+                        style="
+                          border: 2px solid black !important;
+                          font-weight: bold;
+                          min-width: 78px;
+                        "
+                      >
+                        <p class="ma-0 text-center text-h5 font-weight-medium">
+                          {{ firstRow }}
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </v-col>
+                <v-col cols="12" sm="1">
+                  <div
+                    class="d-flex align-center justify-center pa-2"
+                    style="
+                      min-width: 124px;
+                      background: gainsboro;
+                      border-radius: 4%;
+                    "
+                  >
+                    <img width="20" height="22" src="@/assets/icons/time.svg" />
+                    <p class="timer-acuan-font mb-0 mx-2">
+                      {{ minutes || "--" }}:{{ seconds || "--" }}
+                    </p>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-divider class="primary mb-12" style="border-width: 2px" />
               <div cols="12" class="py-8">
                 <v-row no-gutters align="center" justify="center">
                   <div class="d-flex flex-column px-12 py-2">
@@ -215,6 +222,10 @@
                     </div>
                   </div>
                 </v-row>
+              </div>
+              <v-divider class="primary" style="border-width: 2px" />
+              <div class="d-flex flex-column align-center">
+                <v-img :src="MalakaLogo" max-width="435px" class="my-8" />
               </div>
             </div>
             <!-- <v-btn
@@ -297,6 +308,7 @@ import { mapGetters, mapMutations } from "vuex";
 import { PURGE_QUESTION } from "@/store/constants/mutations.type";
 import SoalService from "@/services/resources/soal.service";
 import { DATA_SOAL } from "@/router/name.types";
+import MalakaLogo from "@/assets/images/new_kecermatan.png";
 const DefaultLoader = () => import("@/components/Loader/Default");
 const CompletedPopUp = () => import("@/components/Dialog/Completed");
 // const Section = () => import("./Sections");
@@ -322,6 +334,7 @@ export default {
           total: null,
         },
       ],
+      MalakaLogo,
     };
   },
   computed: {
