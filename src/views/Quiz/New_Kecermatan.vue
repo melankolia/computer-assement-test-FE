@@ -103,42 +103,55 @@
               <v-row class="py-5" align="end">
                 <v-col cols="12" sm="4"> </v-col>
                 <v-col cols="12" sm="4" class="white rounded-lg">
-                  <table style="border: 2px solid black !important">
-                    <tr>
-                      <td
-                        v-for="(secondRow, iSecondRow) in sections[sectionIndex]
-                          .secondRow"
-                        class="px-4 py-2 text-center"
-                        :key="`second-row-${iSecondRow}`"
-                        style="
-                          border: 2px solid black !important;
-                          font-weight: bold;
-                          min-width: 78px;
-                        "
-                      >
-                        <p class="ma-0 text-h2 font-weight-medium">
-                          {{ secondRow }}
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        v-for="(firstRow, iFirstRow) in sections[sectionIndex]
-                          .firstRow"
-                        class="px-4 py-2"
-                        :key="`first-row-${iFirstRow}`"
-                        style="
-                          border: 2px solid black !important;
-                          font-weight: bold;
-                          min-width: 78px;
-                        "
-                      >
-                        <p class="ma-0 text-center text-h5 font-weight-medium">
-                          {{ firstRow }}
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
+                  <div
+                    class="
+                      d-flex
+                      flex-column
+                      align-center
+                      justify-center
+                      mx-auto
+                    "
+                  >
+                    <table style="border: 2px solid black !important">
+                      <tr>
+                        <td
+                          v-for="(secondRow, iSecondRow) in sections[
+                            sectionIndex
+                          ].secondRow"
+                          class="px-4 py-2 text-center"
+                          :key="`second-row-${iSecondRow}`"
+                          style="
+                            border: 2px solid black !important;
+                            font-weight: bold;
+                            min-width: 78px;
+                          "
+                        >
+                          <p class="ma-0 text-h2 font-weight-medium">
+                            {{ secondRow }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          v-for="(firstRow, iFirstRow) in sections[sectionIndex]
+                            .firstRow"
+                          class="px-4 py-2"
+                          :key="`first-row-${iFirstRow}`"
+                          style="
+                            border: 2px solid black !important;
+                            font-weight: bold;
+                            min-width: 78px;
+                          "
+                        >
+                          <p
+                            class="ma-0 text-center text-h5 font-weight-medium"
+                          >
+                            {{ firstRow }}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </v-col>
                 <v-col cols="12" sm="1">
                   <div
@@ -207,6 +220,7 @@
                               sections[sectionIndex].question[questionIndex]
                                 .answer.secureId == answer.secureId,
                           }"
+                          class="button-hover-answer"
                           large
                           @click="handleAnswer"
                           style="
@@ -772,5 +786,9 @@ th {
   font-size: 20px !important;
   line-height: 140%;
   color: #38d435;
+}
+
+.button-hover-answer:active {
+  background-color: #38d435 !important;
 }
 </style>
