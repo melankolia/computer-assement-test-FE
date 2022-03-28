@@ -100,7 +100,7 @@
                 black-border
               "
             >
-              <v-row class="pt-5 pb-3" align="end">
+              <v-row class="py-5" align="end">
                 <v-col cols="12" sm="4"> </v-col>
                 <v-col cols="12" sm="4" class="white rounded-lg">
                   <table style="border: 2px solid black !important">
