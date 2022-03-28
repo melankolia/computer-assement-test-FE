@@ -109,7 +109,10 @@
                 </span>
               </p>
             </div>
-            <div class="d-flex flex-row align-center mr-6 mb-3">
+            <div
+              v-if="questionType == 'New_Kecermatan'"
+              class="d-flex flex-row align-center mr-6 mb-3"
+            >
               <v-icon class="mr-1">mdi-timelapse</v-icon>
               <p class="selection-item font-weight-medium ma-0">
                 {{ item.time_interval }} Interval
