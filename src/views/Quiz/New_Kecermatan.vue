@@ -385,6 +385,12 @@ export default {
     isLast() {
       return this.sections.length == this.sectionIndex + 1;
     },
+    isLastQuestion() {
+      return (
+        this.sections[this.sectionIndex].question.length - 1 ==
+        this.questionIndex
+      );
+    },
     isResume() {
       return this.kecermatan?.secureId;
     },
@@ -412,12 +418,6 @@ export default {
         function myFunction() {
           this.converterTimer();
           this.timer--;
-          if (this.timer < 0) {
-            clearInterval(this.counterFunction);
-            this.timer = 0;
-            this.handleNext("countDown");
-          }
-          console.log("Counter Function");
           return myFunction;
         }.bind(this),
         1000
@@ -428,24 +428,6 @@ export default {
         function myFunction() {
           this.questionSeconds = parseInt(this.questionTimer % 60, 10);
           this.questionTimer--;
-          if (this.questionTimer <= 0) {
-            clearInterval(this.counterQuestionFunction);
-            if (
-              this.questionIndex ==
-              this.sections[this.sectionIndex].question.length - 1
-            ) {
-              clearInterval(this.counterFunction);
-              this.questionTimer = 0;
-              this.timer = 0;
-              this.handleNext("countDown");
-            } else {
-              this.questionTimer = 0;
-              this.handleNextQuestion();
-            }
-          }
-
-          console.log("Counter Question Function");
-
           return myFunction;
         }.bind(this),
         1000
@@ -510,24 +492,16 @@ export default {
       }
     },
     handleNextQuestion() {
-      setTimeout(() => {
-        this.questionTimer = this.questionDuration;
-        this.questionIndex++;
-        this.startQuestionCountDown();
-      }, 1);
+      this.questionTimer = this.questionDuration;
+      this.questionIndex++;
+      this.startQuestionCountDown();
     },
     handleAnswer() {
       clearInterval(this.counterQuestionFunction);
-      if (
-        this.questionIndex ==
-        this.sections[this.sectionIndex].question.length - 1
-      ) {
+      if (this.isLastQuestion) {
         clearInterval(this.counterFunction);
-        this.questionTimer = 0;
-        this.timer = 0;
         this.handleNext("countDown");
       } else {
-        this.questionTimer = 0;
         this.handleNextQuestion();
       }
     },
@@ -654,6 +628,27 @@ export default {
     clearInterval(this.dateFunction);
     clearInterval(this.counterFunction);
     clearInterval(this.counterQuestionFunction);
+  },
+  watch: {
+    questionTimer(val) {
+      if (val <= 0) {
+        clearInterval(this.counterQuestionFunction);
+        if (this.isLastQuestion) {
+          clearInterval(this.counterFunction);
+          this.handleNext("countDown");
+        } else {
+          this.handleNextQuestion();
+        }
+      }
+      console.log("Counter Question Function");
+    },
+    timer(val) {
+      if (val < 0) {
+        clearInterval(this.counterFunction);
+        this.handleNext("countDown");
+      }
+      console.log("Counter Function");
+    },
   },
 };
 </script>
