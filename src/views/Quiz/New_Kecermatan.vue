@@ -187,7 +187,7 @@
                           class="text-center px-4"
                         >
                           <p class="text-answer-title font-weight-medium ma-0">
-                            {{ qTitle }}
+                            {{ qTitle }} {{ questionIndex }}
                           </p>
                         </td>
                       </tr>
@@ -385,12 +385,6 @@ export default {
     isLast() {
       return this.sections.length == this.sectionIndex + 1;
     },
-    isLastQuestion() {
-      return (
-        this.sections[this.sectionIndex].question.length - 1 ==
-        this.questionIndex
-      );
-    },
     isResume() {
       return this.kecermatan?.secureId;
     },
@@ -492,13 +486,18 @@ export default {
       }
     },
     handleNextQuestion() {
-      this.questionTimer = this.questionDuration;
-      this.questionIndex++;
-      this.startQuestionCountDown();
+      setTimeout(() => {
+        this.questionTimer = this.questionDuration;
+        this.questionIndex++;
+        this.startQuestionCountDown();
+      }, 0);
     },
     handleAnswer() {
       clearInterval(this.counterQuestionFunction);
-      if (this.isLastQuestion) {
+      if (
+        this.questionIndex + 1 ==
+        this.sections[this.sectionIndex].question.length
+      ) {
         clearInterval(this.counterFunction);
         this.handleNext("countDown");
       } else {
@@ -633,7 +632,10 @@ export default {
     questionTimer(val) {
       if (val <= 0) {
         clearInterval(this.counterQuestionFunction);
-        if (this.isLastQuestion) {
+        if (
+          this.questionIndex + 1 ==
+          this.sections[this.sectionIndex].question.length
+        ) {
           clearInterval(this.counterFunction);
           this.handleNext("countDown");
         } else {
@@ -648,6 +650,9 @@ export default {
         this.handleNext("countDown");
       }
       console.log("Counter Function");
+    },
+    questionIndex(val) {
+      console.log({ val });
     },
   },
 };
