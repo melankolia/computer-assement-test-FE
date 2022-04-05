@@ -187,7 +187,7 @@
                           class="text-center px-4"
                         >
                           <p class="text-answer-title font-weight-medium ma-0">
-                            {{ qTitle }} {{ questionIndex }}
+                            {{ qTitle }}
                           </p>
                         </td>
                       </tr>
