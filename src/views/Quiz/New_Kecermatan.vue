@@ -464,7 +464,7 @@ export default {
           this.startCountDown();
           this.startQuestionCountDown();
           this.loadingChangeSection = false;
-        }, 500);
+        }, 1000);
       } else {
         this.clearingIntervalQuestion();
         if (type == "normal") {
