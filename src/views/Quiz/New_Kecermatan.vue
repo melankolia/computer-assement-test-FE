@@ -348,6 +348,9 @@ export default {
           total: null,
         },
       ],
+      counterFunction: null,
+      counterQuestionFunction: null,
+      dateFunction: null,
       MalakaLogo,
     };
   },
@@ -383,7 +386,7 @@ export default {
       return this.nowHour;
     },
     isLast() {
-      return this.sections.length == this.sectionIndex + 1;
+      return this.sections.length <= this.sectionIndex + 1;
     },
     isResume() {
       return this.kecermatan?.secureId;
@@ -408,6 +411,7 @@ export default {
       this.seconds = this.seconds < 10 ? "0" + this.seconds : this.seconds;
     },
     startCountDown() {
+      this.clearingIntervalSection();
       this.counterFunction = setInterval(
         function myFunction() {
           this.converterTimer();
@@ -418,6 +422,7 @@ export default {
       );
     },
     startQuestionCountDown() {
+      this.clearingIntervalQuestion();
       this.counterQuestionFunction = setInterval(
         function myFunction() {
           this.questionSeconds = parseInt(this.questionTimer % 60, 10);
@@ -428,6 +433,9 @@ export default {
       );
     },
     handleForceSubmit() {
+      this.clearingIntervalSection();
+      this.clearingIntervalQuestion();
+
       this.$confirm({
         title: "Waktu Habis",
         message: `<br /> Klik <b>OK</b> untuk melihat nilai akhir`,
@@ -444,27 +452,21 @@ export default {
     handleNext(type = "normal") {
       if (!this.isLast) {
         this.loadingChangeSection = true;
+
         this.questionTimer = this.questionDuration;
         this.timer = this.duration;
         this.minutes = 0;
         this.seconds = 0;
 
-        clearInterval(this.counterFunction);
-        clearInterval(this.counterQuestionFunction);
-
-        setTimeout(
-          function myFunction() {
-            this.questionIndex = 0;
-            this.sectionIndex++;
-            this.startCountDown();
-            this.startQuestionCountDown();
-            this.loadingChangeSection = false;
-
-            return myFunction;
-          }.bind(this),
-          0
-        );
+        setTimeout(() => {
+          this.questionIndex = 0;
+          this.sectionIndex++;
+          this.startCountDown();
+          this.startQuestionCountDown();
+          this.loadingChangeSection = false;
+        }, 500);
       } else {
+        this.clearingIntervalQuestion();
         if (type == "normal") {
           this.$confirm({
             title: "Confirm",
@@ -474,13 +476,14 @@ export default {
               yes: "Yes",
             },
             callback: (confirm) => {
-              if (confirm) this.handleSubmit();
+              if (confirm) {
+                this.handleSubmit();
+              } else {
+                this.startQuestionCountDown();
+              }
             },
           });
         } else {
-          clearInterval(this.counterFunction);
-          clearInterval(this.counterQuestionFunction);
-
           this.handleForceSubmit();
         }
       }
@@ -493,12 +496,10 @@ export default {
       }, 0);
     },
     handleAnswer() {
-      clearInterval(this.counterQuestionFunction);
       if (
         this.questionIndex + 1 ==
         this.sections[this.sectionIndex].question.length
       ) {
-        clearInterval(this.counterFunction);
         this.handleNext("countDown");
       } else {
         this.handleNextQuestion();
@@ -549,7 +550,7 @@ export default {
       this.purgeData();
     },
     getDate() {
-      this.dataFunction = setInterval(() => {
+      this.dateFunction = setInterval(() => {
         const now = new Date().toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",
@@ -622,6 +623,14 @@ export default {
       const top = window.pageYOffset || e.target.scrollTop || 0;
       this.floating = top > 40;
     },
+    clearingIntervalSection() {
+      clearInterval(this.counterFunction);
+      this.counterFunction = null;
+    },
+    clearingIntervalQuestion() {
+      clearInterval(this.counterQuestionFunction);
+      this.counterQuestionFunction = null;
+    },
   },
   beforeDestroy() {
     clearInterval(this.dateFunction);
@@ -630,29 +639,40 @@ export default {
   },
   watch: {
     questionTimer(val) {
+      console.log("Counter Question Function", val);
+
       if (val <= 0) {
-        clearInterval(this.counterQuestionFunction);
         if (
           this.questionIndex + 1 ==
           this.sections[this.sectionIndex].question.length
         ) {
-          clearInterval(this.counterFunction);
           this.handleNext("countDown");
         } else {
           this.handleNextQuestion();
         }
       }
-      console.log("Counter Question Function");
     },
     timer(val) {
       if (val < 0) {
-        clearInterval(this.counterFunction);
         this.handleNext("countDown");
       }
-      console.log("Counter Function");
+      console.log("Counter Function", val);
     },
     questionIndex(val) {
-      console.log({ val });
+      console.log(
+        "Question Length",
+        this.sections[this.sectionIndex].question.length,
+        "Question Index",
+        val
+      );
+    },
+    sectionIndex(val) {
+      console.log(
+        "Section Length",
+        this.sections[val].length,
+        "Section Index",
+        val
+      );
     },
   },
 };
