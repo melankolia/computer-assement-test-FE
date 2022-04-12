@@ -47,7 +47,7 @@
         <template v-slot:action>
           <v-btn
             depressed
-            @click="() => getDetail()"
+            @click="() => getDetail(questionType)"
             color="default"
             class="px-10"
           >
