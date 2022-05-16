@@ -13,13 +13,28 @@
         >
         </v-text-field>
       </v-col>
-      <v-expand-transition>
-        <v-col cols="12" xs="12" sm="4" align-self="end" v-if="!addMode">
-          <v-btn @click="handleAdd" color="primary float-right no-uppercase">
-            Tambah Peserta
+
+      <v-col cols="12" xs="12" sm="4" align-self="end">
+        <div class="d-flex flex-row justify-end">
+          <v-expand-transition>
+            <v-btn
+              @click="handleAdd"
+              color="primary no-uppercase mr-4"
+              v-if="!addMode"
+            >
+              Tambah Peserta
+            </v-btn>
+          </v-expand-transition>
+
+          <v-btn
+            :loading="loadingDelete"
+            @click="handleDeleteNilai"
+            color="error no-uppercase"
+          >
+            Hapus Nilai Peserta
           </v-btn>
-        </v-col>
-      </v-expand-transition>
+        </div>
+      </v-col>
     </v-row>
     <v-data-table
       :loading="loading"
@@ -162,6 +177,13 @@
                 >
                   Simpan
                 </v-btn>
+                <v-btn
+                  @click="addMode = false"
+                  color="error no-uppercase mb-2"
+                  v-if="addMode"
+                >
+                  Cancel
+                </v-btn>
               </div>
             </v-form>
           </div>
@@ -297,6 +319,7 @@
 
 <script>
 import PesertaService from "@/services/resources/peserta.service";
+import NilaiService from "@/services/resources/nilai.service";
 
 export default {
   data() {
@@ -340,6 +363,7 @@ export default {
       validEdited: false,
       loadingSubmit: false,
       loadingEdit: false,
+      loadingDelete: false,
 
       // RUles Properties
       userNameRules: [
@@ -518,6 +542,44 @@ export default {
         .finally(() => {
           this.getList();
         });
+    },
+    handleDeleteNilai() {
+      this.$confirm({
+        title: "Confirm",
+        message: `Are you sure you want to <b>Delete all</b> peserta nilai ?`,
+        button: {
+          no: "No",
+          yes: "Yes",
+        },
+        callback: (confirm) => {
+          if (confirm) {
+            this.deleteDataNilai();
+          }
+        },
+      });
+    },
+    deleteDataNilai() {
+      this.loadingDelete = true;
+      NilaiService.deleteAllNilai()
+        .then(({ data: { message } }) => {
+          if (message == "OK") {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: `Berhasil menghapus data Nilai Peserta`,
+              color: "success",
+            });
+          } else {
+            this.$store.commit("snackbar/setSnack", {
+              show: true,
+              message: `Gagal menghapus data Nilai Peserta`,
+              color: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => (this.loadingDelete = false));
     },
   },
 };

@@ -108,4 +108,5 @@ export const NILAI = {
   INSERT: `${nilai}`,
   INSERT_KECERMATAN: `${nilai}/kecermatan`,
   INSERT_NEW_KECERMATAN: `${nilai}/new-kecermatan`,
+  DELETE: `${nilai}`,
 };
